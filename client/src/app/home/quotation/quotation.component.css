@@ -1,0 +1,182 @@
+/* Initial Form */
+.mat-stepper-horizontal {
+    margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+    margin-top: 16px;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
+
+.example-full-width {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.make-activeM {
+    background: #0E2B4D;
+}
+
+.make-inactiveM {
+    background: #0e2b4d57;
+}
+
+.make-activeF {
+    background: #60CDEE 0% 0% no-repeat padding-box;
+}
+
+.make-inactiveF {
+    background: #60cdee5f 0% 0% no-repeat padding-box;
+}
+
+
+/************************* Quotations *********************************/
+.example-flex-container {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.example-button-container {
+    justify-content: center;
+}
+
+.example-card {
+    min-height: 350px;
+    border-radius: 20px;
+    border: 1px solid #7070703e;
+}
+
+/* Table */
+
+.example-container {
+    position: relative;
+}
+
+.example-table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 250;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.example-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.example-rate-limit-reached {
+    max-width: 360px;
+    text-align: center;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+.mat-header-cell {
+    background: #0d6efd;
+    color: white;
+}
+
+.full-width-table {
+    width: 100%;
+}
+
+.mat-column-cover {
+    width: 50% !important;
+}
+
+.mat-column-sa {
+    width: 25% !important;
+}
+
+.mat-column-deductible {
+    width: 25% !important;
+}
+
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+
+/* Pay Page */
+
+.pay-card {
+    max-width: 80%;
+    border-radius: 45px;
+}
+
+.pay-card-title {
+    font-size: 30px;
+    color: #0E2B4D;
+    font: normal normal bold 30px/37px Montserrat;
+}
+
+.pay-card-paragraph {
+    font-size: 15px;
+}
+
+.pay-row {
+    max-width: 80%;
+}
+
+.payCertyLogo {
+    max-width: 75px;
+}
+
+.payQuoterLogo {
+    max-width: 200px;
+}
+
+@media screen and (max-width: 800px) {
+
+    .pay-card {
+        max-width: 100%;
+    }
+
+    .pay-row {
+        max-width: 100%;
+    }
+
+    .payCertyLogo {
+        max-width: 40px;
+    }
+
+    .payQuoterLogo {
+        max-width: 100px;
+    }
+
+    .pay-card-title {
+        font-size: 20px;
+    }
+
+    .pay-card-paragraph {
+        font-size: 12px;
+    }
+}

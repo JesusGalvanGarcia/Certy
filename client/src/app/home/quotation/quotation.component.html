@@ -1,0 +1,1490 @@
+<div class="container animated fadeIn" style="margin-top: 50px; margin-bottom: 40px;">
+    <div class="row row-cols-1 row-cols-md-2" *ngIf="initial_page">
+        <div class="col col-md-6">
+            <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
+                style="max-width: 50px;">
+            <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+                No es un gasto, es moverte seguro a todos lados.
+            </p>
+            <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-10.png" alt="certy_logo"
+                style="max-width: 500px;">
+        </div>
+        <div class="col col-12 col-md-6">
+            <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+                <mat-step [stepControl]="userFormGroup">
+                    <form [formGroup]="userFormGroup">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Nombre y Apellidos</mat-label>
+                            <input matInput formControlName="complete_name" style="margin-bottom: 0px;">
+                            <mat-error class="animated fadeIn" *ngIf="invalidCompleteName">
+                                <label class="animated fadeIn"
+                                    *ngIf="userFormGroup.get('complete_name').hasError('required')"
+                                    style="margin-top: 0px;">
+                                    El nombre y apellidos son requeridos.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="userFormGroup.get('complete_name').hasError('minlength')">
+                                    El nombre y apellidos debe contener al menos
+                                    {{userFormGroup.get('complete_name').errors.minlength.requiredLength}} caracteres.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="userFormGroup.get('complete_name').hasError('pattern')">
+                                    El nombre y apellidos son inválidos.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Correo Electrónico</mat-label>
+                            <input matInput formControlName="email">
+                            <mat-error class="animated fadeIn" *ngIf="invalidEmail">
+                                <label class="animated fadeIn" *ngIf="userFormGroup.get('email').hasError('required')">
+                                    El correo electrónico es requerido.
+                                </label>
+                                <label class="animated fadeIn" *ngIf="userFormGroup.get('email').hasError('pattern')">
+                                    El correo electrónico es invalido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Teléfono</mat-label>
+                            <input matInput formControlName="cellphone" maxlength="10">
+                            <mat-error class="animated fadeIn" *ngIf="invalidCellphone">
+                                <label class="animated fadeIn"
+                                    *ngIf="userFormGroup.get('cellphone').hasError('required')">
+                                    El teléfono es requerido.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="userFormGroup.get('cellphone').hasError('pattern')">
+                                    El teléfono es invalido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Edad</mat-label>
+                                    <input matInput formControlName="age" maxlength="2">
+                                    <mat-error class="animated fadeIn" *ngIf="invalidAge">
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('age').hasError('required')">
+                                            La edad es requerida.
+                                        </label>
+                                        <label class="animated fadeIn" *ngIf="userFormGroup.get('age').hasError('min')">
+                                            La edad debe ser igual o mayor a {{userFormGroup.get('age').errors.min.min}}
+                                            años.
+                                        </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('age').hasError('maxlength')">
+                                            La edad debe contener
+                                            {{userFormGroup.get('age').errors.maxlength.requiredLength}}
+                                            caracteres.
+                                        </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('age').hasError('pattern')">
+                                            La edad es invalida.
+                                        </label>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Código Postal</mat-label>
+                                    <input matInput formControlName="cp" (change)="validateCp()" maxlength="5"
+                                        minlength="5">
+                                    <mat-error class="animated fadeIn" *ngIf="invalidCp">
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('cp').hasError('required')">
+                                            El código postal es requerido.
+                                        </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('cp').hasError('minlength')">
+                                            El código postal debe contener
+                                            {{userFormGroup.get('cp').errors.minlength.requiredLength}}
+                                            caracteres.
+                                        </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('cp').hasError('maxlength')">
+                                            El código postal debe contener
+                                            {{userFormGroup.get('cp').errors.maxlength.requiredLength}}
+                                            caracteres.
+                                        </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="userFormGroup.get('cp').hasError('pattern')">
+                                            El código postal es invalido.
+                                        </label>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col" align="start">
+                                <mat-button-toggle-group #group="matButtonToggleGroup" style="border: 0px"
+                                    formControlName="genre">
+                                    <mat-button-toggle value="FEMENINO"
+                                        [class.make-activeF]="userFormGroup.get('genre').value == 'FEMENINO'"
+                                        [class.make-inactiveF]="userFormGroup.get('genre').value == 'MASCULINO' || !userFormGroup.get('genre').value"
+                                        style="color:white; margin-right: 10px; border-radius: 10px;">
+                                        <mat-icon>woman</mat-icon>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="MASCULINO"
+                                        [class.make-activeM]="userFormGroup.get('genre').value == 'MASCULINO'"
+                                        [class.make-inactiveM]="userFormGroup.get('genre').value == 'FEMENINO' || !userFormGroup.get('genre').value"
+                                        style="color:white; margin-left: 10px; border-radius: 10px;">
+                                        <mat-icon>man</mat-icon>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+                            <div class="col mt-4" align="end">
+                                <button mat-button matStepperNext class="btn btn-info"
+                                    style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                    [disabled]="userFormGroup.invalid">Siguiente</button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="vehicleFormGroup" [editable]="userFormGroup.invalid">
+                    <form [formGroup]="vehicleFormGroup" (submit)="validateForms();">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>¿De que año es tu vehículo?</mat-label>
+                            <mat-select formControlName="model" (selectionChange)="getBrands()">
+                                <mat-option value="2024">2024</mat-option>
+                                <mat-option value="2023">2023</mat-option>
+                                <mat-option value="2022">2022</mat-option>
+                                <mat-option value="2021">2021</mat-option>
+                                <mat-option value="2020">2020</mat-option>
+                                <mat-option value="2019">2019</mat-option>
+                                <mat-option value="2018">2018</mat-option>
+                                <mat-option value="2017">2017</mat-option>
+                                <mat-option value="2016">2016</mat-option>
+                                <mat-option value="2015">2015</mat-option>
+                                <mat-option value="2014">2014</mat-option>
+                                <mat-option value="2013">2013</mat-option>
+                                <mat-option value="2012">2012</mat-option>
+                                <mat-option value="2011">2011</mat-option>
+                                <mat-option value="2010">2010</mat-option>
+                                <mat-option value="2009">2009</mat-option>
+                                <mat-option value="2008">2008</mat-option>
+                                <mat-option value="2007">2007</mat-option>
+                                <mat-option value="2006">2006</mat-option>
+                                <mat-option value="2005">2005</mat-option>
+                                <mat-option value="2004">2004</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Marca del Vehículo</mat-label>
+                            <mat-select formControlName="brand_id" (selectionChange)="getTypes()">
+                                <mat-option *ngFor="let brand of brands" [value]="brand.marca">
+                                    {{ brand.nombre }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Tipo</mat-label>
+                            <mat-select formControlName="type" (selectionChange)="getVersions()">
+                                <mat-option *ngFor="let type of types" [value]="type.tipo">
+                                    {{ type.tipo }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Versión</mat-label>
+                            <mat-select formControlName="version">
+                                <mat-option *ngFor="let version of versions" [value]="version.amis">
+                                    {{ version.descripcion }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div>
+                            <div class="row">
+                                <!-- <div class="col" align="start">
+                                    <button mat-button matStepperPrevious class="btn btn-info"
+                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
+                                </div> -->
+                                <div class="col" align="start">
+                                    <mat-radio-group aria-label="Select an option" formControlName="unit_type"
+                                        color="primary">
+                                        <mat-radio-button value="AUTO">Auto </mat-radio-button>
+                                        <mat-radio-button value="PICKUP">Pickup </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="col mt-4" align="end">
+                                    <button type="submit" mat-button matStepperNext class="btn btn-info"
+                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                        [disabled]="vehicleFormGroup.invalid">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step readonly>
+                    <ng-template matStepLabel></ng-template>
+                    <p>Cargando pantalla...</p>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+
+    <div *ngIf="quotations">
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col col-12 col-md-10">
+
+                <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+                    ¡Elige la mejor opción para ti!
+                </p>
+            </div>
+            <div class="col col-12 col-md-2">
+                <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
+                    style="max-width: 60px;">
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col col-12 col-md-2">
+                <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Cobertura</mat-label>
+                    <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();">
+                        <mat-option value="1">Amplia</mat-option>
+                        <mat-option value="2">AMPLIA PLUS</mat-option>
+                        <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                        <mat-option value="4">LIMITADA</mat-option>
+                        <mat-option value="5">RC</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col col-12 col-md-2">
+                <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Forma de Pago</mat-label>
+                    <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();">
+                        <mat-option value="CONTADO">Contado</mat-option>
+                        <mat-option value="SEMESTRAL">Semestral</mat-option>
+                        <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                        <mat-option value="MENSUAL">Mensual</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col col-12 col-md-2">
+                <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
+                    (click)="otherCar();">
+                    Cotizar otro auto
+                </button>
+            </div>
+        </div>
+        <div class="row row-cols-1 row row-cols-md-2 row-cols-lg-3 mt-4">
+            <div class="col mb-4">
+                <mat-card class="example-card">
+                    <div class="mt-2 animated fadeIn" align="center" *ngIf="chuubLoading">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div class="container" align="center" *ngIf="!chuubLoading && chuubActive">
+                        <div class="row mt-4">
+                            <div class="col" align="end">
+                                <img class="navbar-brand mb-4" src="{{chuub_quotation.logoGdeAseguradora}}"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button class="button" mat-mini-fab style="background-color: #5C5C5C;"
+                                        data-bs-toggle="modal" data-bs-target="#ChuubModal">
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1 class="mt-4" style="color: #0CB6CE; font-size: 50px;"> $ {{
+                            chuub_quotation.primas.primaTotal | number : '1.2-2'}}</h1>
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            Costo total del seguro
+                        </p>
+                        <div class="row row-cols-1 row-cols-md-2 mt-2" *ngIf=" chuub_quotation.primas.recibos > 1">
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> Pago Inicial de:</label>
+                                <h1 class="mt-4" style="color: #0CB6CE; font-size: 20px;">
+                                    $ {{ chuub_quotation.primas.reciboInicial | number : '1.2-2'}}
+                                </h1>
+                            </div>
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> {{ (chuub_quotation.primas.recibos - 1)
+                                    }} pagos
+                                    de:</label>
+                                <h1 class="mt-4" style="color: #0CB6CE; font-size: 20px;">
+                                    $ {{ chuub_quotation.primas.reciboSubsecuente | number : '1.2-2'}}
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="mt-4" style="color:#5C5C5C; font-size: 20px;">
+                            {{ chuub_quotation.descripcion }}
+                        </p>
+                        <button class="mt-4 mb-4" mat-raised-button style="background-color: #0CB6CE;color: white;"
+                            (click)="checkSession(); selectQuotation(1)" data-bs-dismiss="modal">
+                            Comprar
+                        </button>
+                    </div>
+
+                    <div class="container" align="center" *ngIf="!chuubLoading && !chuubActive">
+                        <div class="row mt-4">
+                            <div class="col" align="right">
+                                <img class="navbar-brand mb-4"
+                                    src="https://storage.googleapis.com/quattrocrm/aseguradoras/1_280x140.png"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button mat-mini-fab style="background-color: #5C5C5C;" disabled>
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            El vehículo no fue encontrado con la descripción seleccionada.
+                        </p>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="col mb-4">
+                <mat-card class="example-card">
+                    <div class="mt-2 animated fadeIn" align="center" *ngIf="primeroLoading">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div class="container" align="center" *ngIf="!primeroLoading && primeroActive">
+                        <div class="row mt-4">
+                            <div class="col" align="right">
+                                <img class="navbar-brand mb-4"
+                                    src="https://storage.googleapis.com/quattrocrm/aseguradoras/60_140x70.png"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button class="button" mat-mini-fab style="background-color: #5C5C5C;"
+                                        data-bs-toggle="modal" data-bs-target="#PrimeroModal">
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1 class="mt-4" style="color: #1B479B; font-size: 50px;"> $ {{
+                            (primero_quotation.primas.primaTotal ?primero_quotation.primas.primaTotal:0) | number :
+                            '1.2-2'}}</h1>
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            Costo total del seguro
+                        </p>
+                        <div class="row row-cols-1 row-cols-md-2 mt-2" *ngIf="primero_quotation.primas.recibos > 1">
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> Pago Inicial de:</label>
+                                <label class="mt-4" style="color: #1B479B; font-size: 20px;">
+                                    $ {{ primero_quotation.primas.reciboInicial | number : '1.2-2'}}
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> {{ (primero_quotation.primas.recibos - 1)
+                                    }} pagos
+                                    de:</label>
+                                <label class="mt-4" style="color: #1B479B; font-size: 20px;">
+                                    $ {{ primero_quotation.primas.reciboSubsecuente | number : '1.2-2'}}
+                                </label>
+                            </div>
+                        </div>
+                        <p class="mt-4" style="color:#5C5C5C; font-size: 20px;">
+                            {{ vehicleFormGroup.get('version').value }}
+                        </p>
+                        <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
+                            (click)="checkSession(); selectQuotation(2);">
+                            Comprar
+                        </button>
+                    </div>
+
+                    <div class="container" align="center" *ngIf="!primeroLoading && !primeroActive">
+                        <div class="row mt-4">
+                            <div class="col" align="right">
+                                <img class="navbar-brand mb-4"
+                                    src="https://storage.googleapis.com/quattrocrm/aseguradoras/60_140x70.png"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button mat-mini-fab style="background-color: #5C5C5C;" disabled>
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            El vehículo no fue encontrado con la descripción seleccionada.
+                        </p>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="col mb-4">
+                <mat-card class="example-card">
+                    <div class="mt-2 animated fadeIn" align="center" *ngIf="anaLoading">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div class="container" align="center" *ngIf="!anaLoading && anaActive">
+                        <div class="row mt-4">
+                            <div class="col" align="end">
+                                <img class="navbar-brand mb-4" src="{{ana_quotation.logoGdeAseguradora}}"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button class="button" mat-mini-fab style="background-color: #5C5C5C;"
+                                        data-bs-toggle="modal" data-bs-target="#AnaModal">
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h1 class="mt-4" style="color: #D41E2A; font-size: 50px;">
+
+                            $ {{ ana_quotation.primas.primaTotal | number : '1.2-2'}}
+                        </h1>
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            Costo total del seguro
+                        </p>
+                        <div class="row row-cols-1 row-cols-md-2 mt-2" *ngIf=" ana_quotation.primas.recibos > 1">
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> Pago Inicial de:</label>
+                                <h1 class="mt-4" style="color: #D41E2A; font-size: 20px;">
+                                    $ {{ ana_quotation.primas.reciboInicial | number : '1.2-2'}}
+                                </h1>
+                            </div>
+                            <div class="col">
+                                <label style="color:#5C5C5C;font-size: 20px;"> {{ (ana_quotation.primas.recibos - 1) }}
+                                    pagos
+                                    de:</label>
+                                <h1 class="mt-4" style="color: #D41E2A; font-size: 20px;">
+                                    $ {{ ana_quotation.primas.reciboSubsecuente | number : '1.2-2'}}
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="mt-4" style="color:#5C5C5C; font-size: 20px;">
+                            {{ ana_quotation.descripcion }}
+                        </p>
+                        <button class="mt-4 mb-4" mat-raised-button style="background-color: #D41E2A;color: white;"
+                            (click)="checkSession(); selectQuotation(3);">
+                            Comprar
+                        </button>
+                    </div>
+
+                    <div class="container" align="center" *ngIf="!anaLoading && !anaActive">
+                        <div class="row mt-4">
+                            <div class="col" align="right">
+                                <img class="navbar-brand mb-4"
+                                    src="https://storage.googleapis.com/quattrocrm/aseguradoras/8_280x140.png"
+                                    alt="certy_logo" style="max-width: 120px;">
+                            </div>
+                            <div class="col" align="center">
+                                <div class="example-button-container">
+                                    <button mat-mini-fab style="background-color: #5C5C5C;" disabled>
+                                        <mat-icon>question_mark</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                            El vehículo no fue encontrado con la descripción seleccionada.
+                        </p>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2" *ngIf="last_data_page">
+        <div class="col col-md-6">
+            <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
+                style="max-width: 50px;">
+            <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+                Completa los últimos datos para emitir tu póliza.
+            </p>
+        </div>
+        <div class="col col-12 col-md-6">
+            <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+                <mat-step [stepControl]="lastVehicleFormGroup">
+                    <form [formGroup]="lastVehicleFormGroup">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Número de Serie</mat-label>
+                            <input formControlName="serial_no" matInput style="margin-bottom: 0px;" minlength="15"
+                                maxlength="17">
+                            <mat-error class="animated fadeIn" *ngIf="invalidSerialNumber">
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('serial_no').hasError('required')"
+                                    style="margin-top: 0px;">
+                                    El número de serie es requerido.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('serial_no').hasError('minlength')">
+                                    El número de serie debe contener al menos
+                                    {{lastVehicleFormGroup.get('serial_no').errors.minlength.requiredLength}}
+                                    caracteres.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('serial_no').hasError('maxlength')">
+                                    El número de serie no debe contener mas de
+                                    {{lastVehicleFormGroup.get('serial_no').errors.maxlength.requiredLength}}
+                                    caracteres.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('serial_no').hasError('pattern')">
+                                    El número de serie es inválido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Número de Placas</mat-label>
+                            <input matInput formControlName="plate_no" minlength="6" maxlength="7"
+                                (keyup)="lastVehicleFormGroup.patchValue({plate_no: lastVehicleFormGroup.get('plate_no').value.toUpperCase()})">
+                            <mat-error class="animated fadeIn" *ngIf="invalidPlateNumber">
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('plate_no').hasError('required')">
+                                    El número de placas es requerido.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('plate_no').hasError('minlength')">
+                                    El número de placas debe contener
+                                    {{lastVehicleFormGroup.get('plate_no').errors.minlength.requiredLength}}
+                                    caracteres.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('plate_no').hasError('maxlength')">
+                                    El número de placas debe contener
+                                    {{lastVehicleFormGroup.get('plate_no').errors.maxlength.requiredLength}}
+                                    caracteres.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('plate_no').hasError('pattern')">
+                                    El número de placas es invalido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Número de Motor</mat-label>
+                            <input matInput formControlName="motor_no" maxlength="17">
+                            <mat-error class="animated fadeIn" *ngIf="invalidMotorNumber">
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('motor_no').hasError('required')">
+                                    El número del motor es requerido.
+                                </label>
+                                <label class="animated fadeIn"
+                                    *ngIf="lastVehicleFormGroup.get('motor_no').hasError('pattern')">
+                                    El número del motor es invalido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="row mt-4">
+                            <div class="col" align="start">
+                            </div>
+                            <div class="col" align="end">
+                                <button mat-button matStepperNext class="btn btn-info"
+                                    style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                    [disabled]="lastVehicleFormGroup.invalid">Siguiente</button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="lastUserFormGroup">
+                    <form [formGroup]="lastUserFormGroup" (submit)="validateLastForms();">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>RFC</mat-label>
+                            <input matInput style="margin-bottom: 0px;" formControlName="rfc"
+                                (keyup)="lastUserFormGroup.patchValue({rfc: lastUserFormGroup.get('rfc').value.toUpperCase()})"
+                                maxlength="13">
+                            <mat-error class="animated fadeIn" *ngIf="invalidRFC">
+                                <label class="animated fadeIn"
+                                    *ngIf="lastUserFormGroup.get('rfc').hasError('required')">
+                                    El RFC es requerido.
+                                </label>
+                                <label class="animated fadeIn" *ngIf="lastUserFormGroup.get('rfc').hasError('pattern')">
+                                    El RFC es invalido.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Calle</mat-label>
+                            <input matInput formControlName="street">
+                            <mat-error class="animated fadeIn" *ngIf="invalidStreet">
+                                <p class="animated fadeIn" *ngIf="lastUserFormGroup.get('street').hasError('required')">
+                                    La calle es requerida.
+                                </p>
+                                <p class="animated fadeIn"
+                                    *ngIf="lastUserFormGroup.get('street').hasError('minlength')">
+                                    La calle debe contener al menos
+                                    {{lastUserFormGroup.get('street').errors.minlength.requiredLength}}
+                                    caracteres.
+                                </p>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Colonia</mat-label>
+                            <input type="text" matInput [formControl]="suburbControl" [matAutocomplete]="suburb_auto">
+                            <mat-autocomplete autoActiveFirstOption #suburb_auto="matAutocomplete">
+                                <mat-option *ngFor="let suburb of filteredSuburbs | async" [value]="suburb">
+                                    {{ suburb }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error class="animated fadeIn" *ngIf="invalidSuburb">
+                                <label class="animated fadeIn" *ngIf="suburbControl.hasError('required')">
+                                    La colonia es requerida.
+                                </label>
+                                <label class="animated fadeIn" *ngIf="suburbControl.hasError('minlength')">
+                                    La colonia debe contener al menos 5 caracteres.
+                                </label>
+                            </mat-error>
+                        </mat-form-field>
+                        <div>
+                            <div class="row row-cols-1 row-cols-2">
+                                <div class="col col-12 col-md-6" align="start">
+                                    <mat-form-field appearance="outline" class="example-full-width">
+                                        <mat-label>Municipio</mat-label>
+                                        <input matInput style="margin-bottom: 0px;" formControlName="township">
+                                        <mat-error class="animated fadeIn" *ngIf="invalidTownship">
+                                            <label class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('township').hasError('required')">
+                                                El municipio es requerido.
+                                            </label>
+                                            <label class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('township').hasError('minlength')">
+                                                El municipio debe contener al menos
+                                                {{lastUserFormGroup.get('township').errors.maxlength.requiredLength}}
+                                                caracteres.
+                                            </label>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col col-12 col-md-6" align="end">
+                                    <mat-form-field appearance="outline" class="example-full-width">
+                                        <mat-label>Estado</mat-label>
+                                        <input matInput style="margin-bottom: 0px;" formControlName="state">
+                                        <mat-error class="animated fadeIn" *ngIf="invalidState">
+                                            <label class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('state').hasError('required')">
+                                                El estado es requerido.
+                                            </label>
+                                            <label class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('state').hasError('minlength')">
+                                                El estado debe contener al menos
+                                                {{lastUserFormGroup.get('state').errors.maxlength.requiredLength}}
+                                                caracteres.
+                                            </label>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="row row-cols-1 row-cols-2">
+                                <div class="col col-12 col-md-6" align="start">
+                                    <mat-form-field appearance="outline" class="example-full-width">
+                                        <mat-label>Número interior</mat-label>
+                                        <input matInput formControlName="int_street_number" maxlength="8">
+                                        <mat-error class="animated fadeIn" *ngIf="invalidIntStreetNumber">
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('int_street_number').hasError('required')">
+                                                El número interior es requerido.
+                                            </p>
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('int_street_number').hasError('minlength')">
+                                                El número interior debe contener al menos
+                                                {{lastUserFormGroup.get('int_street_number').errors.minlength.requiredLength}}
+                                                caracteres.
+                                            </p>
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('int_street_number').hasError('pattern')">
+                                                El número interior es invalido.
+                                            </p>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col col-12 col-md-6" align="end">
+                                    <mat-form-field appearance="outline" class="example-full-width">
+                                        <mat-label>Número exterior</mat-label>
+                                        <input matInput formControlName="street_number" maxlength="8">
+                                        <mat-error class="animated fadeIn" *ngIf="invalidStreetNumber">
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('street_number').hasError('required')">
+                                                El número exterior es requerido.
+                                            </p>
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('street_number').hasError('minlength')">
+                                                El número exterior debe contener al menos
+                                                {{lastUserFormGroup.get('street_number').errors.minlength.requiredLength}}
+                                                caracteres.
+                                            </p>
+                                            <p class="animated fadeIn"
+                                                *ngIf="lastUserFormGroup.get('street_number').hasError('pattern')">
+                                                El número exterior es invalido.
+                                            </p>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="row">
+                                <div class="col" align="start">
+                                    <button mat-button matStepperPrevious class="btn btn-info"
+                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
+                                </div>
+                                <div class="col" align="end">
+                                    <button type="submit" mat-button class="btn btn-info"
+                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                        [disabled]="lastUserFormGroup.invalid">
+                                        Ir a Pago
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step readonly>
+                    <ng-template matStepLabel></ng-template>
+                    <p>Cargando pantalla...</p>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+
+    <div *ngIf="pay_page" align="center">
+        <div class="row mt-4 mb-4" align="center">
+            <label style="color:#0E2B4D; font-size: 60px; font: normal normal bold 60px/73px Montserrat;">
+                ¡Muchas gracias por elegirnos!
+            </label>
+        </div>
+        <div class="card pay-card">
+            <div class="card-body">
+                <div class="row pay-row row-cols-2">
+                    <div class="col" align="start">
+                        <img class="payQuoterLogo mb-2" src="{{quotation_selected.logoGdeAseguradora}}"
+                            alt="certy_logo">
+
+                    </div>
+                    <div class="col" align="end">
+                        <img class="payCertyLogo mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+                    </div>
+                </div>
+
+                <hr class="mb-4 pay-row">
+                <div class="row pay-row row-cols-1 row-cols-md-2 mb-2">
+                    <div class="col col-12 col-md-6" align="start">
+                        <label class="pay-card-title">Producto seleccionado</label>
+                        <p class="pay-card-paragraph">Aseguradora: {{ quoter_name }}</p>
+                        <p class="pay-card-paragraph">Cobertura: {{ quoters_packs[quoter_pack] }}</p>
+                        <p class="pay-card-paragraph">
+                            Forma de pago: {{ quotation_selected.frecuenciaPago }}
+                        </p>
+                        <p class="pay-card-paragraph">Total a pagar:
+                            ${{ quotation_selected.primas.reciboInicial | number : '1.2-2'}}</p>
+                    </div>
+                    <div class="col col-12 col-md-6" align="start">
+                        <label class="pay-card-title">Vehículo por asegurar</label>
+                        <p class="pay-card-paragraph">Descripción: {{ quotation_selected.descripcion }}</p>
+                        <p class="pay-card-paragraph">Modelo: {{ vehicleFormGroup.get('model').value }}</p>
+                    </div>
+                </div>
+                <hr class="mb-4 pay-row">
+                <div class="row pay-row row-cols-1 row-cols-md-2">
+                    <div class="col col-12 col-md-6" align="start">
+                        <label class="pay-card-title">Dirección: </label>
+                        <p class="pay-card-paragraph">Calle: {{lastUserFormGroup.get('street').value}}</p>
+                        <p class="pay-card-paragraph">Colonia: {{suburbControl.value}}</p>
+                        <p class="pay-card-paragraph">Código Postal: {{userFormGroup.get('cp').value}}</p>
+                        <p class="pay-card-paragraph">RFC: {{lastUserFormGroup.get('rfc').value}}</p>
+                    </div>
+                    <div class="col col-12 col-md-6" align="start">
+                        <label class="pay-card-title">Método de pago</label>
+                        <p>
+                            <mat-radio-group aria-label="Select an option" color="primary">
+                                <mat-radio-button value="AUTO" checked>Pago con Tarjeta </mat-radio-button>
+                            </mat-radio-group>
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-primary btn-lg" style="border-radius: 20px;">
+                                Pagar póliza
+                            </button>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ana Modal -->
+<div class="modal fade" id="AnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="container-fluid">
+                    <div class="row row-cols-2">
+                        <div class="col col-11">
+                            <div class="row row-cols-1 row-cols-md-2">
+                                <div class="col col-12 col-md-4" align="start">
+                                    <img class="navbar-brand mb-4"
+                                        src="https://storage.googleapis.com/quattrocrm/aseguradoras/8_280x140.png"
+                                        alt="certy_logo" style="min-width: 200px;max-width: 250;">
+                                </div>
+                                <div class="col col-12 col-md-8" align="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <span matListItemLine>Año: {{vehicleFormGroup.get('model').value}}</span>
+                                            <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI AUT 5
+                                                ABS CA CE PIEL SM CQ CB</span>
+                                            <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                            <span matListItemLine>Vigencia: 1 Año</span>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-1">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row  row-cols-1 row-cols-md-2">
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Cobertura</mat-label>
+                                <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();" disabled>
+                                    <mat-option value="1">Amplia</mat-option>
+                                    <mat-option value="2">AMPLIA PLUS</mat-option>
+                                    <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                                    <mat-option value="4">LIMITADA</mat-option>
+                                    <mat-option value="5">RC</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Forma de Pago</mat-label>
+                                <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                                    disabled>
+                                    <mat-option value="CONTADO">Contado</mat-option>
+                                    <mat-option value="SEMESTRAL">Semestral</mat-option>
+                                    <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                                    <mat-option value="MENSUAL">Mensual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-2" align="center">
+                            <button type="button" class="btn btn-primary btn-lg"
+                                style="margin-top: 20px;background-color: #D41E2A;color: white;"
+                                (click)="checkSession(); selectQuotation(3);" data-bs-dismiss="modal">Comprar</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="mat-elevation-z8">
+                            <div class="example-table-container">
+                                <table mat-table [dataSource]="AnaDataSource" matSort>
+
+                                    <!-- Cover Column -->
+                                    <ng-container matColumnDef="cover">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by number">
+                                            Cobertura
+                                        </th>
+                                        <td mat-cell *matCellDef="let ana"> {{ana.nombre}} </td>
+                                    </ng-container>
+
+                                    <!-- SA Column -->
+                                    <ng-container matColumnDef="sa">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by name">
+                                            S.A.
+                                        </th>
+                                        <td mat-cell *matCellDef="let ana"> $ {{ana.prima | number :
+                                            '1.2-2'}} </td>
+                                    </ng-container>
+
+                                    <!-- Deductible Column -->
+                                    <ng-container matColumnDef="deductible">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by Deductible">
+                                            Deducible
+                                        </th>
+                                        <td mat-cell *matCellDef="let ana"> $ {{((ana.deducible * ana.prima) /100)
+                                            | number : '1.2-2'}} </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="AnaDisplayedColumns; sticky:true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: AnaDisplayedColumns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chuub Modal -->
+<div class="modal fade" id="ChuubModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="container-fluid">
+                    <div class="row row-cols-2">
+                        <div class="col col-11">
+                            <div class="row row-cols-1 row-cols-md-2">
+                                <div class="col col-12 col-md-4" align="start">
+                                    <img class="navbar-brand mb-4"
+                                        src="https://storage.googleapis.com/quattrocrm/aseguradoras/1_280x140.png"
+                                        alt="certy_logo" style="min-width: 200px;max-width: 250;">
+                                </div>
+                                <div class="col col-12 col-md-8" align="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <span matListItemLine>Año: {{vehicleFormGroup.get('model').value}}</span>
+                                            <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI AUT 5
+                                                ABS CA CE PIEL SM CQ CB</span>
+                                            <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                            <span matListItemLine>Vigencia: 1 Año</span>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-1">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row  row-cols-1 row-cols-md-2">
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Cobertura</mat-label>
+                                <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();" disabled>
+                                    <mat-option value="1">Amplia</mat-option>
+                                    <mat-option value="2">AMPLIA PLUS</mat-option>
+                                    <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                                    <mat-option value="4">LIMITADA</mat-option>
+                                    <mat-option value="5">RC</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Forma de Pago</mat-label>
+                                <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                                    disabled>
+                                    <mat-option value="CONTADO">Contado</mat-option>
+                                    <mat-option value="SEMESTRAL">Semestral</mat-option>
+                                    <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                                    <mat-option value="MENSUAL">Mensual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-2" align="center">
+                            <button type="button" class="btn btn-primary btn-lg"
+                                style="margin-top: 20px;background-color: #0CB6CE;color: white;" data-bs-dismiss="modal"
+                                (click)="checkSession();selectQuotation(1);">Comprar</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="mat-elevation-z8">
+                            <div class="example-table-container">
+                                <table mat-table [dataSource]="ChuubDataSource" matSort>
+
+                                    <!-- Cover Column -->
+                                    <ng-container matColumnDef="cover">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by number">
+                                            Cobertura
+                                        </th>
+                                        <td mat-cell *matCellDef="let chuub"> {{chuub.nombre}} </td>
+                                    </ng-container>
+
+                                    <!-- SA Column -->
+                                    <ng-container matColumnDef="sa">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by name">
+                                            S.A.
+                                        </th>
+                                        <td mat-cell *matCellDef="let chuub"> $ {{chuub.sumaAsegurada | number :
+                                            '1.2-2'}} </td>
+                                    </ng-container>
+
+                                    <!-- Deductible Column -->
+                                    <ng-container matColumnDef="deductible">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by Deductible">
+                                            Deducible
+                                        </th>
+                                        <td mat-cell *matCellDef="let chuub">$ {{(chuub.deducible * chuub.sumaAsegurada)
+                                            | number : '1.2-2'}} </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="ChuubDisplayedColumns; sticky:true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ChuubDisplayedColumns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Primero Modal -->
+<div class="modal fade" id="PrimeroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="container-fluid">
+                    <div class="row row-cols-2">
+                        <div class="col col-11">
+                            <div class="row row-cols-1 row-cols-md-2">
+                                <div class="col col-12 col-md-4" align="start">
+                                    <img class="navbar-brand mb-4"
+                                        src="https://storage.googleapis.com/quattrocrm/aseguradoras/60_140x70.png"
+                                        alt="certy_logo" style="min-width: 200px;max-width: 250;">
+                                </div>
+                                <div class="col col-12 col-md-8" align="start">
+                                    <mat-list>
+                                        <mat-list-item>
+                                            <span matListItemLine>Año: {{vehicleFormGroup.get('model').value}}</span>
+                                            <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI AUT 5
+                                                ABS CA CE PIEL SM CQ CB</span>
+                                            <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                            <span matListItemLine>Vigencia: 1 Año</span>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-1">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row  row-cols-1 row-cols-md-2">
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Cobertura</mat-label>
+                                <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();" disabled>
+                                    <mat-option value="1">Amplia</mat-option>
+                                    <mat-option value="2">AMPLIA PLUS</mat-option>
+                                    <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                                    <mat-option value="4">LIMITADA</mat-option>
+                                    <mat-option value="5">RC</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-5">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Forma de Pago</mat-label>
+                                <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                                    disabled>
+                                    <mat-option value="CONTADO">Contado</mat-option>
+                                    <mat-option value="SEMESTRAL">Semestral</mat-option>
+                                    <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                                    <mat-option value="MENSUAL">Mensual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-2" align="center">
+                            <button type="button" class="btn btn-primary btn-lg"
+                                style="margin-top: 20px;background-color: #1B479B;color: white;"
+                                (click)="checkSession();selectQuotation(2);" data-bs-dismiss="modal">Comprar</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="mat-elevation-z8">
+                            <div class="example-table-container">
+                                <table mat-table [dataSource]="PrimeroDataSource" matSort>
+
+                                    <!-- Cover Column -->
+                                    <ng-container matColumnDef="cover">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by number">
+                                            Cobertura
+                                        </th>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.position}} </td>
+                                    </ng-container>
+
+                                    <!-- SA Column -->
+                                    <ng-container matColumnDef="sa">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by name">
+                                            S.A.
+                                        </th>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.name}} </td>
+                                    </ng-container>
+
+                                    <!-- Deductible Column -->
+                                    <ng-container matColumnDef="deductible">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                            sortActionDescription="Sort by Deductible">
+                                            Deducible
+                                        </th>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.weight}} </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="PrimeroDisplayedColumns; sticky:true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: PrimeroDisplayedColumns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="backdrop" [ngStyle]="{display:display_login_modal}" *ngIf="quotations"></div>
+<div class="modal animated fadeIn" tabindex="-1" role="dialog" [ngStyle]="{display:display_login_modal}">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Iniciar Sesión</h1>
+                <button type="button" class="btn-close" (click)="closeLoginModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container" align="center">
+                    <form autocomplete="off" [formGroup]="loginFormGroup" (ngSubmit)="validateLoginForm()">
+                        <div class="col mt-4 mb-4">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Correo Electrónico</mat-label>
+                                <input matInput formControlName="email">
+                                <mat-icon matSuffix>account_circle</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidLoginEmail">
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('email').hasError('required')">
+                                        El correo es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('email').hasError('minlength')">
+                                        El correo debe contener al menos
+                                        {{loginFormGroup.get('email').errors.minlength.requiredLength}} caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('email').hasError('pattern')">
+                                        El correo es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+
+                            <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-label>Contraseña</mat-label>
+                                <input [type]="visibility ? 'text' : 'password'" matInput formControlName="password">
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="!visibility"
+                                    (click)="visibility = !visibility">visibility</mat-icon>
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="visibility"
+                                    (click)="visibility = !visibility">visibility_off</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidLoginPassword">
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('password').hasError('required')">
+                                        La contraseña es requerida.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('password').hasError('minlength')">
+                                        La contraseña debe contener al menos
+                                        {{loginFormGroup.get('password').errors.minlength.requiredLength}} caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('password').hasError('pattern')">
+                                        La contraseña es invalida.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+                            <button type="submit" class="btn btn-primary mt-4"
+                                style="width: 100%; background-color: #60CDEE;">Ingresar
+                            </button>
+                        </div>
+                        <a (click)="openRegisterModal();">
+                            <p style="font-size: 15px; color: #0E2B4D;">
+                                No tengo una cuenta, quiero registrarme
+                            </p>
+                        </a>
+                        <a (click)="openRecoveryModal();" style="text-decoration: none;">
+                            <p style="font-size: 15px; color: #60CDEE;">
+                                ¿Olvidaste tu Contraseña?
+                            </p>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="backdrop" [ngStyle]="{display:display_register_modal}" *ngIf="quotations"></div>
+<div class="modal animated fadeIn" tabindex="-1" role="dialog" [ngStyle]="{display:display_register_modal}">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Registrate</h1>
+                <button type="button" class="btn-close" (click)="closeRegisterModal()"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container" align="center">
+                    <form autocomplete="disabled" [formGroup]="registerFormGroup" (ngSubmit)="validateRegisterForm()">
+                        <div class="col mt-4 mb-4">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Nombre y Apellidos</mat-label>
+                                <input matInput formControlName="complete_name">
+                                <mat-icon matSuffix>account_circle</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidRegisterCompleteName">
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('complete_name').hasError('required')">
+                                        El nombre es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('complete_name').hasError('minlength')">
+                                        El nombre debe contener al menos
+                                        {{registerFormGroup.get('complete_name').errors.minlength.requiredLength }}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('complete_name').hasError('pattern')">
+                                        El nombre es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+
+                            <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+                                <mat-label>Correo Electrónico</mat-label>
+                                <input matInput formControlName="email">
+                                <mat-icon matSuffix>email</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidRegisterEmail">
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('email').hasError('required')">
+                                        El correo es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('email').hasError('minlength')">
+                                        El correo debe contener al menos
+                                        {{registerFormGroup.get('email').errors.minlength.requiredLength}} caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('email').hasError('pattern')">
+                                        El correo es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+
+                            <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-label>Contraseña</mat-label>
+                                <input [type]="visibility ? 'text' : 'password'" matInput formControlName="password">
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="!visibility"
+                                    (click)="visibility = !visibility">visibility</mat-icon>
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="visibility"
+                                    (click)="visibility = !visibility">visibility_off</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidRegisterPassword">
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('password').hasError('required')">
+                                        La contraseña es requerida.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('password').hasError('minlength')">
+                                        La contraseña debe contener al menos
+                                        {{registerFormGroup.get('password').errors.minlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('password').hasError('pattern')">
+                                        La contraseña es invalida.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+                            <p align="start">
+                                <mat-checkbox formControlName="terms">
+                                    He leído y acepto todos los <a href="https://www.google.com" style="color:#60CDEE"
+                                        target="_blank">
+                                        Términos y Condiciones y Políticas de Privacidad de Certy
+                                    </a>
+                                </mat-checkbox>
+                            </p>
+                            <br>
+                            <button type="submit" class="btn btn-primary mt-4" style="width: 100%;">Registrarme
+                            </button>
+                            <mat-error class="animated fadeIn" *ngIf="invalidTerms">
+                                <label class="animated fadeIn"
+                                    *ngIf="registerFormGroup.get('terms').hasError('required')">
+                                    Se deben aceptar términos y condiciones para continuar.
+                                </label>
+                            </mat-error>
+                        </div>
+                        <a (click)="openLoginModal()" style="text-decoration: none;">
+                            <p style="font-size: 15px; color: #60CDEE;">
+                                Ya tengo una cuenta.
+                            </p>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recovery Modal -->
+<div class="backdrop" [ngStyle]="{display:display_recovery_modal}" *ngIf="quotations"></div>
+<div class="modal animated fadeIn" tabindex="-1" role="dialog" [ngStyle]="{display:display_recovery_modal}">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Restablece tu contraseña</h1>
+                <button type="button" class="btn-close" (click)="closeRecoveryModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container" align="center">
+                    <form autocomplete="disabled" [formGroup]="recoveryFormGroup" (ngSubmit)="validateRecoveryForm()"
+                        *ngIf="!next_step">
+                        <div class="col mt-4 mb-4">
+
+                            <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+                                <mat-label>Correo Electrónico</mat-label>
+                                <input matInput formControlName="email">
+                                <mat-icon matSuffix>email</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidRecoveryEmail">
+                                    <label class="animated fadeIn"
+                                        *ngIf="recoveryFormGroup.get('email').hasError('required')">
+                                        El correo es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="recoveryFormGroup.get('email').hasError('minlength')">
+                                        El correo debe contener al menos
+                                        {{recoveryFormGroup.get('email').errors.minlength.requiredLength}} caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="recoveryFormGroup.get('email').hasError('pattern')">
+                                        El correo es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+
+                            <button type="submit" class="btn btn-primary mt-4" style="width: 100%;">
+                                Enviar Correo
+                            </button>
+                        </div>
+                        <a (click)="openLoginModal()" style="text-decoration: none;">
+                            <p style="font-size: 15px; color: #60CDEE;">
+                                Cancelar
+                            </p>
+                        </a>
+                    </form>
+
+                    <form autocomplete="disabled" [formGroup]="actualizeFormGroup" (ngSubmit)="validateActualizeForm()"
+                        *ngIf="next_step">
+                        <div class="col mt-4 mb-4">
+
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Código de Seguridad</mat-label>
+                                <input matInput formControlName="secure_code" maxlength="6">
+                                <mat-icon matSuffix>key</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidSecureCode">
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('secure_code').hasError('required')">
+                                        El código de seguridad es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('secure_code').hasError('minlength')">
+                                        El código de seguridad debe contener
+                                        {{actualizeFormGroup.get('secure_code').errors.minlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('secure_code').hasError('maxlength')">
+                                        El código de seguridad debe contener
+                                        {{actualizeFormGroup.get('secure_code').errors.maxlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('secure_code').hasError('pattern')">
+                                        El código de seguridad es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-label>Nueva Contraseña</mat-label>
+                                <input [type]="visibility ? 'text' : 'password'" matInput formControlName="password">
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="!visibility"
+                                    (click)="visibility = !visibility">visibility</mat-icon>
+                                <mat-icon matSuffix class="animated fadeIn" *ngIf="visibility"
+                                    (click)="visibility = !visibility">visibility_off</mat-icon>
+                                <mat-error class="animated fadeIn" *ngIf="invalidActualizePassword">
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('password').hasError('required')">
+                                        La contraseña es requerida.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('password').hasError('minlength')">
+                                        La contraseña debe contener al menos
+                                        {{actualizeFormGroup.get('password').errors.minlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('password').hasError('pattern')">
+                                        La contraseña es invalida.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <br>
+
+                            <button type="submit" class="btn btn-primary mt-4" style="width: 100%;">
+                                Actualizar
+                            </button>
+                        </div>
+                        <a (click)="validateRecoveryForm()">
+                            <p style="font-size: 15px; color: #0E2B4D;">
+                                Volver a enviar código de seguridad
+                            </p>
+                        </a>
+                        <a (click)="openLoginModal()" style="text-decoration: none;">
+                            <p style="font-size: 15px; color: #60CDEE;">
+                                Cancelar
+                            </p>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

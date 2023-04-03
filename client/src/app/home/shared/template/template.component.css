@@ -1,0 +1,90 @@
+body {
+    display: grid;
+    min-height: 100vh;
+    grid-template-rows: auto 1fr auto;
+}
+
+
+.page-footer {
+    width: 100%;
+    background-color: #0E2B4D;
+}
+
+.page-footer .group-1 {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+    padding: 45px 0px;
+}
+
+.page-footer .group-1 .box figure {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-footer .group-1 .box figure img {
+    width: 350px;
+}
+
+.page-footer .group-1 .box h2 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 26px;
+}
+
+.page-footer .group-1 .box p {
+    color: #efefef;
+    margin-bottom: 10px;
+
+}
+
+.page-footer .group-1 .social-web a {
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    margin-right: 10px;
+    text-align: center;
+    transition: all 300ms ease;
+}
+
+.page-footer .group-1 .social-web a img {
+    max-width: 20px;
+    color: #60CDEE;
+}
+
+.page-footer .group-1 .social-web a:hover {
+
+    color: aqua;
+}
+
+.page-footer .group-2 {
+    background-color: #E9E9E9;
+    padding: 15px 10px;
+    text-align: center;
+    color: #868686;
+    font: normal normal 600 20px/24px Montserrat;
+}
+
+.page-footer .group-2 small {
+
+    font-size: 15px;
+}
+
+@media screen and (max-width: 800px) {
+
+    .page-footer .group-1 {
+        width: 90%;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 30px;
+        padding: 35px 0px;
+    }
+}

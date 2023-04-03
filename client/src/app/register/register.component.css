@@ -1,0 +1,31 @@
+.containerx {
+    background-color: #000000bc;
+    /* background-image: url('../../assets/img/fondo.jpg'); */
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.card {
+    min-width: 25rem;
+    max-width: 15px;
+}
+
+.card-text {
+    margin-top: 45px;
+    margin-bottom: 50px;
+}
+
+.card-footer {
+    font-size: 12px;
+}
+
+mat-card {
+    width: calc(100%);
+    height: calc(100%);
+}
+
+.example-full-width {
+    width: 100%;
+}

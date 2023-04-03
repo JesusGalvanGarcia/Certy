@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background: #0E2B4D 0% 0% no-repeat padding-box;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="color:#60CDEE; margin-left: 100px;">
+                <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-05.png" alt="certy_logo"
+                    style="max-width: 150px;">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" *ngIf="!authenticated">
+                            <button type="button" class="btn btn-info"
+                                style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; margin-right: 10px;"
+                                [routerLink]="['/cotizacion']">
+                                ¡Cotiza Ahora!
+                            </button>
+                        </li>
+                        <li class="nav-item" *ngIf="!authenticated">
+                            <button type="button" class="btn btn-outline-light"
+                                style="min-width: 180px;margin-right: 10px;" [routerLink]="['/login']">
+                                Inicia Sesión
+                            </button>
+                        </li>
+                        <li class="nav-item" *ngIf="authenticated">
+                            <a class="nav-link active" [routerLink]="['/dashboard']">
+                                <button mat-button style="color: white">
+                                    <mat-icon>home</mat-icon>
+                                    Inicio
+                                </button>
+                            </a>
+                        </li>
+                        <li class="nav-item" *ngIf="authenticated">
+                            <a class="nav-link active" [routerLink]="['/contratos']">
+                                <button mat-button style="color: white">
+                                    <mat-icon>history_edu</mat-icon>
+                                    Estado de Cuenta
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                    <small style="color: #60CDEE;">
+                        {{authenticated ? user_info.user_name: '' }}
+                    </small>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #60CDEE;"
+                        aria-label="Example icon-button with a menu" *ngIf="authenticated">
+
+
+                        <mat-icon>account_circle</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <mat-icon>settings</mat-icon>
+                            <span>Configuraciones</span>
+                        </button>
+                        <button mat-menu-item (click)="Logout()">
+                            <mat-icon>logout</mat-icon>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <router-outlet></router-outlet>
+    </div>
+    <footer class="page-footer">
+
+        <div class="group-1">
+            <div class="box">
+                <figure>
+                    <a href="">
+                        <img src="./assets/images/Iconos_Web_Certy_Mesa-de-trabajo-1.png" alt="Footer Certy Logo">
+                    </a>
+                </figure>
+            </div>
+            <div class="box">
+                <h2> Contacto</h2>
+                <p>contactotrinitas.cire.com.mx</p>
+                <p>Tel: 81 8647 6770 as 73 ext.113</p>
+                <p>Tel. Móvil 81 2878 1856</p>
+            </div>
+            <div class="box">
+                <h2> Trínitas</h2>
+                <p>Soluciones Financieras</p>
+                <p>Blog Financiero</p>
+                <p>www.trinitas.mx</p>
+            </div>
+            <div class="box">
+                <h2>SIGUENOS</h2>
+                <div class="social-web">
+                    <a href="#" class="fa fa-facebook">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-06.png" alt="Intagram Logo">
+                    </a>
+                    <a href=" #" class="fa fa-instagram">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-07.png" alt="Intagram Logo">
+                    </a>
+                    <a href="#" class="fa fa-twitter">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-08.png" alt="Intagram Logo">
+                    </a>
+                    <a href="#" class="fa fa-youtube">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-09.png" alt="Intagram Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="group-2">
+            <small>Aviso de Privacidad | Términos y Condiciones</small>
+        </div>
+    </footer>
+</body>
+
+</html>
