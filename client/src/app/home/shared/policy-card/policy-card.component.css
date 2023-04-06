@@ -1,0 +1,12 @@
+.policy-card {
+    border-radius: 25px;
+}
+
+.mat-card-content {
+    min-height: 180px;
+}
+
+.policy-paragraph {
+    font-size: 20px;
+    color: #5C5C5C;
+}

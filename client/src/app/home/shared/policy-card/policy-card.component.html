@@ -1,0 +1,39 @@
+<mat-card class="policy-card">
+    <div class="row row-cols-1 row-cols-md-2 mb-4">
+        <div class="col col-12 col-md-4">
+            <img class="navbar-brand mb-4" [src]="policy.insurer_logo"
+                alt="certy_logo" style="min-width: 100px; max-width: 150px;">
+        </div>
+        <div class="col col-12 col-md-8">
+            <div class="row row-cols-2 mt-4" align="center">
+                <div class="col mb-2" *ngIf="policy.status_id == 3">
+                    <button mat-raised-button style="background: #E5E5E5; color: #5C5C5C; ">{{policy.status}}</button>
+                </div>
+                <div class="col mb-2" *ngIf="policy.status_id == 3">
+                    <button mat-raised-button
+                        style="background: #60CDEE; color: white;  margin-right: 80px;">Renovar</button>
+                </div>
+                <div class="col mb-2" *ngIf="policy.status_id == 2">
+                    <button mat-raised-button style="background: #60CD40; color: white; margin-right: 100px;">{{policy.status}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mat-card-content class="mat-card-content" align="start">
+
+        <p class="policy-parragraph mb-4">Póliza: {{policy.policy_code}}</p>
+        <p class="policy-parragraph mb-4">Vehículo: {{policy.vehicle_description}}</p>
+        <p class="policy-parragraph mb-4">Vigencia: {{policy.date_expire | date: 'dd-MM-yyyy'}}</p>
+
+    </mat-card-content>
+    <mat-divider>
+    </mat-divider>
+    <mat-card-actions align="end">
+        <button mat-icon-button>
+            <mat-icon>download</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon>open_in_new</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>

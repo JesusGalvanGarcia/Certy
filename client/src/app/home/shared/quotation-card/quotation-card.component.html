@@ -1,0 +1,26 @@
+<mat-card class="quotation-card">
+    <div class="row row-cols-1 row-cols-md-2 mb-4">
+        <div class="col col-12 col-md-6">
+            <img class="navbar-brand mb-4" [src]="policy.insurer_logo" alt="certy_logo"
+                style="min-width: 100px; max-width: 150px;">
+        </div>
+        <div class="col col-12 col-md-6 mt-4" align="end">
+            <button mat-raised-button style="background: #e7c818; color: white; margin-right: 100px;">
+                {{policy.status}}
+            </button>
+        </div>
+    </div>
+    <mat-card-content class="mat-card-content" align="start">
+
+        <p class="quotation-parragraph mb-4">Marca: {{policy.brand}}</p>
+        <p class="quotation-parragraph mb-4">Vehículo: {{policy.type}}</p>
+        <p class="quotation-parragraph mb-4">Descripción: {{policy.vehicle_description}}</p>
+    </mat-card-content>
+    <mat-divider>
+    </mat-divider>
+    <mat-card-actions align="end">
+        <button mat-button [routerLink]="['/cotizacion',policy.id]">
+            Continuar
+        </button>
+    </mat-card-actions>
+</mat-card>

@@ -4,9 +4,9 @@
             <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
                 style="max-width: 50px;">
             <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
-                No es un gasto, es moverte seguro a todos lados.
+                Cotiza sin costo en menos de 30 segundos
             </p>
-            <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-10.png" alt="certy_logo"
+            <img class="navbar-brand" src="./assets/images/Carro-Nuevo-2.png" alt="certy_logo"
                 style="max-width: 500px;">
         </div>
         <div class="col col-12 col-md-6">
@@ -145,6 +145,27 @@
                 </mat-step>
                 <mat-step [stepControl]="vehicleFormGroup" [editable]="userFormGroup.invalid">
                     <form [formGroup]="vehicleFormGroup" (submit)="validateForms();">
+                        <div class="row mt-4">
+                            <!-- <div class="col" align="start">
+                                    <button mat-button matStepperPrevious class="btn btn-info"
+                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
+                                </div> -->
+                            <div class="col" align="start">
+                                <mat-radio-group aria-label="Select an option" formControlName="unit_type"
+                                    color="primary">
+                                    <mat-radio-button value="AUTO">
+                                        Auto
+                                        <img src="./assets/images/icon-auto.png"
+                                            style="max-width: 45px; margin-left: 10px;">
+                                    </mat-radio-button>
+                                    <mat-radio-button value="PICKUP">
+                                        Pickup
+                                        <img src="./assets/images/icon-pikcup.png"
+                                            style="max-width: 45px; margin-left: 10px;">
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
                         <mat-form-field appearance="outline" class="example-full-width">
                             <mat-label>¿De que año es tu vehículo?</mat-label>
                             <mat-select formControlName="model" (selectionChange)="getBrands()">
@@ -196,24 +217,17 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <div>
-                            <div class="row">
-                                <!-- <div class="col" align="start">
+                        <div class="row">
+                            <!-- <div class="col" align="start">
                                     <button mat-button matStepperPrevious class="btn btn-info"
                                         style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
                                 </div> -->
-                                <div class="col" align="start">
-                                    <mat-radio-group aria-label="Select an option" formControlName="unit_type"
-                                        color="primary">
-                                        <mat-radio-button value="AUTO">Auto </mat-radio-button>
-                                        <mat-radio-button value="PICKUP">Pickup </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col mt-4" align="end">
-                                    <button type="submit" mat-button matStepperNext class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
-                                        [disabled]="vehicleFormGroup.invalid">Continuar</button>
-                                </div>
+                            <div class="col" align="start">
+                            </div>
+                            <div class="col mt-4" align="end">
+                                <button type="submit" mat-button matStepperNext class="btn btn-info"
+                                    style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                    [disabled]="vehicleFormGroup.invalid">Continuar</button>
                             </div>
                         </div>
                     </form>
@@ -246,7 +260,8 @@
             <div class="col col-12 col-md-2">
                 <mat-form-field appearance="outline" class="example-full-width">
                     <mat-label>Cobertura</mat-label>
-                    <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();">
+                    <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();"
+                        [disabled]="anaLoading || chuubLoading || primeroLoading">
                         <mat-option value="1">Amplia</mat-option>
                         <mat-option value="2">AMPLIA PLUS</mat-option>
                         <mat-option value="3">AMPLIA PLUS 3%</mat-option>
@@ -258,7 +273,8 @@
             <div class="col col-12 col-md-2">
                 <mat-form-field appearance="outline" class="example-full-width">
                     <mat-label>Forma de Pago</mat-label>
-                    <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();">
+                    <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                        [disabled]="anaLoading || chuubLoading || primeroLoading">
                         <mat-option value="CONTADO">Contado</mat-option>
                         <mat-option value="SEMESTRAL">Semestral</mat-option>
                         <mat-option value="TRIMESTRAL">Trimestral</mat-option>
@@ -268,7 +284,7 @@
             </div>
             <div class="col col-12 col-md-2">
                 <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
-                    (click)="otherCar();">
+                    (click)="otherCar();" [disabled]="anaLoading || chuubLoading || primeroLoading">
                     Cotizar otro auto
                 </button>
             </div>
@@ -320,7 +336,7 @@
                             {{ chuub_quotation.descripcion }}
                         </p>
                         <button class="mt-4 mb-4" mat-raised-button style="background-color: #0CB6CE;color: white;"
-                            (click)="checkSession(); selectQuotation(1)" data-bs-dismiss="modal">
+                            (click)="checkSession(1);" data-bs-dismiss="modal">
                             Comprar
                         </button>
                     </div>
@@ -392,10 +408,10 @@
                             </div>
                         </div>
                         <p class="mt-4" style="color:#5C5C5C; font-size: 20px;">
-                            {{ vehicleFormGroup.get('version').value }}
+                            {{ primero_quotation.descripcion }}
                         </p>
                         <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
-                            (click)="checkSession(); selectQuotation(2);">
+                            (click)="checkSession(2);">
                             Comprar
                         </button>
                     </div>
@@ -470,7 +486,7 @@
                             {{ ana_quotation.descripcion }}
                         </p>
                         <button class="mt-4 mb-4" mat-raised-button style="background-color: #D41E2A;color: white;"
-                            (click)="checkSession(); selectQuotation(3);">
+                            (click)="checkSession(3);">
                             Comprar
                         </button>
                     </div>
@@ -888,7 +904,7 @@
                         <div class="col col-12 col-md-2" align="center">
                             <button type="button" class="btn btn-primary btn-lg"
                                 style="margin-top: 20px;background-color: #D41E2A;color: white;"
-                                (click)="checkSession(); selectQuotation(3);" data-bs-dismiss="modal">Comprar</button>
+                                (click)="checkSession(3);" data-bs-dismiss="modal">Comprar</button>
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -1003,7 +1019,7 @@
                         <div class="col col-12 col-md-2" align="center">
                             <button type="button" class="btn btn-primary btn-lg"
                                 style="margin-top: 20px;background-color: #0CB6CE;color: white;" data-bs-dismiss="modal"
-                                (click)="checkSession();selectQuotation(1);">Comprar</button>
+                                (click)="checkSession(1);">Comprar</button>
                         </div>
                     </div>
                     <div class="row mt-4">
@@ -1118,7 +1134,7 @@
                         <div class="col col-12 col-md-2" align="center">
                             <button type="button" class="btn btn-primary btn-lg"
                                 style="margin-top: 20px;background-color: #1B479B;color: white;"
-                                (click)="checkSession();selectQuotation(2);" data-bs-dismiss="modal">Comprar</button>
+                                (click)="checkSession(2);" data-bs-dismiss="modal">Comprar</button>
                         </div>
                     </div>
                     <div class="row mt-4">

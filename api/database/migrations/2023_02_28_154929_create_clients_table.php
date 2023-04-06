@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('suburb', 100)->nullable($value = true);
             $table->string('state', 50)->nullable($value = true);
             $table->string('township', 50)->nullable($value = true);
+            $table->string('street', 150)->nullable($value = true);
             $table->string('street_number', 20)->nullable($value = true);
             $table->string('int_street_number', 20)->nullable($value = true);
             $table->string('password', 255)->nullable($value = true);

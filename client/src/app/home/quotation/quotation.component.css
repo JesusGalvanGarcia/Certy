@@ -135,7 +135,7 @@ th {
 .pay-card-title {
     font-size: 30px;
     color: #0E2B4D;
-    font: normal normal bold 30px/37px Montserrat;
+    font: normal normal bold 30px/37px;
 }
 
 .pay-card-paragraph {

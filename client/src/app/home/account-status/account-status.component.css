@@ -6,26 +6,20 @@
 .user_header {
     color: #0E2B4D;
     font-size: 50px;
-    font-weight: bold;
 }
 
 .header-img {
     max-width: 65px;
 }
 
-.subtitle-quotation {
-    color: #60CDEE;
-    font: normal normal normal 30px/37px Montserrat;
-}
-
-.quotation-parragraph {
-    font-size: 20px;
-    color: #5C5C5C;
-}
-
 .div-row {
     border: 2px solid var(--unnamed-color-707070);
     border: 2px solid #707070;
+}
+
+.policies-header {
+    color: #0E2B4D;
+    font-size: 25px;
 }
 
 
@@ -37,7 +31,7 @@
 
     .user_header {
         margin-left: 20px;
-        font: normal normal bold 30px/43px Montserrat;
+        font: normal normal 30px/43px Montserrat;
         margin-bottom: 30px;
     }
 

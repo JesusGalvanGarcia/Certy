@@ -1,4 +1,55 @@
-<div align="center">
+<div class="container mb-4 animated fadeIn" align="center">
+    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+        <div class="user_header col-12 col-md-8" align="start">
+            <label>
+                Bienvenido {{ user_info.user_name }}
+            </label>
+        </div>
+        <div class="col-12 col-md-4">
+            <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3">
+        <div class="col col-12 col-md-4 mb-4">
+            <label class="subtitle-quotation">
+                Pólizas registradas : {{ total_policies}}
+            </label>
+        </div>
+        <div class="col col-12 col-md-4 mb-4">
+            <label class="subtitle-quotation">
+                Saldo pendiente: ${{ pending_amount |
+                number : '1.2-2' }}
+            </label>
+        </div>
+        <div class="col col-12 col-md-4 mb-4">
+            <label class="subtitle-quotation">
+                Saldo Vencido: ${{ expired_amount |
+                number : '1.2-2' }}
+            </label>
+        </div>
+    </div>
 
-    <img class="mt-4" src="./assets/images/coming_soon.jpg" style="max-width:50rem;">
+    <hr class="div-row mb-4">
+    <div class="row mb-4" align="start">
+        <div class="col-12 col-md-4">
+            <button mat-button class="btn btn-info"
+                style="background: #0E2B4D 0% 0% no-repeat padding-box;color:white;min-width: 100%; min-height: 40px;"
+                [routerLink]="['/cotizacion']" [disabled]="loading">
+                Nueva Cotización
+            </button>
+        </div>
+    </div>
+    <div class=" mt-2 animated fadeIn" align="center" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="alert alert-info" role="alert" *ngIf="!loading && policies.length <= 0">
+        Sin pólizas o cotizaciones pendientes.
+    </div>
+    <div class="row row-cols-1 row-cols-md-2" *ngIf="!loading && policies.length > 0">
+        <div class="col animated fadeIn mb-4" *ngFor="let policy of policies; let i = index">
+            <app-policy-card [policy]="policy" *ngIf="policy.status_id == 2 || policy.status_id == 3"></app-policy-card>
+            <app-quotation-card [policy]="policy" *ngIf="policy.status_id == 1"></app-quotation-card>
+        </div>
+    </div>
 </div>

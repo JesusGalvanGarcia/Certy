@@ -273,7 +273,7 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X199'
-            ]);
+            ], 500);
         }
     }
 
@@ -414,7 +414,7 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X299'
-            ]);
+            ], 500);
         }
     }
 
@@ -528,7 +528,7 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X399'
-            ]);
+            ], 500);
         }
     }
 
@@ -598,10 +598,26 @@ class CopsisController extends Controller
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($chuub_quotation, true);
 
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['message'],
+                    'http_code' => $chuub_quotation->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X404'
+                ]);
+
+                return response()->json([
+                    'title' => 'Error Copsis',
+                    'message' => $response['message'],
+                    'code' => $this->prefixCode . 'X405'
+                ], 400);
+            }
+
             // Si la respuesta falla se inserta en un log los motivos de las fallas
             if ($chuub_quotation->failed()) {
 
-                foreach ($response->errors as $error) {
+                foreach ($response['errors'] as $error) {
 
                     ErrorsLog::create([
                         'description' => $error,
@@ -610,21 +626,11 @@ class CopsisController extends Controller
                         'prefix_code' => $this->prefixCode . 'X403'
                     ]);
                 }
-            }
-
-            if (!$response['ok']) {
-
-                ErrorsLog::create([
-                    'description' => $response['result']['error'],
-                    'http_code' => $chuub_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X404'
-                ]);
 
                 return response()->json([
-                    'title' => 'Datos Faltantes',
-                    'message' => $response['result']['error'],
-                    'code' => $this->prefixCode . 'X405'
+                    'title' => 'Error Copsis',
+                    'message' => $response['errors'],
+                    'code' => $this->prefixCode . 'X403'
                 ], 400);
             }
 
@@ -632,7 +638,6 @@ class CopsisController extends Controller
                 'title' => 'Proceso completo',
                 'message' => 'Cotización consultada correctamente',
                 'chuub_quotation' => $response['result']
-
             ]);
         } catch (Exception $e) {
 
@@ -647,7 +652,7 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X499'
-            ]);
+            ], 500);
         }
     }
 
@@ -716,6 +721,22 @@ class CopsisController extends Controller
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($primero_quotation, true);
 
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['message'],
+                    'http_code' => $primero_quotation->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X504'
+                ]);
+
+                return response()->json([
+                    'title' => 'Error Copsis',
+                    'message' => $response['message'],
+                    'code' => $this->prefixCode . 'X506'
+                ], 400);
+            }
+
             // Si la respuesta falla se inserta en un log los motivos de las fallas
             if ($primero_quotation->failed()) {
 
@@ -727,23 +748,13 @@ class CopsisController extends Controller
                         'module' => 'CopsisController',
                         'prefix_code' => $this->prefixCode . 'X503'
                     ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['errors'],
+                        'code' => $this->prefixCode . 'X506'
+                    ], 400);
                 }
-            }
-
-            if (!$response['ok']) {
-
-                ErrorsLog::create([
-                    'description' => $response['result']['error'],
-                    'http_code' => $primero_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X504'
-                ]);
-
-                return response()->json([
-                    'title' => 'Datos Faltantes',
-                    'message' => $response['result']['error'],
-                    'code' => $this->prefixCode . 'X506'
-                ], 400);
             }
 
             return response()->json([
@@ -765,7 +776,7 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X599'
-            ]);
+            ], 500);
         }
     }
 
@@ -833,6 +844,22 @@ class CopsisController extends Controller
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($ana_quotation, true);
 
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['message'],
+                    'http_code' => $ana_quotation->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X604'
+                ]);
+
+                return response()->json([
+                    'title' => 'Error Copsis',
+                    'message' => $response['message'],
+                    'code' => $this->prefixCode . 'X605'
+                ], 400);
+            }
+
             // Si la respuesta falla se inserta en un log los motivos de las fallas
             if ($ana_quotation->failed()) {
 
@@ -845,21 +872,11 @@ class CopsisController extends Controller
                         'prefix_code' => $this->prefixCode . 'X603'
                     ]);
                 }
-            }
-
-            if (!$response['ok']) {
-
-                ErrorsLog::create([
-                    'description' => $response['result']['error'],
-                    'http_code' => $ana_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X504'
-                ]);
 
                 return response()->json([
-                    'title' => 'Datos Faltantes',
-                    'message' => $response['result']['error'],
-                    'code' => $this->prefixCode . 'X506'
+                    'title' => 'Error Copsis',
+                    'message' => $response['errors'],
+                    'code' => $this->prefixCode . 'X605'
                 ], 400);
             }
 
@@ -882,7 +899,219 @@ class CopsisController extends Controller
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
                 'code' => $this->prefixCode . 'X499'
+            ], 500);
+        }
+    }
+
+    public function anaPayment(Request $request)
+    {
+        try {
+
+            // Se validan los datos de entrada
+            $validator = Validator::make($request->all(), [
+                'cotizacionID' => 'Required|String|NotIn:0',
+                'contratante' => 'Required|Array',
+                'vehiculo' => 'Required|Array',
+                'quattroPoliza' => 'Required|Array'
             ]);
+
+            // Respuesta en caso de que la validación falle
+            if ($validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X701'
+                ], 400);
+
+            // Se validan los datos del cliente
+            $client_validator = Validator::make($request->contratante, [
+                'nombre' => 'Required|String',
+                'apellidoPaterno' => 'Required|String',
+                'apellidoMaterno' => 'Required|String',
+                'rfc' => 'Required|String',
+                'estadoCivil' => 'Required|String',
+                'sexo' => 'Required|String',
+                'tipoPersona' => 'Required|String',
+                'correo' => 'Required|String',
+                'telefono' => 'Required|String',
+                'direccion' => 'Required|Array',
+                'direccion.calle' => 'Required|String',
+                'direccion.pais' => 'Required|String',
+                'direccion.codigoPostal' => 'Required|String',
+                'direccion.colonia' => 'Required|String',
+                'direccion.numeroExterior' => 'String|Nullable',
+                'direccion.numeroInterior' => 'String|Nullable',
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($client_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $client_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X702'
+                ], 400);
+
+            // Se validan los datos del vehículo
+            $vehicle_validator = Validator::make($request->vehiculo, [
+                'serie' => 'Required|String',
+                'placas' => 'Required|String',
+                'motor' => 'Required|String'
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($vehicle_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $vehicle_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X702'
+                ], 400);
+
+            // Se validan los datos del quattroPoliza
+            $quattro_validator = Validator::make($request->quattroPoliza, [
+                'grupoEstructuraID' => 'Required|Integer',
+                'vendedorID' => 'Required|String'
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($quattro_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $quattro_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X702'
+                ], 400);
+
+            // Conexión con Copsis para obtener el token de autenticación
+            $token = Http::withHeaders([
+                'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
+            ])
+                ->timeout(120)
+                ->post('https://apiuat.copsis.com/api/oauth/token', []);
+
+            // Se trata la respuesta para poder leerla como un objeto
+            $response = json_decode($token, true);
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($token->failed()) {
+
+                foreach ($response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X703'
+                    ]);
+                }
+            }
+
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['result']['error'],
+                    'http_code' => $token->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X704'
+                ]);
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $response['result']['error'],
+                    'code' => $this->prefixCode . 'X706'
+                ], 400);
+            }
+
+            $auth_token = $response['result']['token'];
+
+            // Conexión con Copsis para obtener el token de autenticación
+            $token = Http::withHeaders([
+                'Authorization' => "Bearer " . $auth_token
+            ])
+                ->timeout(120)
+                ->put('https://apiuat.quattrocrm.mx/autos/emision', [
+                    "cotizacionID" => 0,
+                    "contratante" => [
+                        "nombre" => "Jose",
+                        "apellidoPaterno" => "Martinez",
+                        "apellidoMaterno" => "Garcia",
+                        "rfc" => "XXXX010101000",
+                        "estadoCivil" => "SOLTERO",
+                        "sexo" => "MASCULINO",
+                        "tipoPersona" => "FISICA",
+                        "correo" => "test@copsis.com",
+                        "telefono" => "8181818181",
+                        "direccion" => [
+                            "calle" => "Centro",
+                            "pais" => "MEXICO",
+                            "codigoPostal" => "64000",
+                            "colonia" => "Monterrey Centro",
+                            "numeroExterior" => "1000",
+                            "numeroInterior" => ""
+                        ]
+                    ],
+                    "vehiculo" => [
+                        "serie" => "00000000000000001",
+                        "placas" => "ABC123",
+                        "motor" => "HECHO EN MEX"
+                    ],
+                    "quattroPoliza" => [
+                        "grupoEstructuraID" => 2,
+                        "vendedorID" => "l66xHtlkmi56Uqz3MEYuqw=="
+                    ]
+                ]);
+
+            // Se trata la respuesta para poder leerla como un objeto
+            $response = json_decode($token, true);
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($token->failed()) {
+
+                foreach ($response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X703'
+                    ]);
+                }
+            }
+
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['result']['error'],
+                    'http_code' => $token->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X704'
+                ]);
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $response['result']['error'],
+                    'code' => $this->prefixCode . 'X706'
+                ], 400);
+            }
+
+            return response()->json([
+                'title' => 'Proceso Completado',
+                'message' => 'Cotización consultada correctamente',
+                'ana_quotation' => $response['result']
+
+            ]);
+        } catch (Exception $e) {
+
+            ErrorsLog::create([
+                'description' => $e->getMessage() . '-L:' . $e->getLine(),
+                'http_code' => 500,
+                'module' => 'CopsisController',
+                'prefix_code' => $this->prefixCode . 'X799'
+            ]);
+
+            return response()->json([
+                'title' => 'Error en el servidor',
+                'message' => $e->getMessage() . '-L:' . $e->getLine(),
+                'code' => $this->prefixCode . 'X799'
+            ], 500);
         }
     }
 }

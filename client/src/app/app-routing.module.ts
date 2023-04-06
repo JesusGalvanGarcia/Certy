@@ -6,14 +6,15 @@ import { RecoveryPasswordComponent } from './recovery-password/recovery-password
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
-import { QuotationsComponent } from './home/quotations/quotations.component';
+import { AccountStatusComponent } from './home/account-status/account-status.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
   { path: 'recuperacion_contraseña', component: RecoveryPasswordComponent },
   { path: 'cotizacion', component: QuotationComponent },
-  // { path: 'cotizaciones', component: QuotationsComponent },
+  { path: 'estado-de-cuenta', component: AccountStatusComponent },
+  { path: 'cotizacion/:quotation_id', component: QuotationComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'cotizacion', pathMatch: 'full' }
 ];

@@ -30,6 +30,7 @@ class Client extends Authenticatable
         'suburb',
         'state',
         'township',
+        'street',
         'street_number',
         'int_street_number',
         'password',

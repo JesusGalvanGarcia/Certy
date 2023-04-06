@@ -57,6 +57,7 @@ class ClientController extends Controller
                 'suburb',
                 'state',
                 'township',
+                'street',
                 'street_number',
                 'int_street_number',
                 'password',
@@ -114,6 +115,7 @@ class ClientController extends Controller
                 'suburb' => 'String|Min:5|Nullable',
                 'state' => 'String|Min:5|Nullable',
                 'township' => 'String|Min:5|Nullable',
+                'street' => 'String|Min:5|Nullable',
                 'street_number' => 'String|Nullable',
                 'int_street_number' => 'String|Nullable',
             ]);
@@ -156,6 +158,7 @@ class ClientController extends Controller
                 'suburb' => $request->suburb ? $request->suburb : $client->suburb,
                 'state' => $request->state ? $request->state : $client->state,
                 'township' => $request->township ? $request->township : $client->township,
+                'street' => $request->street ? $request->street : $client->street,
                 'street_number' => $request->street_number ? $request->street_number : $client->street_number,
                 'int_street_number' => $request->int_street_number ? $request->int_street_number : $client->int_street_number
             ]);

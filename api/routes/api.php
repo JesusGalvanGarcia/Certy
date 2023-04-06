@@ -14,6 +14,7 @@ Route::post('/register', [LoginController::class, 'register']);
 Route::post('/sendSecureCode', [LoginController::class, 'sendSecureCode']);
 Route::post('/actualizePassword', [LoginController::class, 'actualizePassword']);
 
+Route::post('/quotations/lastUpdate', [QuotationController::class, 'lastUpdate']);
 Route::resource('/quotations', QuotationController::class);
 Route::resource('/clients', ClientController::class);
 

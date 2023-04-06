@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { ClientService } from 'src/app/services/client.service';
-import { LoginService } from 'src/app/services/login.service';
 import { QuotationService } from 'src/app/services/quotation.service';
-import { TemplateComponent } from '../shared/template/template.component';
 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-account-status',
+  templateUrl: './account-status.component.html',
+  styleUrls: ['./account-status.component.css']
 })
-export class DashboardComponent {
+export class AccountStatusComponent {
 
   user_info: any
 
@@ -19,15 +16,13 @@ export class DashboardComponent {
 
   policies: any = []
 
-  total_policies: number = 0
   pending_amount: number = 0
   expired_amount: number = 0
+  total_amount: number = 0
+  paid_amount: number = 0
 
   constructor(
-    private _quotationService: QuotationService,
-    private _clientService: ClientService,
-    private _loginService: LoginService,
-    private _templateComponent: TemplateComponent
+    private _quotationService: QuotationService
   ) {
 
     if (localStorage.getItem('Certy_token')) {
@@ -37,19 +32,20 @@ export class DashboardComponent {
 
     this.getQuotations();
   }
-
   getQuotations() {
 
     const searchData = {
-      client_id: this.user_info.user_id
+      client_id: this.user_info.user_id,
+      filter: 1
     }
 
     this._quotationService.getQuotations(searchData).
-      then(({ policies, total_policies, pending_amount, expired_amount }) => {
+      then(({ policies, pending_amount, expired_amount, total_amount, paid_amount }) => {
 
         this.policies = policies
-        this.total_policies = total_policies
+        this.total_amount = total_amount
         this.pending_amount = pending_amount
+        this.paid_amount = paid_amount
         this.expired_amount = expired_amount
         this.loading = false
 

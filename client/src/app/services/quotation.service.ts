@@ -31,6 +31,80 @@ export class QuotationService {
     })
   }
 
+  async getQuotations(searchData: any) {
+
+    return this.api_conect.get('/quotations', { params: searchData })
+      .then(({ data }: any) => {
+        console.log(data)
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async storeQuotation(quotationData: any) {
+
+    return this.api_conect.post('/quotations', quotationData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async updateQuotation(quotationData: any) {
+
+    return this.api_conect.put('/quotations/' + quotationData.quotation_id, quotationData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async lastUpdateQuotation(quotationData: any) {
+
+    return this.api_conect.post('/quotations/lastUpdate', quotationData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async getQuotation(searchData: any) {
+
+    return this.api_conect.get('/quotations/' + searchData.quotation_id, { params: searchData })
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        throw data;
+      });
+  }
+
   async validateCP(cp: any) {
 
     return this.copsis_api_conect.get('/postal-codes/' + cp)

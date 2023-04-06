@@ -42,7 +42,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
-import { QuotationsComponent } from './home/quotations/quotations.component';
+import { QuotationCardComponent } from './home/shared/quotation-card/quotation-card.component';
+import { PolicyCardComponent } from './home/shared/policy-card/policy-card.component';
+import { AccountStatusComponent } from './home/account-status/account-status.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { QuotationsComponent } from './home/quotations/quotations.component';
     RegisterComponent,
     RecoveryPasswordComponent,
     DashboardComponent,
-    QuotationsComponent
+    QuotationCardComponent,
+    PolicyCardComponent,
+    AccountStatusComponent
   ],
   imports: [
     BrowserModule,

@@ -8,7 +8,7 @@ import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { QuotationService } from 'src/app/services/quotation.service';
 import { ClientService } from 'src/app/services/client.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -71,7 +71,10 @@ export class QuotationComponent {
 
   quotation_selected: any;
 
-  payment_frequency: string = 'MENSUAL'
+  pack_id: any
+  brand_logo: any
+
+  payment_frequency: string = 'CONTADO'
 
   quoter_name: string = ''
   quoter_pack: string = "1"
@@ -128,7 +131,7 @@ export class QuotationComponent {
   registerFormGroup: any = this._formBuilder.group({
     complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú]+(?: [A-ZÁÉÍÓÚa-zñáéíóú]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú]+)?$')]],
     email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]{4,10}$')]],
+    password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]{4,20}$')]],
     terms: [null, Validators.requiredTrue]
   });
 
@@ -145,6 +148,8 @@ export class QuotationComponent {
   ////////////////////////// Last Data Page ////////////////////////////
 
   last_data_page: boolean = false;
+  quotation_id: number = 0
+  quotation: any
 
   ////////////////////////// Pay Page ////////////////////////////
 
@@ -162,7 +167,8 @@ export class QuotationComponent {
     private _loginService: LoginService,
     private _templateComponent: TemplateComponent,
     private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
-    private router: Router
+    private router: Router,
+    private rutaActiva: ActivatedRoute
   ) {
 
     if (localStorage.getItem('Certy_token')) {
@@ -174,8 +180,13 @@ export class QuotationComponent {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
-  }
 
+    this.rutaActiva.params.subscribe(
+      ({ quotation_id }: Params) => {
+        this.quotation_id = quotation_id ? quotation_id : 0;
+      }
+    );
+  }
 
   ngAfterViewInit() {
 
@@ -222,7 +233,13 @@ export class QuotationComponent {
           this.validateCp();
         }
 
-        Swal.close()
+        if (this.quotation_id > 0) {
+
+          this.getQuotation();
+        } else {
+
+          Swal.close()
+        }
       })
       .catch(({ title, message, code }) => {
         console.log(message)
@@ -254,7 +271,7 @@ export class QuotationComponent {
 
     const searchData = {
       model: this.vehicleFormGroup.get('model').value,
-      unit_type: 'AUTO'
+      unit_type: this.vehicleFormGroup.get('unit_type').value
     }
 
     this.vehicleFormGroup.patchValue({
@@ -299,7 +316,7 @@ export class QuotationComponent {
     const searchData = {
       model: this.vehicleFormGroup.get('model').value,
       brand_id: this.vehicleFormGroup.get('brand_id').value,
-      unit_type: 'AUTO'
+      unit_type: this.vehicleFormGroup.get('unit_type').value
     }
 
     this.vehicleFormGroup.patchValue({
@@ -344,7 +361,7 @@ export class QuotationComponent {
       model: this.vehicleFormGroup.get('model').value,
       brand_id: this.vehicleFormGroup.get('brand_id').value,
       type: this.vehicleFormGroup.get('type').value,
-      unit_type: 'AUTO'
+      unit_type: this.vehicleFormGroup.get('unit_type').value
     }
 
     this.vehicleFormGroup.patchValue({
@@ -377,19 +394,26 @@ export class QuotationComponent {
 
   otherCar() {
 
-    this.quotations = false;
-    this.initial_page = true;
+    if (this.quotation_id == 0) {
 
-    this.chuubLoading = true;
-    this.primeroLoading = true;
-    this.anaLoading = true;
+      this.quotations = false;
+      this.initial_page = true;
 
-    this.vehicleFormGroup.patchValue({
-      model: '',
-      brand_id: '',
-      type: '',
-      version: ''
-    })
+      this.chuubLoading = true;
+      this.primeroLoading = true;
+      this.anaLoading = true;
+
+      this.vehicleFormGroup.reset()
+
+      this.vehicleFormGroup.patchValue({
+        unit_type: 'AUTO'
+      })
+    } else {
+
+      this.router.navigate(['cotizacion']);
+    }
+
+
   }
 
   validateCp() {
@@ -449,9 +473,6 @@ export class QuotationComponent {
 
   toQuotations() {
 
-    this.quotations = true
-    this.initial_page = false
-
     Swal.fire({
       allowOutsideClick: false,
       allowEscapeKey: false,
@@ -474,6 +495,9 @@ export class QuotationComponent {
 
     this._quotationService.homologation(clientData).
       then(({ ana, chuub, primero }) => {
+
+        this.quotations = true
+        this.initial_page = false
 
         this.anaInfo = ana;
         this.chuubInfo = chuub;
@@ -509,7 +533,6 @@ export class QuotationComponent {
   chuubQuotation() {
 
     this.chuubLoading = true;
-
     const searchData = {
       brand_id: this.chuubInfo.negocioID,
       pack: this.chuubInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
@@ -562,7 +585,6 @@ export class QuotationComponent {
         this.PrimeroDataSource.sort = this.PrimeroSort;
 
         this.primeroLoading = false;
-
         this.primeroActive = true;
       })
       .catch(({ title, message, code }) => {
@@ -611,30 +633,185 @@ export class QuotationComponent {
       case 1:
         this.quoter_name = 'CHUUB';
         this.quotation_selected = this.chuub_quotation;
+
+        this.pack_id = this.chuubInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
+        this.brand_logo = this.chuubInfo.marca.logoMarca;
         break;
 
       case 2:
 
         this.quoter_name = 'PRIMERO';
         this.quotation_selected = this.primero_quotation;
+
+        this.pack_id = this.primeroInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
+        this.brand_logo = this.primeroInfo.marca.logoMarca;
         break;
 
       case 3:
 
         this.quoter_name = 'ANA';
         this.quotation_selected = this.ana_quotation;
+        this.pack_id = this.anaInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
+        this.brand_logo = this.anaInfo.marca.logoMarca;
         break;
     }
 
   }
+
+  getQuotation() {
+
+    const quotationData: any = {
+      user_id: this.user_info.user_id,
+      quotation_id: this.quotation_id
+    };
+
+    this._quotationService.getQuotation(quotationData).
+      then(({ quotation }) => {
+
+        this.quotation = quotation;
+
+        this.lastVehicleFormGroup.patchValue({
+          serial_no: quotation.serial_number,
+          plate_no: quotation.license_plate,
+          motor_no: quotation.motor_no
+        })
+
+        this.vehicleFormGroup.patchValue({
+          model: quotation.model,
+          brand_id: quotation.brand_id,
+          type: quotation.type,
+          version: quotation.amis,
+          unit_type: quotation.unit_type
+        })
+
+        this.quoter_name = quotation.brand
+        this.quoter_pack = quotation.pack_id
+        this.payment_frequency = quotation.payment_frequency
+
+        this.toQuotations();
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        this.router.navigate(['cotizacion']);
+      })
+  }
+
+  storeQuotation() {
+
+    let brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value)
+
+    let version = this.versions.find((version: any) => version.amis == this.vehicleFormGroup.get('version').value)
+
+    const quotationData: any = {
+      client_id: this.user_info.user_id,
+      model: this.vehicleFormGroup.get('model').value,
+      brand_id: this.vehicleFormGroup.get('brand_id').value,
+      brand: brand.nombre,
+      unit_type: this.vehicleFormGroup.get('unit_type').value,
+      type: this.vehicleFormGroup.get('type').value,
+      amis: this.vehicleFormGroup.get('version').value,
+      vehicle_description: this.quotation_selected.descripcion,
+      pack_id: this.quoter_pack,
+      pack_name: this.quoters_packs[this.quoter_pack],
+      payment_frequency: this.payment_frequency,
+      quotation_code: this.quotation_selected.cotizacionID,
+      brand_logo: this.brand_logo,
+      vehicle_code: this.quotation_selected.clave,
+      insurer: this.quoter_name,
+      insurer_logo: this.quotation_selected.logoGdeAseguradora,
+      total_amount: this.quotation_selected.primas.primaTotal
+    };
+
+    this._quotationService.storeQuotation(quotationData).
+      then(({ quotation }) => {
+
+        this.quotation_id = quotation.id;
+        this.quotations = false;
+        this.last_data_page = true;
+        Swal.close();
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
+  updateQuotation() {
+
+    const quotationData: any = {
+      client_id: this.user_info.user_id,
+      vehicle_description: this.quotation_selected.descripcion,
+      quotation_id: this.quotation_id,
+      pack_id: this.quoter_pack,
+      pack_name: this.quoters_packs[this.quoter_pack],
+      payment_frequency: this.payment_frequency,
+      quotation_code: this.quotation_selected.cotizacionID,
+      vehicle_code: this.quotation_selected.clave,
+      insurer: this.quoter_name,
+      insurer_logo: this.quotation_selected.logoGdeAseguradora,
+      total_amount: this.quotation_selected.primas.primaTotal
+    };
+
+    this._quotationService.updateQuotation(quotationData).
+      then(({ quotation }) => {
+
+        this.quotations = false;
+        this.last_data_page = true;
+
+        Swal.close();
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
   ////////////////////////////////////// Login | Register //////////////////////////////////
 
-  checkSession() {
+  checkSession(quoter: number) {
+
+    Swal.fire({
+      text: 'Procesando',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false
+    })
+    Swal.showLoading()
+
+    this.selectQuotation(quoter);
 
     if (this._loginService.isAuthenticated()) {
 
-      this.quotations = false;
-      this.last_data_page = true;
+      if (this.quotation_id > 0)
+        this.updateQuotation();
+      else
+        this.storeQuotation();
+
     } else {
 
       this.loginFormGroup.patchValue({
@@ -673,7 +850,6 @@ export class QuotationComponent {
     this.login();
   }
 
-
   login() {
 
     Swal.fire({
@@ -694,11 +870,10 @@ export class QuotationComponent {
 
         this._templateComponent.loginListener(true);
 
-        this.quotations = false;
-        this.last_data_page = true;
-
-        Swal.close();
         this.closeLoginModal();
+
+        this.storeQuotation();
+
       })
       .catch(({ title, message, code }) => {
 
@@ -768,11 +943,9 @@ export class QuotationComponent {
 
         this._templateComponent.loginListener(true);
 
-        this.quotations = false;
-        this.last_data_page = true;
-
-        Swal.close();
         this.closeRegisterModal();
+
+        this.storeQuotation();
       })
       .catch(({ title, message, code }) => {
 
@@ -897,6 +1070,8 @@ export class QuotationComponent {
     this._loginService.actualizePassword(searchData).
       then(({ title, message }) => {
 
+        this.storeQuotation();
+
         Swal.fire({
           title: title,
           text: message,
@@ -908,11 +1083,10 @@ export class QuotationComponent {
 
             this._templateComponent.loginListener(true);
 
-            this.quotations = false;
-            this.last_data_page = true;
 
-            Swal.close();
             this.closeRecoveryModal();
+
+            this.storeQuotation();
           }
         })
       })
@@ -973,7 +1147,9 @@ export class QuotationComponent {
     let clientInfo = {
       rfc: this.lastUserFormGroup.get('rfc').value,
       township: this.lastUserFormGroup.get('township').value,
+      suburb: this.suburbControl.value,
       state: this.lastUserFormGroup.get('state').value,
+      street: this.lastUserFormGroup.get('street').value,
       street_number: this.lastUserFormGroup.get('street_number').value,
       int_street_number: this.lastUserFormGroup.get('int_street_number').value
     }
@@ -981,8 +1157,42 @@ export class QuotationComponent {
     this._clientService.updateClient(user_info.user_id, clientInfo)
       .then((client) => {
 
+        this.lastUpdateQuotation();
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
+  lastUpdateQuotation() {
+
+    const quotationData: any = {
+      client_id: this.user_info.user_id,
+      quotation_id: this.quotation_id,
+      serial_no: this.lastVehicleFormGroup.get('serial_no').value,
+      plate_no: this.lastVehicleFormGroup.get('plate_no').value,
+      motor_no: this.lastVehicleFormGroup.get('motor_no').value
+    };
+
+    this._quotationService.lastUpdateQuotation(quotationData).
+      then(({ quotation }) => {
+
         this.last_data_page = false;
         this.pay_page = true;
+
         Swal.close();
       })
       .catch(({ title, message, code }) => {
