@@ -48,7 +48,7 @@ class CopsisController extends Controller
                     'x-api-key' => env('api_key_uat'),
                     'Accept' => 'application/json'
                 ])
-                    ->timeout(5)
+                    ->timeout(30)
                     ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/marca', [
                         'aseguradora' => "CHUBB",
                         'modelo' => $request->model,
@@ -173,7 +173,7 @@ class CopsisController extends Controller
                 $type = Http::withHeaders([
                     'x-api-key' => env('api_key_uat')
                 ])
-                    ->timeout(5)
+                    ->timeout(30)
                     ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/tipo', [
                         'aseguradora' => "CHUBB",
                         'modelo' => $request->model,
@@ -303,7 +303,7 @@ class CopsisController extends Controller
                 $version = Http::withHeaders([
                     'x-api-key' => env('api_key_uat')
                 ])
-                    ->timeout(5)
+                    ->timeout(30)
                     ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/version', [
                         'aseguradora' => "CHUBB",
                         'modelo' => $request->model,
@@ -347,21 +347,27 @@ class CopsisController extends Controller
 
                         return response()->json([
                             'title' => 'Error en Copsis',
-                            'message' => 'Elige otra',
+                            'message' => 'Elige otra opción',
                             'code' => $this->prefixCode . 'X204'
                         ], 400);
                     }
 
+                    $copsis_versions = collect($versions);
+
+                    $copsis_versions = $copsis_versions->filter(function ($value,  $key) {
+                        return strlen($value['amis']) >= 12;
+                    })->values();
+
                     // Se evalua si las marcas ya existen en la base de datos actual
-                    $old_versions = Version::whereIn('amis', collect($versions)->pluck('amis'))->where([
+                    $old_versions = Version::whereIn('amis', $copsis_versions->pluck('amis'))->where([
                         ['model', $request->model],
                         ['brand_id', $request->brand_id],
                         ['type', $request->type]
                     ])->get();
 
-                    $new_versions = collect($versions)->pluck('amis')->diff($old_versions->pluck('amis'));
+                    $new_versions = $copsis_versions->pluck('amis')->diff($old_versions->pluck('amis'));
 
-                    $new_versions = collect($versions)->whereIn('amis', $new_versions);
+                    $new_versions = $copsis_versions->whereIn('amis', $new_versions);
 
                     // Se insertan las nuevas marcas consultadas
                     CopsisService::storeNewVersions($new_versions, $request->model, $request->brand_id, $request->type);
@@ -600,18 +606,34 @@ class CopsisController extends Controller
 
             if (!$response['ok']) {
 
-                ErrorsLog::create([
-                    'description' => $response['message'],
-                    'http_code' => $chuub_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X404'
-                ]);
+                if (isset($response['result'])) {
 
-                return response()->json([
-                    'title' => 'Error Copsis',
-                    'message' => $response['message'],
-                    'code' => $this->prefixCode . 'X405'
-                ], 400);
+                    ErrorsLog::create([
+                        'description' => $response['result']['error'],
+                        'http_code' => $chuub_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X404'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['result']['error'],
+                        'code' => $this->prefixCode . 'X405'
+                    ], 400);
+                } else {
+                    ErrorsLog::create([
+                        'description' => $response['message'],
+                        'http_code' => $chuub_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X406'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['message'],
+                        'code' => $this->prefixCode . 'X407'
+                    ], 400);
+                }
             }
 
             // Si la respuesta falla se inserta en un log los motivos de las fallas
@@ -623,14 +645,14 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $chuub_quotation->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X403'
+                        'prefix_code' => $this->prefixCode . 'X408'
                     ]);
                 }
 
                 return response()->json([
                     'title' => 'Error Copsis',
                     'message' => $response['errors'],
-                    'code' => $this->prefixCode . 'X403'
+                    'code' => $this->prefixCode . 'X409'
                 ], 400);
             }
 
@@ -723,18 +745,34 @@ class CopsisController extends Controller
 
             if (!$response['ok']) {
 
-                ErrorsLog::create([
-                    'description' => $response['message'],
-                    'http_code' => $primero_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X504'
-                ]);
+                if (isset($response['result'])) {
 
-                return response()->json([
-                    'title' => 'Error Copsis',
-                    'message' => $response['message'],
-                    'code' => $this->prefixCode . 'X506'
-                ], 400);
+                    ErrorsLog::create([
+                        'description' => $response['result']['error'],
+                        'http_code' => $primero_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X503'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['result']['error'],
+                        'code' => $this->prefixCode . 'X504'
+                    ], 400);
+                } else {
+                    ErrorsLog::create([
+                        'description' => $response['message'],
+                        'http_code' => $primero_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X505'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['message'],
+                        'code' => $this->prefixCode . 'X506'
+                    ], 400);
+                }
             }
 
             // Si la respuesta falla se inserta en un log los motivos de las fallas
@@ -746,13 +784,13 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $primero_quotation->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X503'
+                        'prefix_code' => $this->prefixCode . 'X507'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['errors'],
-                        'code' => $this->prefixCode . 'X506'
+                        'code' => $this->prefixCode . 'X508'
                     ], 400);
                 }
             }
@@ -846,18 +884,34 @@ class CopsisController extends Controller
 
             if (!$response['ok']) {
 
-                ErrorsLog::create([
-                    'description' => $response['message'],
-                    'http_code' => $ana_quotation->status(),
-                    'module' => 'CopsisController',
-                    'prefix_code' => $this->prefixCode . 'X604'
-                ]);
+                if (isset($response['result'])) {
 
-                return response()->json([
-                    'title' => 'Error Copsis',
-                    'message' => $response['message'],
-                    'code' => $this->prefixCode . 'X605'
-                ], 400);
+                    ErrorsLog::create([
+                        'description' => $response['result']['error'],
+                        'http_code' => $ana_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X603'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['result']['error'],
+                        'code' => $this->prefixCode . 'X604'
+                    ], 400);
+                } else {
+                    ErrorsLog::create([
+                        'description' => $response['message'],
+                        'http_code' => $ana_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X605'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['message'],
+                        'code' => $this->prefixCode . 'X606'
+                    ], 400);
+                }
             }
 
             // Si la respuesta falla se inserta en un log los motivos de las fallas
@@ -869,14 +923,14 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $ana_quotation->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X603'
+                        'prefix_code' => $this->prefixCode . 'X607'
                     ]);
                 }
 
                 return response()->json([
                     'title' => 'Error Copsis',
                     'message' => $response['errors'],
-                    'code' => $this->prefixCode . 'X605'
+                    'code' => $this->prefixCode . 'X608'
                 ], 400);
             }
 

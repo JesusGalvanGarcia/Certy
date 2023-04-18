@@ -29,7 +29,7 @@ body {
 }
 
 .page-footer .group-1 .box figure img {
-    width: 350px;
+    width: 300px;
 }
 
 .page-footer .group-1 .box h2 {
@@ -85,5 +85,9 @@ body {
         grid-template-columns: repeat(1, 1fr);
         gap: 30px;
         padding: 35px 0px;
+    }
+
+    .page-footer .group-1 .box figure img {
+        width: 150px;
     }
 }

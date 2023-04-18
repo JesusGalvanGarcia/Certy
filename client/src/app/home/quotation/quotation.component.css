@@ -1,4 +1,16 @@
 /* Initial Form */
+
+.car-image {
+    max-width: 500px;
+}
+
+.page-title {
+    color: #0E2B4D;
+    font-size: 50px;
+    font-weight: bolder;
+    text-justify: auto;
+}
+
 .mat-stepper-horizontal {
     margin-top: 8px;
 }
@@ -155,6 +167,14 @@ th {
 }
 
 @media screen and (max-width: 800px) {
+
+    .car-image {
+        display: none;
+    }
+
+    .page-title {
+        font-size: 30px;
+    }
 
     .pay-card {
         max-width: 100%;

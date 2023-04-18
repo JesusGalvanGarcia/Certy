@@ -43,7 +43,7 @@ export class RecoveryPasswordComponent {
 
     this.recovery_form = this.fb.group({
       secure_code: ['', [Validators.required, Validators.pattern('\\+?[0-9]{6}')]],
-      password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{4,10}$')]],
+      password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
     })
   }
 

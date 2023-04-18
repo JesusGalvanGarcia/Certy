@@ -7,13 +7,17 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountStatusComponent } from './home/account-status/account-status.component';
+import { FaqsComponent } from './home/faqs/faqs.component';
+import { HelpsComponent } from './home/helps/helps.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegisterComponent },
   { path: 'recuperacion_contraseña', component: RecoveryPasswordComponent },
   { path: 'cotizacion', component: QuotationComponent },
-  { path: 'estado-de-cuenta', component: AccountStatusComponent },
+  { path: 'faqs', component: FaqsComponent },
+  { path: 'ayuda', component: HelpsComponent },
+  // { path: 'estado-de-cuenta', component: AccountStatusComponent, canActivate: [AuthGuard] },
   { path: 'cotizacion/:quotation_id', component: QuotationComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'cotizacion', pathMatch: 'full' }

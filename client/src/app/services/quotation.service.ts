@@ -35,7 +35,7 @@ export class QuotationService {
 
     return this.api_conect.get('/quotations', { params: searchData })
       .then(({ data }: any) => {
-        console.log(data)
+
         return data;
       })
       .catch(({ response }: any) => {

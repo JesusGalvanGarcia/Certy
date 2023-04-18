@@ -3,11 +3,10 @@
         <div class="col col-md-6">
             <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
                 style="max-width: 50px;">
-            <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+            <p class="page-title">
                 Cotiza sin costo en menos de 30 segundos
             </p>
-            <img class="navbar-brand" src="./assets/images/Carro-Nuevo-2.png" alt="certy_logo"
-                style="max-width: 500px;">
+            <img class="car-image" src="./assets/images/Carro-Nuevo-2.png" alt="certy_car_logo">
         </div>
         <div class="col col-12 col-md-6">
             <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
@@ -153,12 +152,12 @@
                             <div class="col" align="start">
                                 <mat-radio-group aria-label="Select an option" formControlName="unit_type"
                                     color="primary">
-                                    <mat-radio-button value="AUTO">
+                                    <mat-radio-button value="AUTO" (click)="otherCar();">
                                         Auto
                                         <img src="./assets/images/icon-auto.png"
                                             style="max-width: 45px; margin-left: 10px;">
                                     </mat-radio-button>
-                                    <mat-radio-button value="PICKUP">
+                                    <mat-radio-button value="PICKUP" (click)="otherCar();">
                                         Pickup
                                         <img src="./assets/images/icon-pikcup.png"
                                             style="max-width: 45px; margin-left: 10px;">
@@ -210,13 +209,14 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="example-full-width">
                             <mat-label>Versión</mat-label>
-                            <mat-select formControlName="version">
-                                <mat-option *ngFor="let version of versions" [value]="version.amis">
+                            <input type="text" matInput [formControl]="versionControl" [matAutocomplete]="version_auto">
+                            <mat-autocomplete autoActiveFirstOption #version_auto="matAutocomplete"
+                                [displayWith]="displayFn">
+                                <mat-option *ngFor="let version of filteredVersions | async" [value]="version">
                                     {{ version.descripcion }}
                                 </mat-option>
-                            </mat-select>
+                            </mat-autocomplete>
                         </mat-form-field>
-
                         <div class="row">
                             <!-- <div class="col" align="start">
                                     <button mat-button matStepperPrevious class="btn btn-info"
@@ -235,9 +235,6 @@
                 <mat-step readonly>
                     <ng-template matStepLabel></ng-template>
                     <p>Cargando pantalla...</p>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                    </div>
                 </mat-step>
             </mat-stepper>
         </div>
@@ -247,7 +244,7 @@
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col col-12 col-md-10">
 
-                <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+                <p class="page-title">
                     ¡Elige la mejor opción para ti!
                 </p>
             </div>
@@ -466,7 +463,7 @@
                         <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
                             Costo total del seguro
                         </p>
-                        <div class="row row-cols-1 row-cols-md-2 mt-2" *ngIf=" ana_quotation.primas.recibos > 1">
+                        <div class="row row-cols-1 row-cols-md-2 mt-2" *ngIf="ana_quotation.primas.recibos > 1">
                             <div class="col">
                                 <label style="color:#5C5C5C;font-size: 20px;"> Pago Inicial de:</label>
                                 <h1 class="mt-4" style="color: #D41E2A; font-size: 20px;">
@@ -523,6 +520,8 @@
             <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
                 Completa los últimos datos para emitir tu póliza.
             </p>
+            <img class="navbar-brand" src="./assets/images/Carro-Nuevo-1.png" alt="certy_logo"
+                style="max-width: 500px;">
         </div>
         <div class="col col-12 col-md-6">
             <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
@@ -603,7 +602,7 @@
                             <div class="col" align="end">
                                 <button mat-button matStepperNext class="btn btn-info"
                                     style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
-                                    [disabled]="lastVehicleFormGroup.invalid">Siguiente</button>
+                                    [disabled]="lastVehicleFormGroup.invalid||versionControl.invalid">Siguiente</button>
                             </div>
                         </div>
                     </form>
@@ -767,9 +766,6 @@
                 <mat-step readonly>
                     <ng-template matStepLabel></ng-template>
                     <p>Cargando pantalla...</p>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                    </div>
                 </mat-step>
             </mat-stepper>
         </div>
@@ -1148,7 +1144,7 @@
                                             sortActionDescription="Sort by number">
                                             Cobertura
                                         </th>
-                                        <td mat-cell *matCellDef="let primero"> {{primero.position}} </td>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.nombre}} </td>
                                     </ng-container>
 
                                     <!-- SA Column -->
@@ -1157,7 +1153,7 @@
                                             sortActionDescription="Sort by name">
                                             S.A.
                                         </th>
-                                        <td mat-cell *matCellDef="let primero"> {{primero.name}} </td>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.leyendaSumaAsegurada}} </td>
                                     </ng-container>
 
                                     <!-- Deductible Column -->
@@ -1166,7 +1162,7 @@
                                             sortActionDescription="Sort by Deductible">
                                             Deducible
                                         </th>
-                                        <td mat-cell *matCellDef="let primero"> {{primero.weight}} </td>
+                                        <td mat-cell *matCellDef="let primero"> {{primero.leyendaDeducible}} </td>
                                     </ng-container>
 
                                     <tr mat-header-row *matHeaderRowDef="PrimeroDisplayedColumns; sticky:true"></tr>
@@ -1237,8 +1233,14 @@
                                         {{loginFormGroup.get('password').errors.minlength.requiredLength}} caracteres.
                                     </label>
                                     <label class="animated fadeIn"
+                                        *ngIf="loginFormGroup.get('password').hasError('maxlength')">
+                                        La contraseña debe contener máximo
+                                        {{loginFormGroup.get('password').errors.maxlength.requiredLength}} caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
                                         *ngIf="loginFormGroup.get('password').hasError('pattern')">
-                                        La contraseña es invalida.
+                                        La contraseña es invalida. Se permiten letras, números y los caracteres
+                                        especiales @ $ ! % * ? &.
                                     </label>
                                 </mat-error>
                             </mat-form-field>
@@ -1342,8 +1344,15 @@
                                         caracteres.
                                     </label>
                                     <label class="animated fadeIn"
+                                        *ngIf="registerFormGroup.get('password').hasError('maxlength')">
+                                        La contraseña debe contener máximo
+                                        {{registerFormGroup.get('password').errors.maxlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
                                         *ngIf="registerFormGroup.get('password').hasError('pattern')">
-                                        La contraseña es invalida.
+                                        La contraseña es invalida. Se permiten letras, números y los caracteres
+                                        especiales @ $ ! % * ? &.
                                     </label>
                                 </mat-error>
                             </mat-form-field>
@@ -1477,8 +1486,15 @@
                                         caracteres.
                                     </label>
                                     <label class="animated fadeIn"
+                                        *ngIf="actualizeFormGroup.get('password').hasError('maxlength')">
+                                        La contraseña debe contener máximo
+                                        {{registerFormGroup.get('password').errors.maxlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
                                         *ngIf="actualizeFormGroup.get('password').hasError('pattern')">
-                                        La contraseña es invalida.
+                                        La contraseña es invalida. Se permiten letras, números y los caracteres
+                                        especiales @ $ ! % * ? &.
                                     </label>
                                 </mat-error>
                             </mat-form-field>

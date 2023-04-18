@@ -32,7 +32,8 @@ export class QuotationComponent {
   versions: any
 
   userFormGroup: any = this._formBuilder.group({
-    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1]+(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1]+)?$')]],
+    // complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?$')]],
+    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
     email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
     cellphone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
     age: ['', [Validators.required, Validators.min(18), Validators.pattern('[0-9]{1,2}')]],
@@ -44,14 +45,17 @@ export class QuotationComponent {
     model: ['', [Validators.required, Validators.pattern('\\+?[0-9]{4}')]],
     brand_id: ['', [Validators.required, Validators.pattern('\\+?[0-9]{1,3}')]],
     type: ['', [Validators.required]],
-    version: ['', [Validators.required]],
     unit_type: ['AUTO', [Validators.required]]
   });
 
+  // Version control
+  versionControl: FormControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
+  filteredVersions: Observable<string[]> | any;
+
   lastVehicleFormGroup: any = this._formBuilder.group({
     serial_no: ['', [Validators.required, Validators.minLength(15), Validators.maxLength(17), Validators.pattern('^[a-zA-Z0-9]*$')]],
-    plate_no: ['', [Validators.required, Validators.pattern('[A-Z0-9]{7}')]],
-    motor_no: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]{5,17}$')]],
+    plate_no: ['', [Validators.pattern('[A-Z0-9]{7}')]],
+    motor_no: ['', [Validators.pattern('[a-zA-Z0-9]{5,17}$')]],
   });
 
   lastUserFormGroup: any = this._formBuilder.group({
@@ -125,13 +129,13 @@ export class QuotationComponent {
 
   loginFormGroup: any = this._formBuilder.group({
     email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]{4,10}$')]]
+    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]]
   });
 
   registerFormGroup: any = this._formBuilder.group({
-    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú]+(?: [A-ZÁÉÍÓÚa-zñáéíóú]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú]+)?$')]],
+    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
     email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]{4,20}$')]],
+    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
     terms: [null, Validators.requiredTrue]
   });
 
@@ -141,7 +145,7 @@ export class QuotationComponent {
 
   actualizeFormGroup: any = this._formBuilder.group({
     secure_code: ['', [Validators.required, Validators.pattern('\\+?[0-9]{6}')]],
-    password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{4,10}$')]],
+    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
   });
 
 
@@ -188,6 +192,17 @@ export class QuotationComponent {
     );
   }
 
+  ngOnInit(): void {
+
+    this.filteredVersions = this.versionControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name ? this._filter(name as string) : this.versions.slice();
+      }),
+    );
+  }
+
   ngAfterViewInit() {
 
     this.AnaDataSource.sort = this.AnaSort;
@@ -204,7 +219,9 @@ export class QuotationComponent {
     })
     Swal.showLoading()
 
-    this._clientService.getClient(this.user_info.user_id).
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
+    this._clientService.getClient(user_info.user_id).
       then(({ client }) => {
 
         this.client = client
@@ -222,6 +239,7 @@ export class QuotationComponent {
           rfc: client.rfc,
           state: client.state,
           township: client.township,
+          street: client.street,
           street_number: client.street_number,
           int_street_number: client.int_street_number
         })
@@ -371,6 +389,14 @@ export class QuotationComponent {
     this._quotationService.getVersions(searchData).
       then(({ versions }) => {
 
+        this.filteredVersions = this.versionControl.valueChanges.pipe(
+          startWith(''),
+          map(version => {
+            const description = typeof version === 'string' ? version : version?.description;
+            return description ? this._filterVersions(description as string) : this.versions.slice();
+          }),
+        );
+
         this.versions = versions;
         Swal.close()
       })
@@ -392,6 +418,18 @@ export class QuotationComponent {
       })
   }
 
+  private _filterVersions(description: string) {
+
+    const filterValue = description.toLowerCase();
+
+    return this.versions.filter((version: any) => version.descripcion.toLowerCase().includes(filterValue));
+  }
+
+  displayFn(version: any): string {
+
+    return version && version.descripcion ? version.descripcion : '';
+  }
+
   otherCar() {
 
     if (this.quotation_id == 0) {
@@ -404,7 +442,7 @@ export class QuotationComponent {
       this.anaLoading = true;
 
       this.vehicleFormGroup.reset()
-
+      this.versionControl.reset()
       this.vehicleFormGroup.patchValue({
         unit_type: 'AUTO'
       })
@@ -488,7 +526,7 @@ export class QuotationComponent {
       age: this.userFormGroup.get('age').value,
       cp: this.userFormGroup.get('cp').value,
       genre: this.userFormGroup.get('genre').value,
-      amis: this.vehicleFormGroup.get('version').value,
+      amis: this.versionControl.value.amis,
       model: this.vehicleFormGroup.get('model').value,
       unit_type: this.vehicleFormGroup.get('unit_type').value
     };
@@ -631,7 +669,7 @@ export class QuotationComponent {
     switch (quoter) {
 
       case 1:
-        this.quoter_name = 'CHUUB';
+        this.quoter_name = 'CHUBB';
         this.quotation_selected = this.chuub_quotation;
 
         this.pack_id = this.chuubInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
@@ -660,8 +698,10 @@ export class QuotationComponent {
 
   getQuotation() {
 
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
     const quotationData: any = {
-      user_id: this.user_info.user_id,
+      user_id: user_info.user_id,
       quotation_id: this.quotation_id
     };
 
@@ -671,8 +711,8 @@ export class QuotationComponent {
         this.quotation = quotation;
 
         this.lastVehicleFormGroup.patchValue({
-          serial_no: quotation.serial_number,
-          plate_no: quotation.license_plate,
+          serial_no: quotation.serial_no,
+          plate_no: quotation.plate_no,
           motor_no: quotation.motor_no
         })
 
@@ -680,9 +720,10 @@ export class QuotationComponent {
           model: quotation.model,
           brand_id: quotation.brand_id,
           type: quotation.type,
-          version: quotation.amis,
           unit_type: quotation.unit_type
         })
+
+        this.versionControl.patchValue({ amis: quotation.amis })
 
         this.quoter_name = quotation.brand
         this.quoter_pack = quotation.pack_id
@@ -701,16 +742,16 @@ export class QuotationComponent {
 
     let brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value)
 
-    let version = this.versions.find((version: any) => version.amis == this.vehicleFormGroup.get('version').value)
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     const quotationData: any = {
-      client_id: this.user_info.user_id,
+      client_id: user_info.user_id,
       model: this.vehicleFormGroup.get('model').value,
       brand_id: this.vehicleFormGroup.get('brand_id').value,
       brand: brand.nombre,
       unit_type: this.vehicleFormGroup.get('unit_type').value,
       type: this.vehicleFormGroup.get('type').value,
-      amis: this.vehicleFormGroup.get('version').value,
+      amis: this.versionControl.value.amis,
       vehicle_description: this.quotation_selected.descripcion,
       pack_id: this.quoter_pack,
       pack_name: this.quoters_packs[this.quoter_pack],
@@ -751,8 +792,10 @@ export class QuotationComponent {
 
   updateQuotation() {
 
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
     const quotationData: any = {
-      client_id: this.user_info.user_id,
+      client_id: user_info.user_id,
       vehicle_description: this.quotation_selected.descripcion,
       quotation_id: this.quotation_id,
       pack_id: this.quoter_pack,
@@ -828,7 +871,7 @@ export class QuotationComponent {
       });
 
       this.display_login_modal = 'block';
-
+      Swal.close()
     }
   }
 
@@ -1179,8 +1222,10 @@ export class QuotationComponent {
 
   lastUpdateQuotation() {
 
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
     const quotationData: any = {
-      client_id: this.user_info.user_id,
+      client_id: user_info.user_id,
       quotation_id: this.quotation_id,
       serial_no: this.lastVehicleFormGroup.get('serial_no').value,
       plate_no: this.lastVehicleFormGroup.get('plate_no').value,

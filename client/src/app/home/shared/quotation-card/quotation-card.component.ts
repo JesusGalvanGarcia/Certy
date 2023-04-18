@@ -18,7 +18,5 @@ export class QuotationCardComponent {
       this.user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     }
-
-    console.log(this.policy)
   }
 }

@@ -16,8 +16,10 @@ export class DashboardComponent {
   user_info: any
 
   loading: boolean = true;
+  loadingClient: boolean = true;
 
   policies: any = []
+  client: any = []
 
   total_policies: number = 0
   pending_amount: number = 0
@@ -36,12 +38,43 @@ export class DashboardComponent {
     }
 
     this.getQuotations();
+    this.getClient();
+  }
+
+  getClient() {
+
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
+    this._clientService.getClient(user_info.user_id).
+      then(({ client }) => {
+
+        this.client = client
+        this.loadingClient = false
+        this.loading = false
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
   }
 
   getQuotations() {
 
     const searchData = {
-      client_id: this.user_info.user_id
+      client_id: this.user_info.user_id,
+      filter: 0
     }
 
     this._quotationService.getQuotations(searchData).
@@ -51,7 +84,7 @@ export class DashboardComponent {
         this.total_policies = total_policies
         this.pending_amount = pending_amount
         this.expired_amount = expired_amount
-        this.loading = false
+        // this.loading = false
 
       })
       .catch(({ title, message, code }) => {

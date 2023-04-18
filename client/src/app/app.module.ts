@@ -45,6 +45,8 @@ import { DashboardComponent } from './home/dashboard/dashboard.component';
 import { QuotationCardComponent } from './home/shared/quotation-card/quotation-card.component';
 import { PolicyCardComponent } from './home/shared/policy-card/policy-card.component';
 import { AccountStatusComponent } from './home/account-status/account-status.component';
+import { FaqsComponent } from './home/faqs/faqs.component';
+import { HelpsComponent } from './home/helps/helps.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { AccountStatusComponent } from './home/account-status/account-status.com
     DashboardComponent,
     QuotationCardComponent,
     PolicyCardComponent,
-    AccountStatusComponent
+    AccountStatusComponent,
+    FaqsComponent,
+    HelpsComponent
   ],
   imports: [
     BrowserModule,

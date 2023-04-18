@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg" style="background: #0E2B4D 0% 0% no-repeat padding-box;">
+    <nav class="navbar sticky-top navbar-expand-lg" style="background: #0E2B4D 0% 0% no-repeat padding-box;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" style="color:#60CDEE; margin-left: 100px;">
                 <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-05.png" alt="certy_logo"
@@ -25,14 +25,24 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item" *ngIf="!authenticated">
-                            <button type="button" class="btn btn-info"
+                            <button class="mb-2 mt-2" mat-button
+                                style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
+                                [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
+                        </li>
+                        <li class="nav-item" *ngIf="authenticated">
+                            <button class="mt-2 mb-2" mat-button
+                                style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
+                                [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
+                        </li>
+                        <li class="nav-item" *ngIf="!authenticated">
+                            <button type="button" class="btn btn-info mb-2 mt-2"
                                 style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; margin-right: 10px;"
                                 [routerLink]="['/cotizacion']">
                                 ¡Cotiza Ahora!
                             </button>
                         </li>
                         <li class="nav-item" *ngIf="!authenticated">
-                            <button type="button" class="btn btn-outline-light"
+                            <button type="button" class="btn btn-outline-light mt-2 mb-2"
                                 style="min-width: 180px;margin-right: 10px;" [routerLink]="['/login']">
                                 Inicia Sesión
                             </button>
@@ -45,14 +55,14 @@
                                 </button>
                             </a>
                         </li>
-                        <li class="nav-item" *ngIf="authenticated">
+                        <!-- <li class="nav-item" *ngIf="authenticated">
                             <a class="nav-link active" [routerLink]="['/estado-de-cuenta']">
                                 <button mat-button style="color: white">
                                     <mat-icon>history_edu</mat-icon>
                                     Estado de Cuenta
                                 </button>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                     <small style="color: #60CDEE;">
                         {{authenticated ? user_info.user_name: '' }}
@@ -87,37 +97,49 @@
         <div class="group-1">
             <div class="box">
                 <figure>
-                    <a href="">
+                    <a>
                         <img src="./assets/images/certy-jointlogo-blanco.png" alt="Footer Certy Logo">
                     </a>
                 </figure>
             </div>
             <div class="box">
                 <h2> Contacto</h2>
-                <p>contactotrinitas.cire.com.mx</p>
+                <p>contactotrinitas@cire.com.mx</p>
                 <p>Tel: 81 8647 6770 al 73 ext.113</p>
                 <p>Tel. Móvil 81 2878 1856</p>
+                <p><a [routerLink]="['/faqs']" style="text-decoration: none; color: white;">FAQS</a></p>
             </div>
             <div class="box">
                 <h2> Trínitas</h2>
-                <p>Soluciones Financieras</p>
-                <p>Blog Financiero</p>
-                <p>www.trinitas.mx</p>
+                <p>
+                    <a href="https://trinitas.mx/creditos/" style="text-decoration: none; color: white;">
+                        Soluciones Financieras
+                    </a>
+                </p>
+                <p>
+                    <a href="https://trinitas.mx/blog/" style="text-decoration: none; color: white;">
+                        Blog Financiero
+                    </a>
+                </p>
+                <p>
+                    <a href="https://trinitas.mx/" style="text-decoration: none; color: white;">
+                        www.trinitas.mx
+                    </a>
+                </p>
             </div>
             <div class="box">
-                <h2>SIGUENOS</h2>
                 <div class="social-web">
-                    <a href="#" class="fa fa-facebook">
-                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-06.png" alt="Intagram Logo">
+                    <a href="https://www.facebook.com/FinancieraTrinitas/">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-06.png" alt="Facebook Logo">
                     </a>
-                    <a href=" #" class="fa fa-instagram">
+                    <a href="https://www.instagram.com/trinitas.mx/">
                         <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-07.png" alt="Intagram Logo">
                     </a>
-                    <a href="#" class="fa fa-twitter">
-                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-08.png" alt="Intagram Logo">
+                    <a href="">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-08.png" alt="Twitter Logo">
                     </a>
-                    <a href="#" class="fa fa-youtube">
-                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-09.png" alt="Intagram Logo">
+                    <a href="https://www.linkedin.com/company/financiera-tr-nitas-sa-de-cv-sofom-enr/">
+                        <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-09.png" alt="Youtube Logo">
                     </a>
                 </div>
             </div>

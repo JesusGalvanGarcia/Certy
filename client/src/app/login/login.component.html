@@ -4,9 +4,9 @@
             <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
                 style="max-width: 50px;">
             <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
-                No es un gasto, es manejar seguro a todos lados.
+                No es solo un gasto, es manejar seguro a todos lados.
             </p>
-            <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-10.png" alt="certy_logo"
+            <img class="navbar-brand" src="./assets/images/Carro-Nuevo-1.png" alt="certy_logo"
                 style="max-width: 500px;">
         </div>
         <div class="col col-12 col-md-6" align="center">
@@ -47,15 +47,23 @@
                                     <mat-icon matSuffix class="animated fadeIn" *ngIf="visibility"
                                         (click)="visibility = !visibility">visibility_off</mat-icon>
                                     <mat-error class="animated fadeIn" *ngIf="invalidPassword">
-                                        <label class="animated fadeIn" *ngIf="form.get('password').hasError('required')">
+                                        <label class="animated fadeIn"
+                                            *ngIf="form.get('password').hasError('required')">
                                             La contraseña es requerida.
                                         </label>
-                                        <label class="animated fadeIn" *ngIf="form.get('password').hasError('minlength')">
+                                        <label class="animated fadeIn"
+                                            *ngIf="form.get('password').hasError('minlength')">
                                             La contraseña debe contener al menos
                                             {{form.get('password').errors.minlength.requiredLength}} caracteres.
                                         </label>
+                                        <label class="animated fadeIn"
+                                            *ngIf="form.get('password').hasError('maxlength')">
+                                            La contraseña debe contener máximo
+                                            {{form.get('password').errors.maxlength.requiredLength}} caracteres.
+                                        </label>
                                         <label class="animated fadeIn" *ngIf="form.get('password').hasError('pattern')">
-                                            La contraseña es invalida.
+                                            La contraseña es invalida. Se permiten letras, números y los caracteres
+                                            especiales @ $ ! % * ? &.
                                         </label>
                                     </mat-error>
                                 </mat-form-field>
