@@ -26,8 +26,8 @@ Route::post('/copsis/homologation', [CopsisController::class, 'homologation']);
 Route::post('/copsis/chuubQuotation', [CopsisController::class, 'chuubQuotation']);
 Route::post('/copsis/anaQuotation', [CopsisController::class, 'anaQuotation']);
 Route::post('/copsis/primeroQuotation', [CopsisController::class, 'primeroQuotation']);
-Route::post('/copsis/storeEmission', [CopsisController::class, 'storeEmission']);
-Route::post('/copsis/emission', [CopsisController::class, 'emission']);
+Route::post('/copsis/chubbEmission', [CopsisController::class, 'chubbEmission']);
+Route::post('/copsis/primeroEmission', [CopsisController::class, 'primeroEmission']);
 
 Route::post('/tools/permissions/create', [ToolsController::class, 'storePermissions']);
 Route::post('/tools/roles/create', [ToolsController::class, 'storeRoles']);

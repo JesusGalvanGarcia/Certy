@@ -24,6 +24,12 @@
     justify-content: start;
 }
 
+.collapse-text {
+    font-size: 15px;
+    align-items: start;
+    justify-content: start;
+}
+
 .collapse-image {
     max-width: 30px;
     margin-right: 60px;
@@ -47,6 +53,12 @@
 
     .collapse-title {
         font-size: 15px;
+    }
+
+    .collapse-text {
+        font-size: 13px;
+        align-items: start;
+        justify-content: start;
     }
 
     .collapse-image {

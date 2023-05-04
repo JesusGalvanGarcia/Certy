@@ -60,29 +60,11 @@ class LoginController extends Controller
             //     32
             // ]);
 
-            // if (!$permissions) {
-            //     return response()->json([
-            //         'message' => 'No estas autorizado para entrar a esta plataforma'
-            //     ], 404);
-            // }
-
-            //Consulta del internal_user en base a modelo
-            if (!$user->roles->first()) {
-
-                UserService::log($user->id, $this->prefixCode . 'Y001', 'Intento fallido de Login. Usuario no autorizado para ingresar.', 2);
-
-                return response()->json([
-                    'title' => 'Acceso denegado',
-                    'message' => 'No estas autorizado para entrar a esta plataforma',
-                    'code' => $this->prefixCode . 'X003'
-                ], 404);
-            }
 
             $log_Data = [
                 'user_id' => $user->id,
                 'user_name' => $user->complete_name,
-                'user_email' => $user->email,
-                'role' => $user->roles->first()->id
+                'user_email' => $user->email
             ];
 
             $log_on = Request::create(
@@ -168,7 +150,7 @@ class LoginController extends Controller
                     ], 400);
 
 
-                    // Caso contrario se asigna la contraseña al usuario y se crea desde el proceso de cotización.
+                // Caso contrario se asigna la contraseña al usuario y se crea desde el proceso de cotización.
                 $user->update([
                     'password' => Hash::make($request->password)
                 ]);
@@ -411,23 +393,10 @@ class LoginController extends Controller
 
             UserService::log($user->id, $this->prefixCode . 'Y303', 'Contraseña Actualizada.', 1);
 
-            //Consulta del internal_user en base a modelo
-            if (!$user->roles->first()) {
-
-                UserService::log($user->id, $this->prefixCode . 'Y001', 'Intento fallido de Login. Usuario no autorizado para ingresar.', 2);
-
-                return response()->json([
-                    'title' => 'Acceso denegado',
-                    'message' => 'No estas autorizado para entrar a esta plataforma',
-                    'code' => $this->prefixCode . 'X003'
-                ], 404);
-            }
-
             $log_Data = [
                 'user_id' => $user->id,
                 'user_name' => $user->complete_name,
-                'user_email' => $user->email,
-                'role' => $user->roles->first()->id
+                'user_email' => $user->email
             ];
 
             $log_on = Request::create(

@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <mat-form-field appearance="outline" class="example-full-width">
-                            <mat-label>¿De que año es tu vehículo?</mat-label>
+                            <mat-label>¿De qué año es tu vehículo?</mat-label>
                             <mat-select formControlName="model" (selectionChange)="getBrands()">
                                 <mat-option value="2024">2024</mat-option>
                                 <mat-option value="2023">2023</mat-option>
@@ -1249,12 +1249,12 @@
                                 style="width: 100%; background-color: #60CDEE;">Ingresar
                             </button>
                         </div>
-                        <a (click)="openRegisterModal();">
+                        <a href="#" (click)="openRegisterModal();" style="text-decoration: none;">
                             <p style="font-size: 15px; color: #0E2B4D;">
                                 No tengo una cuenta, quiero registrarme
                             </p>
                         </a>
-                        <a (click)="openRecoveryModal();" style="text-decoration: none;">
+                        <a href="#" (click)="openRecoveryModal();" style="text-decoration: none;">
                             <p style="font-size: 15px; color: #60CDEE;">
                                 ¿Olvidaste tu Contraseña?
                             </p>
@@ -1375,7 +1375,7 @@
                                 </label>
                             </mat-error>
                         </div>
-                        <a (click)="openLoginModal()" style="text-decoration: none;">
+                        <a href="#" (click)="openLoginModal()" style="text-decoration: none;">
                             <p style="font-size: 15px; color: #60CDEE;">
                                 Ya tengo una cuenta.
                             </p>
@@ -1428,7 +1428,8 @@
                                 Enviar Correo
                             </button>
                         </div>
-                        <a (click)="openLoginModal()" style="text-decoration: none;">
+                        <a href="#" style="text-decoration: none;" (click)="openLoginModal()"
+                            style="text-decoration: none;">
                             <p style="font-size: 15px; color: #60CDEE;">
                                 Cancelar
                             </p>
