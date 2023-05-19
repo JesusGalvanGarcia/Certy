@@ -48,8 +48,9 @@
     </div>
     <div class="row row-cols-1 row-cols-md-2" *ngIf="!loading && policies.length > 0">
         <div class="col animated fadeIn mb-4" *ngFor="let policy of policies; let i = index">
-            <app-policy-card [policy]="policy" *ngIf="policy.status_id == 2 || policy.status_id == 3"></app-policy-card>
-            <app-quotation-card [policy]="policy" *ngIf="policy.status_id == 1"></app-quotation-card>
+            <app-policy-card [policy]="policy"
+                *ngIf="policy.status_id == 2 || policy.status_id == 3|| policy.status_id == 5"></app-policy-card>
+            <app-quotation-card [policy]=" policy" *ngIf="policy.status_id == 1"></app-quotation-card>
         </div>
     </div>
 </div>

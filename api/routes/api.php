@@ -28,6 +28,9 @@ Route::post('/copsis/anaQuotation', [CopsisController::class, 'anaQuotation']);
 Route::post('/copsis/primeroQuotation', [CopsisController::class, 'primeroQuotation']);
 Route::post('/copsis/chubbEmission', [CopsisController::class, 'chubbEmission']);
 Route::post('/copsis/primeroEmission', [CopsisController::class, 'primeroEmission']);
+Route::post('/copsis/anaEmission', [CopsisController::class, 'anaEmission']);
+Route::post('/copsis/confirmPayment', [CopsisController::class, 'confirmPayment']);
+Route::post('/copsis/printPDF', [CopsisController::class, 'printPDF']);
 
 Route::post('/tools/permissions/create', [ToolsController::class, 'storePermissions']);
 Route::post('/tools/roles/create', [ToolsController::class, 'storeRoles']);

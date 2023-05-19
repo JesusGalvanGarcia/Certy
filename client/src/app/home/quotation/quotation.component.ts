@@ -258,6 +258,9 @@ export class QuotationComponent {
 
           Swal.close()
         }
+
+        // this.primeroEmission()
+
       })
       .catch(({ title, message, code }) => {
         console.log(message)
@@ -1126,7 +1129,6 @@ export class QuotationComponent {
 
             this._templateComponent.loginListener(true);
 
-
             this.closeRecoveryModal();
 
             this.storeQuotation();
@@ -1148,7 +1150,6 @@ export class QuotationComponent {
           allowEscapeKey: false,
           allowEnterKey: false
         })
-
       })
   }
 
@@ -1257,6 +1258,117 @@ export class QuotationComponent {
 
       })
   }
+
+  checkToPay() {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      text: 'Procesando'
+    })
+    Swal.showLoading()
+
+    if (this.quoter_name == 'PRIMERO') {
+
+      this.primeroEmission();
+    } else if (this.quoter_name == 'ANA') {
+    } else if (this.quoter_name == 'CHUBB') {
+
+    }
+  }
+
+  primeroEmission() {
+
+    // Consulta al usuario actual
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
+    // Se separa el nombre del usuario
+    let complete_name = this.userFormGroup.get('complete_name').value;
+
+    const name_array = complete_name.split(" ");
+
+    let name = "";
+    let father_lastname = "";
+    let mother_lastname = "";
+
+    if (name_array.length >= 3) {
+
+      let array_count = 0
+      for (let i = 0; i < name_array.length - 2; i++) {
+
+        name = name + name_array[i]
+
+        array_count++;
+      }
+
+      father_lastname = name_array[array_count]
+      mother_lastname = name_array[array_count + 1]
+
+    } else {
+
+      for (let i = 0; i < name_array.length - 2; i) {
+
+        name += name_array[i]
+      }
+
+      father_lastname = name_array[1]
+      mother_lastname = ""
+    }
+
+    const quotationData: any = {
+      client_id: user_info.user_id,
+      quotation_id: this.quotation_id,
+      cotizacionID: this.quotation_selected.cotizacionID,
+      contratante: {
+        nombre: name,
+        apellidoPaterno: father_lastname,
+        apellidoMaterno: mother_lastname,
+        rfc: this.lastUserFormGroup.get('rfc').value,
+        estadoCivil: "SOLTERO",
+        sexo: this.userFormGroup.get('genre').value,
+        tipoPersona: "FISICA",
+        correo: this.userFormGroup.get('email').value,
+        telefono: this.userFormGroup.get('cellphone').value,
+        direccion: {
+          calle: this.lastUserFormGroup.get('street').value,
+          pais: 'MEXICO',
+          codigoPostal: this.userFormGroup.get('cp').value,
+          colonia: this.suburbControl.value,
+          numeroExterior: this.lastUserFormGroup.get('street_number').value,
+          numeroInterior: this.lastUserFormGroup.get('int_street_number').value
+        }
+      },
+      vehiculo: {
+        serie: this.lastVehicleFormGroup.get('serial_no').value,
+        placas: this.lastVehicleFormGroup.get('plate_no').value,
+        motor: this.lastVehicleFormGroup.get('motor_no').value
+      }
+    }
+
+    this._quotationService.primeroEmission(quotationData).
+      then(({ url }) => {
+
+        window.location.href = url
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
   // Getters 
 
   get invalidCompleteName() {

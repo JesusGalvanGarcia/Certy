@@ -40,8 +40,8 @@ class QuotationController extends Controller
                 ], 400);
 
             DB::beginTransaction();
-            //Se verifica la vigencia de las pólizas
 
+            //Se verifica la vigencia de las pólizas
             $expired_policies = Policy::where([
                 ['status_id', 2],
                 ['date_expire', '<=', Carbon::now()->format('Y-m-d')]
@@ -97,13 +97,14 @@ class QuotationController extends Controller
                     ['policies.status_id', '!=', 4]
                 ])
                 ->when(request('filter') == 1, function ($when) {
-                    return $when->whereIn('policies.status_id', [2, 3]);
+                    return $when->whereIn('policies.status_id', [2, 3, 5]);
                 })
                 ->join('status as S', function ($join_status) {
 
                     return $join_status->on('S.status_id', 'policies.status_id')
                         ->where('table_name', 'policies');
                 })
+                ->orderBy('policies.status_id', 'desc')
                 ->get();
 
             return response()->json([

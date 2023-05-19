@@ -226,4 +226,34 @@ export class QuotationService {
         throw data;
       });
   }
+
+  async primeroEmission(searchData: any) {
+
+    return this.api_conect.post('/copsis/primeroEmission', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async confirmPayment(searchData: any) {
+
+    return this.api_conect.post('/copsis/confirmPayment', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
 }

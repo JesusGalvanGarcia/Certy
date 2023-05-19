@@ -47,6 +47,7 @@ import { PolicyCardComponent } from './home/shared/policy-card/policy-card.compo
 import { AccountStatusComponent } from './home/account-status/account-status.component';
 import { FaqsComponent } from './home/faqs/faqs.component';
 import { HelpsComponent } from './home/helps/helps.component';
+import { ControlComponent } from './home/control/control.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { HelpsComponent } from './home/helps/helps.component';
     PolicyCardComponent,
     AccountStatusComponent,
     FaqsComponent,
-    HelpsComponent
+    HelpsComponent,
+    ControlComponent
   ],
   imports: [
     BrowserModule,
