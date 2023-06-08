@@ -79,7 +79,7 @@ export class DashboardComponent {
 
     this._quotationService.getQuotations(searchData).
       then(({ policies, total_policies, pending_amount, expired_amount }) => {
-        console.log(policies)
+
         this.policies = policies
         this.total_policies = total_policies
         this.pending_amount = pending_amount

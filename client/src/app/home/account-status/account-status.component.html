@@ -1,123 +1,149 @@
-<div class="container mb-4 animated fadeIn" align="center">
-    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
-        <div class="user_header col-12 col-md-8" align="start">
-            <label>
-                Estado de cuenta
-            </label>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hotjar Tracking Code for Certy Test 2023 -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 3506324, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mb-4 animated fadeIn" align="center">
+        <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+            <div class="user_header col-12 col-md-8" align="start">
+                <label>
+                    Estado de cuenta
+                </label>
+            </div>
+            <div class="col-12 col-md-4">
+                <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+            </div>
         </div>
-        <div class="col-12 col-md-4">
-            <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+
+        <hr class="div-row mb-4">
+
+        <div class="row mb-4">
+            <div class="col-12 col-md-8">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title class="policies-header mb-4">Pólizas Registradas</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="container mb-4" *ngFor="let policy of policies; let i = index">
+                            <div class="row row-cols-1 row-cols-md-2" align="left">
+                                <div class="col col-12 col-md-6 mb-4">
+                                    <label class="policy-label"><b>Póliza:</b> {{policy.policy_code}}</label>
+                                </div>
+                                <div class="col col col-12 col-md-6 mb-4">
+                                    <label class="policy-label"><b>Concepto:</b> {{policy.vehicle_description}}</label>
+                                </div>
+                                <div class="col col col-12 col-md-6 mb-4">
+                                    <label class="policy-label"><b>Aseguradora: </b>{{policy.insurer}}</label>
+                                </div>
+                                <div class="col col col-12 col-md-6 mb-4">
+                                    <label class="policy-label">
+                                        <b> Vigencia:</b> {{policy.init_date | date: 'dd-MM-yyyy'}} -
+                                        {{policy.date_expire |
+                                        date: 'dd-MM-yyyy'}}
+                                    </label>
+                                </div>
+                                <div class="col col col-12 col-md-6 mb-4">
+                                    <label class="policy-label">
+                                        <b>Moneda: </b>PESOS
+                                    </label>
+                                </div>
+                                <div class="col col col-12 col-md-6 mb-4">
+                                    <label class="policy-label">
+                                        <b>Forma de Pago:
+                                        </b>{{policy.payment_frequency}}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <table class="table table-responsive table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Vence</th>
+                                            <th scope="col">Pagado</th>
+                                            <th scope="col">Pendiente</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ policy.status }}</td>
+                                            <td>{{ policy.date_expire | date: 'dd-MM-yyyy' }}</td>
+                                            <td>${{ policy.paid_amount | number : '1.2-2'}}</td>
+                                            <td>${{ policy.pending_amount | number : '1.2-2'}}</td>
+                                            <td>${{ policy.total_amount | number : '1.2-2'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-divider>
+                            </mat-divider>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-12 col-md-4">
+                <mat-card class="container">
+                    <mat-card-header>
+                        <mat-card-title class="policies-header mb-4">Resumen</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content align="start">
+                        <div class="row row-cols-2 mb-4">
+                            <div class="col col-6">
+                                <label class="resume-issue"> Total: </label>
+                            </div>
+                            <div class="col col-6">
+                                <label class="resume-text"> ${{ total_amount | number : '1.2-2' }} </label>
+                            </div>
+                        </div>
+                        <div class="row row-cols-2 mb-4">
+                            <div class="col col-6">
+                                <label class="resume-issue"> Pagado: </label>
+                            </div>
+                            <div class="col col-6">
+                                <label class="resume-text"> ${{ paid_amount | number : '1.2-2' }}</label>
+                            </div>
+                        </div>
+                        <div class="row row-cols-2 mb-4">
+                            <div class="col col-6">
+                                <label class="resume-issue"> Pendiente: </label>
+                            </div>
+                            <div class="col col-6">
+                                <label class="resume-text"> ${{ pending_amount | number : '1.2-2' }} </label>
+                            </div>
+                        </div>
+                        <div class="row row-cols-2 mb-4">
+                            <div class="col col-6">
+                                <label class="resume-issue" style="color:red"> Vencido: </label>
+                            </div>
+                            <div class="col col-6">
+                                <label class="resume-text" style="color:red"> ${{ expired_amount | number : '1.2-2' }}
+                                </label>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
         </div>
     </div>
+</body>
 
-    <hr class="div-row mb-4">
-
-    <div class="row mb-4">
-        <div class="col-12 col-md-8">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title class="policies-header mb-4">Pólizas Registradas</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="container mb-4" *ngFor="let policy of policies; let i = index">
-                        <div class="row row-cols-1 row-cols-md-2" align="left">
-                            <div class="col col-12 col-md-6 mb-4">
-                                <label class="policy-label"><b>Póliza:</b> {{policy.policy_code}}</label>
-                            </div>
-                            <div class="col col col-12 col-md-6 mb-4">
-                                <label class="policy-label"><b>Concepto:</b> {{policy.vehicle_description}}</label>
-                            </div>
-                            <div class="col col col-12 col-md-6 mb-4">
-                                <label class="policy-label"><b>Aseguradora: </b>{{policy.insurer}}</label>
-                            </div>
-                            <div class="col col col-12 col-md-6 mb-4">
-                                <label class="policy-label">
-                                    <b> Vigencia:</b> {{policy.init_date | date: 'dd-MM-yyyy'}} - {{policy.date_expire |
-                                    date: 'dd-MM-yyyy'}}
-                                </label>
-                            </div>
-                            <div class="col col col-12 col-md-6 mb-4">
-                                <label class="policy-label">
-                                    <b>Moneda: </b>PESOS
-                                </label>
-                            </div>
-                            <div class="col col col-12 col-md-6 mb-4">
-                                <label class="policy-label">
-                                    <b>Forma de Pago:
-                                    </b>{{policy.payment_frequency}}
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <table class="table table-responsive table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Vence</th>
-                                        <th scope="col">Pagado</th>
-                                        <th scope="col">Pendiente</th>
-                                        <th scope="col">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ policy.status }}</td>
-                                        <td>{{ policy.date_expire | date: 'dd-MM-yyyy' }}</td>
-                                        <td>${{ policy.paid_amount | number : '1.2-2'}}</td>
-                                        <td>${{ policy.pending_amount | number : '1.2-2'}}</td>
-                                        <td>${{ policy.total_amount | number : '1.2-2'}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <mat-divider>
-                        </mat-divider>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-        <div class="col-12 col-md-4">
-            <mat-card class="container">
-                <mat-card-header>
-                    <mat-card-title class="policies-header mb-4">Resumen</mat-card-title>
-                </mat-card-header>
-                <mat-card-content align="start">
-                    <div class="row row-cols-2 mb-4">
-                        <div class="col col-6">
-                            <label class="resume-issue"> Total: </label>
-                        </div>
-                        <div class="col col-6">
-                            <label class="resume-text"> ${{ total_amount | number : '1.2-2' }} </label>
-                        </div>
-                    </div>
-                    <div class="row row-cols-2 mb-4">
-                        <div class="col col-6">
-                            <label class="resume-issue"> Pagado: </label>
-                        </div>
-                        <div class="col col-6">
-                            <label class="resume-text"> ${{ paid_amount | number : '1.2-2' }}</label>
-                        </div>
-                    </div>
-                    <div class="row row-cols-2 mb-4">
-                        <div class="col col-6">
-                            <label class="resume-issue"> Pendiente: </label>
-                        </div>
-                        <div class="col col-6">
-                            <label class="resume-text"> ${{ pending_amount | number : '1.2-2' }} </label>
-                        </div>
-                    </div>
-                    <div class="row row-cols-2 mb-4">
-                        <div class="col col-6">
-                            <label class="resume-issue" style="color:red"> Vencido: </label>
-                        </div>
-                        <div class="col col-6">
-                            <label class="resume-text" style="color:red"> ${{ expired_amount | number : '1.2-2' }}
-                            </label>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-    </div>
-</div>
+</html>

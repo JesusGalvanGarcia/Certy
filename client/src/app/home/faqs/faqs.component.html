@@ -1,374 +1,428 @@
-<div class="container mb-4 animated fadeIn" align="center">
-    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
-        <div class="faqs_header col-12 col-md-8" align="start">
-            <label>
-                Preguntas Frecuentes
-            </label>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hotjar Tracking Code for Certy Test 2023 -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 3506324, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mb-4 animated fadeIn" align="center">
+        <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+            <div class="faqs_header col-12 col-md-8" align="start">
+                <label>
+                    Preguntas Frecuentes
+                </label>
+            </div>
+            <div class="col-12 col-md-4">
+                <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+            </div>
         </div>
-        <div class="col-12 col-md-4">
-            <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
-        </div>
+        <mat-accordion>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Qué no cubre una póliza de seguro de automóviles?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>Las exclusiones de una póliza se podrán encontrar de manera completa en las condiciones generales
+                        de
+                        las
+                        mismas, sin embargo a continuación mencionamos algunas de ellas:</p>
+                    <p><b>Daños Materiales:</b></p>
+                    <ul>
+                        <li>Daños diferentes a los cubiertos.</li>
+                        <li>Falla y/o descompostura mecánica.</li>
+                        <li>Desgaste natural y depreciación del auto.</li>
+                        <li>Daños por acción de la marea incluyendo inundación.</li>
+                        <li>Circular en caminos intransitables por sus condiciones o dimensión.</li>
+                        <li>Circular en caminos cerrados a la vialidad por acumulación de agua.</li>
+                    </ul>
+                    <p><b>Robo Total:</b></p>
+                    <ul>
+                        <li>Robo parcial de partes y/o accesorios.</li>
+                        <li>Abuso de confianza, fraude, extorsión o secuestro.</li>
+                    </ul>
+                    <p><b>Responsabilidad Civil:</b></p>
+                    <ul>
+                        <li>Daños ocasionados por remolques.</li>
+                        <li>Bienes bajo tu custodia.</li>
+                        <li>Bienes de tus empleados, agentes o representantes mientras estén dentro de tu predio.</li>
+                        <li>Bienes de terceros y/u ocupantes que se encuentren dentro del vehículo.</li>
+                        <li>Lesiones o muerte de ocupantes del vehículo.</li>
+                        <li>Daños a la propiedad del cónyuge o parientes en primer grado.</li>
+                        <li>Daños a empleados o personas a servicio del asegurado al momento de ocurrir el siniestro.
+                        </li>
+                    </ul>
+                    <p><b>Generales:</b></p>
+                    <ul>
+                        <li>Uso diferente a particular.</li>
+                        <li>Autoescuela.</li>
+                        <li>Participar en carreras.</li>
+                        <li>Vehículos blindados.</li>
+                        <li>Conductores menores de 18 años sin licencia.</li>
+                        <li>Actos de personas mal intencionadas.</li>
+                        <li>Manejar en estado de ebriedad.</li>
+                        <li>Falsear declaraciones a la aseguradora.</li>
+                    </ul>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Por qué necesito un seguro de auto?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>Es importante contar con el mejor seguro de auto que ayude a cubrir los gastos en caso de un
+                        incidente de
+                        cualquier magnitud.</p>
+                    <p>Un seguro de auto puede ayudar en:</p>
+                    <ul>
+                        <li>Proteger una inversión.</li>
+                        <li>Pagar gastos médicos de los ocupantes en caso de accidentes.</li>
+                        <li>Cubrir pérdidas causadas por conductores sin seguro.</li>
+                        <li>Pagar daños por robo o desastres naturales.</li>
+                        <li>Tener la tranquilidad para enfrentar cualquier situación automovilística que se presente.
+                        </li>
+                    </ul>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Qué tipo de unidades se pueden asegurar en este portal de Certy?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="collpase-text" align="start">
+                    <p>El programa opera actualmente para autos y pick ups de uso particular. No se pueden asegurar
+                        motocicletas, atv 's, vehículos de uso comercial, taxis o vehículos de alquiler de plataformas
+                        como
+                        Uber, Didi, Cabify y similares. Si se desea asegurarlos se podrá hacer estableciendo contacto
+                        con el
+                        ejecutivo de servicio de Seguros Certy y revisar los términos aplicables para esta clase de
+                        unidades.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Con qué compañías aseguradoras se puede contratar actualmente en Certy?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="collpase-text" align="start">
+                    <p>Primero Seguros, ANA Seguros y Chubb Seguros. Posteriormente se irán agregando otras opciones.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Qué significa cada una de las coberturas incluidas en los paquetes ofrecidos?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="collpase-text" align="start">
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/definiciones_primeroseguros.pdf">
+                            DEFINICIÓN COBERTURAS DE PRIMERO SEGUROS.
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/definiciones_anaseguros.pdf">
+                            DEFINICIÓN COBERTURAS DE ANA SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/trinitas/definiciones_chubb.pdf">
+                            DEFINICIÓN COBERTURAS DE CHUBB SEGUROS
+                        </a>
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Qué se hace si se tiene si un accidente automovilístico o se requiere utilizar la póliza
+                        contratada?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="collpase-text" align="start">
+                    <p>Se debe tener siempre a la mano los siguientes datos:</p>
+                    <ul>
+                        <li>El número de atención de la compañía aseguradora.</li>
+                        <li>Número de póliza o VIN (serie) para que se pueda validar el estatus de la póliza e
+                            identificar
+                            el
+                            tipo de cobertura contratada.</li>
+                        <li>Dirección exacta del siniestro.</li>
+                        <li>Licencia de manejo o permiso de conducir.</li>
+                        <li>Tarjeta de circulación del vehículo.</li>
+                    </ul>
+                    <p>Se debe contactar a la aseguradora de inmediato y seguir las indicaciones de la persona que
+                        atenderá
+                        la
+                        llamada.</p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Se tienen que realizar pagos adicionales al costo que aparece en la cotización?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>No, el costo que aparece en la cotización ya incluye todos los importes generados por el seguro:
+                        prima de riesgo, derechos de póliza, recargos por pago fraccionado e impuestos.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Todas las pólizas con forma de pago diferente a la anual generan cargos adicionales o hay
+                        manera de
+                        eliminar estos cargos por pago fraccionado?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>En el caso de PRIMERO SEGUROS el costo es exactamente el mismo independientemente de la
+                        periodicidad
+                        del pago. En su caso no hay que hacer nada adicional para gozar de este beneficio ya que la
+                        prima se
+                        recalcula de manera automática. PRIMERO SEGUROS permite pago con tarjeta de crédito o débito en
+                        todas las periodicidades del pago.</p>
+                    <p> En el caso de ANA SEGUROS aplica un recargo por pago fraccionado. Entre más se fraccione el
+                        pago,
+                        más alto será el recargo. No obstante a lo anterior, ANA SEGUROS ofrece la opción de 12 meses
+                        sin
+                        intereses con cualquier tarjeta visa o mastercard. Para obtener dicho beneficio se tiene que
+                        emitir
+                        la póliza en forma de pago de contado y posteriormente hay que hablar al servicio de
+                        telecontacto al
+                        tel. 800 835 32 62 y solicitar la aplicación de la promoción. En pagos con tarjeta de débito con
+                        ANA
+                        SEGUROS se selecciona la emisión de contado y al realizar el pago con tarjeta de débito
+                        automáticamente hace el ajuste a descuentos mensuales sin recargo por pago fraccionado.
+                    </p>
+                    <p>
+                        En el caso de CHUBB SEGUROS aplica un recargo por pago fraccionado. Entre más se fraccione el
+                        pago,
+                        más alto será el recargo.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Por qué se tienen que dar datos personales para cotizar la póliza del automóvil como la edad,
+                        código postal, etc?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>El cotizador tiene un sistema que recaba toda la información posible para poder dar un precio
+                        justo y
+                        real del seguro del auto, por lo que no contar con tus datos personales correctos puede darte
+                        una
+                        idea
+                        inexacta de lo que podría costar la póliza del auto y en caso de emisión de la misma se
+                        generaría
+                        con
+                        datos incorrectos que pudieran generar inconvenientes en caso de siniestro.</p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Qué beneficios tengo al comparar el seguro de auto con Certy?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>
+                        En México existe una amplia gama de compañías aseguradoras, cada una de ellas te brindará
+                        servicios
+                        que las distinguen. En Certy se ha realizado un convenio para ofrecer la mejor cobertura a
+                        precio de
+                        flotilla, donde con un solo clic y desde la comodidad de la casa u oficina se pueda cotizar,
+                        comparar y comprar el seguro de auto. Cada compañía aseguradora mostrará el mejor precio que
+                        tienen
+                        de acuerdo a las características de cada unidad.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Cuáles son los paquetes de coberturas que se pueden contratar con cada aseguradora a través de
+                        este
+                        programa?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>
+                        A continuación se pueden consultar las tablas de las coberturas incluidas en cada uno de los
+                        paquetes
+                        preestablecidos que ofrecen las aseguradoras participantes del programa de seguros Certy
+                        actualmente.
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/paquetes_primeroseguros.pdf">
+                            PAQUETES PRIMERO SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/paquetes_anaseguros.pdf">
+                            PAQUETES ANA SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/trinitas/paquetes_chubb.pdf">
+                            PAQUETES CHUBB SEGUROS
+                        </a>
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Dónde se pueden consultar las condiciones generales de las pólizas disponibles para adquirir a
+                        través del portal de Certy?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>A continuación se pueden consultar las condiciones generales completas que aplican para las
+                        pólizas
+                        emitidas a través de las aseguradoras participantes del programa de Seguros Certy
+                        actualmente.
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/condicionesgenerales_primeroseguros.pdf">
+                            CONDICIONES GENERALES PRIMERO SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/condicionesgenerales_anaseguros.pdf">
+                            CONDICIONES GENERALES ANA SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/trinitas/condicionesgenerales_chubb.pdf">
+                            CONDICIONES GENERALES CHUBB SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/asistencialegalyvial_primeroseguros.pdf">
+                            ASISTENCIA AUTOMÓVILES Y PICK UP PRIMERO SEGUROS
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://copsis.com/clientes/irpac/asistenciaserviciosfunerarios_primeroseguros.pdf">
+                            ASISTENCIA DE SERVICIOS FUNERARIOS PRIMERO SEGUROS
+                        </a>
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿En qué se basan los costos del seguro de auto?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>Los precios dependen de varios factores como son: </p>
+                    <ul>
+                        <li>El índice de siniestralidad o riesgo con el que cuenta el auto.</li>
+                        <li>El estado y/o municipio de residencia o circulación de la unidad.</li>
+                        <li>El modelo, el año y la marca.</li>
+                    </ul>
+                    <p>
+                        Cada compañía aseguradora tiene su propia experiencia sobre este riesgo, y establecen sus costos
+                        anualmente de manera independiente y no necesariamente en función del valor del vehículo a
+                        asegurar.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Cuáles son las formas de pago con las que se puede contratar el seguro?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>
+                        Todas las pólizas son emitidas por un año a partir del momento de la contratación y éstas pueden
+                        ser
+                        contratadas en todas las modalidades de pago: anual, semestral, trimestral y mensual. La
+                        contratación de la póliza debe ser mediante pago con tarjeta de débito o crédito (cualquier
+                        tarjeta
+                        visa o mastercard de un banco nacional).
+                    </p>
+
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Existe un horario específico para poder cotizar y contratar el seguro de auto?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collpase-text" align="start">
+                    <p>
+                        La página está habilitada los 365 días del año las 24 horas para que se pueda comparar y
+                        contratar.
+                    </p>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+
     </div>
-    <mat-accordion>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Qué no cubre una póliza de seguro de automóviles?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>Las exclusiones de una póliza se podrán encontrar de manera completa en las condiciones generales de
-                    las
-                    mismas, sin embargo a continuación mencionamos algunas de ellas:</p>
-                <p><b>Daños Materiales:</b></p>
-                <ul>
-                    <li>Daños diferentes a los cubiertos.</li>
-                    <li>Falla y/o descompostura mecánica.</li>
-                    <li>Desgaste natural y depreciación del auto.</li>
-                    <li>Daños por acción de la marea incluyendo inundación.</li>
-                    <li>Circular en caminos intransitables por sus condiciones o dimensión.</li>
-                    <li>Circular en caminos cerrados a la vialidad por acumulación de agua.</li>
-                </ul>
-                <p><b>Robo Total:</b></p>
-                <ul>
-                    <li>Robo parcial de partes y/o accesorios.</li>
-                    <li>Abuso de confianza, fraude, extorsión o secuestro.</li>
-                </ul>
-                <p><b>Responsabilidad Civil:</b></p>
-                <ul>
-                    <li>Daños ocasionados por remolques.</li>
-                    <li>Bienes bajo tu custodia.</li>
-                    <li>Bienes de tus empleados, agentes o representantes mientras estén dentro de tu predio.</li>
-                    <li>Bienes de terceros y/u ocupantes que se encuentren dentro del vehículo.</li>
-                    <li>Lesiones o muerte de ocupantes del vehículo.</li>
-                    <li>Daños a la propiedad del cónyuge o parientes en primer grado.</li>
-                    <li>Daños a empleados o personas a servicio del asegurado al momento de ocurrir el siniestro.</li>
-                </ul>
-                <p><b>Generales:</b></p>
-                <ul>
-                    <li>Uso diferente a particular.</li>
-                    <li>Autoescuela.</li>
-                    <li>Participar en carreras.</li>
-                    <li>Vehículos blindados.</li>
-                    <li>Conductores menores de 18 años sin licencia.</li>
-                    <li>Actos de personas mal intencionadas.</li>
-                    <li>Manejar en estado de ebriedad.</li>
-                    <li>Falsear declaraciones a la aseguradora.</li>
-                </ul>
-            </div>
-        </mat-expansion-panel>
+</body>
 
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Por qué necesito un seguro de auto?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>Es importante contar con el mejor seguro de auto que ayude a cubrir los gastos en caso de un
-                    incidente de
-                    cualquier magnitud.</p>
-                <p>Un seguro de auto puede ayudar en:</p>
-                <ul>
-                    <li>Proteger una inversión.</li>
-                    <li>Pagar gastos médicos de los ocupantes en caso de accidentes.</li>
-                    <li>Cubrir pérdidas causadas por conductores sin seguro.</li>
-                    <li>Pagar daños por robo o desastres naturales.</li>
-                    <li>Tener la tranquilidad para enfrentar cualquier situación automovilística que se presente.</li>
-                </ul>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Qué tipo de unidades se pueden asegurar en este portal de Certy?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div class="collpase-text" align="start">
-                <p>El programa opera actualmente para autos y pick ups de uso particular. No se pueden asegurar
-                    motocicletas, atv 's, vehículos de uso comercial, taxis o vehículos de alquiler de plataformas como
-                    Uber, Didi, Cabify y similares. Si se desea asegurarlos se podrá hacer estableciendo contacto con el
-                    ejecutivo de servicio de Seguros Certy y revisar los términos aplicables para esta clase de
-                    unidades.
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Con qué compañías aseguradoras se puede contratar actualmente en Certy?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div class="collpase-text" align="start">
-                <p>Primero Seguros, ANA Seguros y Chubb Seguros. Posteriormente se irán agregando otras opciones.</p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Qué significa cada una de las coberturas incluidas en los paquetes ofrecidos?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div class="collpase-text" align="start">
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/definiciones_primeroseguros.pdf">
-                        DEFINICIÓN COBERTURAS DE PRIMERO SEGUROS.
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/definiciones_anaseguros.pdf">
-                        DEFINICIÓN COBERTURAS DE ANA SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/trinitas/definiciones_chubb.pdf">
-                        DEFINICIÓN COBERTURAS DE CHUBB SEGUROS
-                    </a>
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Qué se hace si se tiene si un accidente automovilístico o se requiere utilizar la póliza
-                    contratada?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div class="collpase-text" align="start">
-                <p>Se debe tener siempre a la mano los siguientes datos:</p>
-                <ul>
-                    <li>El número de atención de la compañía aseguradora.</li>
-                    <li>Número de póliza o VIN (serie) para que se pueda validar el estatus de la póliza e identificar
-                        el
-                        tipo de cobertura contratada.</li>
-                    <li>Dirección exacta del siniestro.</li>
-                    <li>Licencia de manejo o permiso de conducir.</li>
-                    <li>Tarjeta de circulación del vehículo.</li>
-                </ul>
-                <p>Se debe contactar a la aseguradora de inmediato y seguir las indicaciones de la persona que atenderá
-                    la
-                    llamada.</p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Se tienen que realizar pagos adicionales al costo que aparece en la cotización?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>No, el costo que aparece en la cotización ya incluye todos los importes generados por el seguro:
-                    prima de riesgo, derechos de póliza, recargos por pago fraccionado e impuestos.
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Todas las pólizas con forma de pago diferente a la anual generan cargos adicionales o hay manera de
-                    eliminar estos cargos por pago fraccionado?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>En el caso de PRIMERO SEGUROS el costo es exactamente el mismo independientemente de la periodicidad
-                    del pago. En su caso no hay que hacer nada adicional para gozar de este beneficio ya que la prima se
-                    recalcula de manera automática. PRIMERO SEGUROS permite pago con tarjeta de crédito o débito en
-                    todas las periodicidades del pago.</p>
-                <p> En el caso de ANA SEGUROS aplica un recargo por pago fraccionado. Entre más se fraccione el pago,
-                    más alto será el recargo. No obstante a lo anterior, ANA SEGUROS ofrece la opción de 12 meses sin
-                    intereses con cualquier tarjeta visa o mastercard. Para obtener dicho beneficio se tiene que emitir
-                    la póliza en forma de pago de contado y posteriormente hay que hablar al servicio de telecontacto al
-                    tel. 800 835 32 62 y solicitar la aplicación de la promoción. En pagos con tarjeta de débito con ANA
-                    SEGUROS se selecciona la emisión de contado y al realizar el pago con tarjeta de débito
-                    automáticamente hace el ajuste a descuentos mensuales sin recargo por pago fraccionado.
-                </p>
-                <p>
-                    En el caso de CHUBB SEGUROS aplica un recargo por pago fraccionado. Entre más se fraccione el pago,
-                    más alto será el recargo.
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Por qué se tienen que dar datos personales para cotizar la póliza del automóvil como la edad,
-                    código postal, etc?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>El cotizador tiene un sistema que recaba toda la información posible para poder dar un precio justo y
-                    real del seguro del auto, por lo que no contar con tus datos personales correctos puede darte una
-                    idea
-                    inexacta de lo que podría costar la póliza del auto y en caso de emisión de la misma se generaría
-                    con
-                    datos incorrectos que pudieran generar inconvenientes en caso de siniestro.</p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Qué beneficios tengo al comparar el seguro de auto con Certy?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>
-                    En México existe una amplia gama de compañías aseguradoras, cada una de ellas te brindará servicios
-                    que las distinguen. En Certy se ha realizado un convenio para ofrecer la mejor cobertura a precio de
-                    flotilla, donde con un solo clic y desde la comodidad de la casa u oficina se pueda cotizar,
-                    comparar y comprar el seguro de auto. Cada compañía aseguradora mostrará el mejor precio que tienen
-                    de acuerdo a las características de cada unidad.
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Cuáles son los paquetes de coberturas que se pueden contratar con cada aseguradora a través de este
-                    programa?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>
-                    A continuación se pueden consultar las tablas de las coberturas incluidas en cada uno de los
-                    paquetes
-                    preestablecidos que ofrecen las aseguradoras participantes del programa de seguros Certy
-                    actualmente.
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/paquetes_primeroseguros.pdf">
-                        PAQUETES PRIMERO SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/paquetes_anaseguros.pdf">
-                        PAQUETES ANA SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/trinitas/paquetes_chubb.pdf">
-                        PAQUETES CHUBB SEGUROS
-                    </a>
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Dónde se pueden consultar las condiciones generales de las pólizas disponibles para adquirir a
-                    través del portal de Certy?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>A continuación se pueden consultar las condiciones generales completas que aplican para las pólizas
-                    emitidas a través de las aseguradoras participantes del programa de Seguros Certy
-                    actualmente.
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/condicionesgenerales_primeroseguros.pdf">
-                        CONDICIONES GENERALES PRIMERO SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/condicionesgenerales_anaseguros.pdf">
-                        CONDICIONES GENERALES ANA SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/trinitas/condicionesgenerales_chubb.pdf">
-                        CONDICIONES GENERALES CHUBB SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/asistencialegalyvial_primeroseguros.pdf">
-                        ASISTENCIA AUTOMÓVILES Y PICK UP PRIMERO SEGUROS
-                    </a>
-                </p>
-                <p>
-                    <a href="https://copsis.com/clientes/irpac/asistenciaserviciosfunerarios_primeroseguros.pdf">
-                        ASISTENCIA DE SERVICIOS FUNERARIOS PRIMERO SEGUROS
-                    </a>
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿En qué se basan los costos del seguro de auto?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>Los precios dependen de varios factores como son: </p>
-                <ul>
-                    <li>El índice de siniestralidad o riesgo con el que cuenta el auto.</li>
-                    <li>El estado y/o municipio de residencia o circulación de la unidad.</li>
-                    <li>El modelo, el año y la marca.</li>
-                </ul>
-                <p>
-                    Cada compañía aseguradora tiene su propia experiencia sobre este riesgo, y establecen sus costos
-                    anualmente de manera independiente y no necesariamente en función del valor del vehículo a asegurar.
-                </p>
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Cuáles son las formas de pago con las que se puede contratar el seguro?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>
-                    Todas las pólizas son emitidas por un año a partir del momento de la contratación y éstas pueden ser
-                    contratadas en todas las modalidades de pago: anual, semestral, trimestral y mensual. La
-                    contratación de la póliza debe ser mediante pago con tarjeta de débito o crédito (cualquier tarjeta
-                    visa o mastercard de un banco nacional).
-                </p>
-
-            </div>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Existe un horario específico para poder cotizar y contratar el seguro de auto?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collpase-text" align="start">
-                <p>
-                    La página está habilitada los 365 días del año las 24 horas para que se pueda comparar y contratar.
-                </p>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-
-</div>
+</html>

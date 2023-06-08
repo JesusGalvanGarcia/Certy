@@ -1,131 +1,161 @@
-<div class="container mb-4 animated fadeIn" align="center">
-    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
-        <div class="faqs_header col-12 col-md-8" align="start">
-            <label>
-                ¿Qué debo hacer en caso de un siniestro?
-            </label>
-        </div>
-        <div class="col-12 col-md-4">
-            <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
-        </div>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
-        <div class="col-12 col-md-4 mb-4">
-            <mat-card>
-                <div align="center">
-                    <img class="card-img mb-4" src="./assets/images/chubb-logo.png" alt="certy_logo">
-                </div>
-                <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
-            </mat-card>
-        </div>
-        <div class="col-12 col-md-4 mb-4">
-            <mat-card>
-                <div align="center">
-                    <img class="card-img mb-4" src="./assets/images/primero-logo.png" alt="certy_logo">
-                </div>
-                <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
-            </mat-card>
-        </div>
-        <div class="col-12 col-md-4 mb-4">
-            <mat-card>
-                <div align="center">
-                    <img class="card-img mb-4" src="./assets/images/ana-logo.png" alt="certy_logo">
-                </div>
-                <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
-            </mat-card>
-        </div>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
-        <div class="faqs_header col-12 col-md-8" align="start">
-            <label>
-                5 preguntas más frecuentes
-            </label>
-        </div>
-    </div>
-    <mat-accordion>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Cómo compro el seguro?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collapse-text" align="start">
-                <ol>
-                    <li>Reunir la información necesaria: <br>
-                        <ul>
-                            <li>Marca, modelo (año) y descripción del auto.</li>
-                            <li>VIN (Número de Serie o Identificación Vehícular), placas y número de motor.</li>
-                            <li>Definir las características de protección (cobertura) que sean necesarias.</li>
-                            <li>Datos personales: nombre, domicilio de la persona que asegura el vehículo, RFC, etc.
-                            </li>
-                            <li>Tarjeta de crédito o débito con la que se desee generar el pago de la póliza.</li>
-                        </ul>
-                    </li>
-                    <li>Realizar el comparativo de cotizaciones entre aseguradoras para tomar la mejor decisión de
-                        compra en cuanto a coberturas y costos.</li>
-                    <li>Una vez realizada la cotización se debe pasar a la sección de contratación, para ello se
-                        requiere tener a la mano la información del paso 1.</li>
-                </ol>
-            </div>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Cómo renovar una póliza de seguro?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="collapse-text" align="start">
-                Unos días previos al vencimiento de su póliza recibirá un correo electrónico para renovar
-                su póliza de
-                manera automática. Se le solicitará firmar el formato de consentimiento para el trámite de pago
-                correspondiente.
-            </p>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Tienes dudas sobre alguna cotización o póliza realizada en el portal?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="collapse-text" align="start">Para comunicarse con el ejecutivo de servicio al cliente dé clic al botón de whatsapp que
-                aparece en el
-                lado inferior derecho de su pantalla o comuníquese al: <b>+52 81 28781856</b>. Los horarios de atención
-                son de
-                9:00 hrs a 14:00 hrs y de 15:00 hrs a 18:00 hrs.</p>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿Se puede asegurar una unidad en Certy si ya se cuenta con una póliza activa?
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p class="collapse-text" align="start">La unidad no debe de tener una póliza activa. Se tendría primero que dar de baja la póliza
-                actual para poder contratar una nueva.
-            </p>
-        </mat-expansion-panel>
-        <mat-expansion-panel class="collapse-container">
-            <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
-                <mat-panel-title class="collapse-title">
-                    <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
-                    ¿En qué otros trámites podemos ayudarte?
+<!DOCTYPE html>
+<html lang="en">
 
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="collapse-text" align="start">
-                <ul>
-                    <li>Endoso de beneficiario preferente.</li>
-                    <li>Cambios o cancelaciones de póliza.</li>
-                    <li>Modificaciones en la forma de pago.</li>
-                    <li>Agregar coberturas adicionales a las establecidas en los paquetes base.</li>
-                    <li>Cotizar y emitir alguna unidad adicional (unidades de uso comercial, motocicletas, taxis, autos
-                        de alquiler o plataformas, etc…).</li>
-                    <li>Asegurar unidades antiguas o de un valor superior a $1,500,000.00 MN, entre otras cosas.</li>
-                </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hotjar Tracking Code for Certy Test 2023 -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 3506324, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mb-4 animated fadeIn" align="center">
+        <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+            <div class="faqs_header col-12 col-md-8" align="start">
+                <label>
+                    ¿Qué debo hacer en caso de un siniestro?
+                </label>
             </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-</div>
+            <div class="col-12 col-md-4">
+                <img class="header-img mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo">
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+            <div class="col-12 col-md-4 mb-4">
+                <mat-card>
+                    <div align="center">
+                        <img class="card-img mb-4" src="./assets/images/chubb-logo.png" alt="certy_logo">
+                    </div>
+                    <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-12 col-md-4 mb-4">
+                <mat-card>
+                    <div align="center">
+                        <img class="card-img mb-4" src="./assets/images/primero-logo.png" alt="certy_logo">
+                    </div>
+                    <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-12 col-md-4 mb-4">
+                <mat-card>
+                    <div align="center">
+                        <img class="card-img mb-4" src="./assets/images/ana-logo.png" alt="certy_logo">
+                    </div>
+                    <mat-card-content class="card-title">Ver Instrucciones</mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+            <div class="faqs_header col-12 col-md-8" align="start">
+                <label>
+                    5 preguntas más frecuentes
+                </label>
+            </div>
+        </div>
+        <mat-accordion>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Cómo compro el seguro?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collapse-text" align="start">
+                    <ol>
+                        <li>Reunir la información necesaria: <br>
+                            <ul>
+                                <li>Marca, modelo (año) y descripción del auto.</li>
+                                <li>VIN (Número de Serie o Identificación Vehícular), placas y número de motor.</li>
+                                <li>Definir las características de protección (cobertura) que sean necesarias.</li>
+                                <li>Datos personales: nombre, domicilio de la persona que asegura el vehículo, RFC, etc.
+                                </li>
+                                <li>Tarjeta de crédito o débito con la que se desee generar el pago de la póliza.</li>
+                            </ul>
+                        </li>
+                        <li>Realizar el comparativo de cotizaciones entre aseguradoras para tomar la mejor decisión de
+                            compra en cuanto a coberturas y costos.</li>
+                        <li>Una vez realizada la cotización se debe pasar a la sección de contratación, para ello se
+                            requiere tener a la mano la información del paso 1.</li>
+                    </ol>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Cómo renovar una póliza de seguro?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p class="collapse-text" align="start">
+                    Unos días previos al vencimiento de su póliza recibirá un correo electrónico para renovar
+                    su póliza de
+                    manera automática. Se le solicitará firmar el formato de consentimiento para el trámite de pago
+                    correspondiente.
+                </p>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Tienes dudas sobre alguna cotización o póliza realizada en el portal?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p class="collapse-text" align="start">Para comunicarse con el ejecutivo de servicio al cliente dé clic
+                    al botón de whatsapp que
+                    aparece en el
+                    lado inferior derecho de su pantalla o comuníquese al: <b>+52 81 28781856</b>. Los horarios de
+                    atención
+                    son de
+                    9:00 hrs a 14:00 hrs y de 15:00 hrs a 18:00 hrs.</p>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿Se puede asegurar una unidad en Certy si ya se cuenta con una póliza activa?
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p class="collapse-text" align="start">La unidad no debe de tener una póliza activa. Se tendría primero
+                    que dar de baja la póliza
+                    actual para poder contratar una nueva.
+                </p>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="collapse-container">
+                <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'150px'">
+                    <mat-panel-title class="collapse-title">
+                        <img src="./assets/images/Iconos_Web_Certy-02.png" class="collapse-image">
+                        ¿En qué otros trámites podemos ayudarte?
+
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="collapse-text" align="start">
+                    <ul>
+                        <li>Endoso de beneficiario preferente.</li>
+                        <li>Cambios o cancelaciones de póliza.</li>
+                        <li>Modificaciones en la forma de pago.</li>
+                        <li>Agregar coberturas adicionales a las establecidas en los paquetes base.</li>
+                        <li>Cotizar y emitir alguna unidad adicional (unidades de uso comercial, motocicletas, taxis,
+                            autos
+                            de alquiler o plataformas, etc…).</li>
+                        <li>Asegurar unidades antiguas o de un valor superior a $1,500,000.00 MN, entre otras cosas.
+                        </li>
+                    </ul>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</body>
+
+</html>
