@@ -242,6 +242,21 @@ export class QuotationService {
       });
   }
 
+  async chubbEmission(searchData: any) {
+
+    return this.api_conect.post('/copsis/chubbEmission', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
   async confirmPayment(searchData: any) {
 
     return this.api_conect.post('/copsis/confirmPayment', searchData)

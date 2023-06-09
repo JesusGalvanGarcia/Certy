@@ -969,6 +969,8 @@ class CopsisController extends Controller
 
             // Se validan los datos de entrada
             $validator = Validator::make($request->all(), [
+                'client_id' => 'Required|Integer|NotIn:0',
+                'quotation_id' => 'Required|Integer|NotIn:0',
                 'cotizacionID' => 'Required|Integer|NotIn:0',
                 'contratante' => 'Required|Array',
                 'vehiculo' => 'Required|Array'
@@ -996,7 +998,7 @@ class CopsisController extends Controller
                 'direccion' => 'Required|Array',
                 'direccion.calle' => 'Required|String',
                 'direccion.pais' => 'Required|String',
-                'direccion.codigoPostal' => 'Required|String',
+                'direccion.codigoPostal' => 'Required|Numeric',
                 'direccion.colonia' => 'Required|String',
                 'direccion.numeroExterior' => 'String|Nullable',
                 'direccion.numeroInterior' => 'String|Nullable',
@@ -1023,6 +1025,15 @@ class CopsisController extends Controller
                     'title' => 'Datos Faltantes',
                     'message' => $vehicle_validator->messages()->first(),
                     'code' => $this->prefixCode . 'X703'
+                ], 400);
+
+            $quotation = Policy::find($request->quotation_id);
+
+            if ($quotation->status_id != 1)
+                return response()->json([
+                    'title' => 'Datos Incorrectos',
+                    'message' => 'Esta cotización ya no es valida',
+                    'code' => $this->prefixCode . 'X704'
                 ], 400);
 
             // Conexión con Copsis para obtener el token de autenticación
@@ -1093,7 +1104,8 @@ class CopsisController extends Controller
                 ->timeout(120)
                 ->post('https://apiuat.copsis.com/v1/polizas/auto/quattro', [
                     "cotizacionID" => $request->cotizacionID,
-                    "urlRetorno" => 'https://gallant-mcnulty.50-62-180-0.plesk.page/#/cotizacion',
+                    "urlRetorno" => "https://certytest.trinitas.mx/#/proceso/" . $quotation->id,
+                    // "urlRetorno" => "http://localhost:4200/#/proceso/" . $quotation->id,
                     "contratante" => $request->contratante,
                     "vehiculo" => $request->vehiculo,
                     "quattroPoliza" => [
@@ -1104,7 +1116,7 @@ class CopsisController extends Controller
 
             // Se trata la respuesta para poder leerla como un objeto
             $emission_response = json_decode($chuub_emission, true);
-            return $emission_response;
+
             if (!$emission_response['ok']) {
 
                 if (isset($emission_response['result'])) {
@@ -1152,10 +1164,53 @@ class CopsisController extends Controller
                 }
             }
 
+            DB::beginTransaction();
+
+            // Se guarda la emisión en el registro de emisiones realizadas.
+            EmittedPolicy::create([
+                'policy_id' => $emission_response['result']['polizaID'],
+                'receipt_id' => $emission_response['result']['reciboID'],
+                'policy_number' => $emission_response['result']['noPoliza'],
+                'emission_id' => $emission_response['result']['emisionID'],
+                'insurer' => $emission_response['result']['aseguradora'],
+                'date_init' => $emission_response['result']['vigenciaDe'],
+                'date_expires' => $emission_response['result']['vigenciaA'],
+                'emission_date' => $emission_response['result']['fechaEmision'],
+                'payment_frequency' => $emission_response['result']['frecuenciaPago'],
+                'status_id' => 1
+            ]);
+
+            // Se evalúa si la cotización tenia una emisión anterior y se cancela
+            if ($quotation->policy_code) {
+
+                $emitted_policy = EmittedPolicy::where('policy_id', $quotation->policy_code)->first();
+
+                if ($emitted_policy) {
+
+                    $emitted_policy->update([
+                        'status_id' => 2
+                    ]);
+                }
+            }
+
+            // Se actualiza/inserta la emisión en la cotización.
+            $quotation->update([
+                'issuance_date' => $emission_response['result']['fechaEmision'],
+                'issuance_code' => $emission_response['result']['emisionID'],
+                'receipt_code' => $emission_response['result']['reciboID'],
+                'policy_code' => $emission_response['result']['polizaID'],
+                'policy_number' => $emission_response['result']['noPoliza'],
+                'init_date' => $emission_response['result']['vigenciaDe'],
+                'date_expire' => $emission_response['result']['vigenciaA'],
+                'status_id' => 5
+            ]);
+
+            DB::commit();
+
             return response()->json([
                 'title' => 'Proceso Completado',
                 'message' => 'Cotización consultada correctamente',
-                'ana_quotation' => $emission_response['result']
+                'url' => $emission_response['result']['pasarela']
 
             ]);
         } catch (Exception $e) {
@@ -1194,7 +1249,7 @@ class CopsisController extends Controller
                 return response()->json([
                     'title' => 'Datos Faltantes',
                     'message' => $validator->messages()->first(),
-                    'code' => $this->prefixCode . 'X701'
+                    'code' => $this->prefixCode . 'X801'
                 ], 400);
 
             // Se validan los datos del cliente
@@ -1222,7 +1277,7 @@ class CopsisController extends Controller
                 return response()->json([
                     'title' => 'Datos Faltantes',
                     'message' => $client_validator->messages()->first(),
-                    'code' => $this->prefixCode . 'X702'
+                    'code' => $this->prefixCode . 'X802'
                 ], 400);
 
             // Se validan los datos del vehículo
@@ -1237,17 +1292,17 @@ class CopsisController extends Controller
                 return response()->json([
                     'title' => 'Datos Faltantes',
                     'message' => $vehicle_validator->messages()->first(),
-                    'code' => $this->prefixCode . 'X703'
+                    'code' => $this->prefixCode . 'X803'
                 ], 400);
 
+            // Consulta de la cotización para asignar la póliza
+            $quotation = Policy::find($request->quotation_id);
 
-            $cotization = Policy::find($request->quotation_id);
-
-            if ($cotization->status_id != 1)
+            if ($quotation->status_id != 1)
                 return response()->json([
                     'title' => 'Datos Incorrectos',
                     'message' => 'Esta cotización ya no es valida',
-                    'code' => $this->prefixCode . 'X704'
+                    'code' => $this->prefixCode . 'X804'
                 ], 400);
 
             // Conexión con Copsis para obtener el token de autenticación
@@ -1268,13 +1323,13 @@ class CopsisController extends Controller
                         'description' => $response['result']['error'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X705'
+                        'prefix_code' => $this->prefixCode . 'X805'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['result']['error'],
-                        'code' => $this->prefixCode . 'X706'
+                        'code' => $this->prefixCode . 'X806'
                     ], 400);
                 } else {
 
@@ -1282,13 +1337,13 @@ class CopsisController extends Controller
                         'description' => $response['message'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X707'
+                        'prefix_code' => $this->prefixCode . 'X807'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X708'
+                        'code' => $this->prefixCode . 'X808'
                     ], 400);
                 }
             }
@@ -1302,7 +1357,7 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $token->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X709'
+                        'prefix_code' => $this->prefixCode . 'X809'
                     ]);
                 }
             }
@@ -1337,13 +1392,13 @@ class CopsisController extends Controller
                         'description' => $emission_response['result']['error'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X710'
+                        'prefix_code' => $this->prefixCode . 'X810'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $emission_response['result']['error'],
-                        'code' => $this->prefixCode . 'X711'
+                        'code' => $this->prefixCode . 'X811'
                     ], 400);
                 } else {
 
@@ -1351,13 +1406,13 @@ class CopsisController extends Controller
                         'description' => $emission_response['message'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X712'
+                        'prefix_code' => $this->prefixCode . 'X812'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $emission_response['message'],
-                        'code' => $this->prefixCode . 'X713'
+                        'code' => $this->prefixCode . 'X813'
                     ], 400);
                 }
             }
@@ -1371,7 +1426,7 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $primero_emission->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X714'
+                        'prefix_code' => $this->prefixCode . 'X814'
                     ]);
                 }
             }
@@ -1393,9 +1448,9 @@ class CopsisController extends Controller
             ]);
 
             // Se evalúa si la cotización tenia una emisión anterior y se cancela
-            if ($cotization->policy_code) {
+            if ($quotation->policy_code) {
 
-                $emitted_policy = EmittedPolicy::where('policy_id', $cotization->policy_code)->first();
+                $emitted_policy = EmittedPolicy::where('policy_id', $quotation->policy_code)->first();
 
                 if ($emitted_policy) {
 
@@ -1406,7 +1461,7 @@ class CopsisController extends Controller
             }
 
             // Se actualiza/inserta la emisión en la cotización.
-            $cotization->update([
+            $quotation->update([
                 'issuance_date' => $emission_response['result']['fechaEmision'],
                 'issuance_code' => $emission_response['result']['emisionID'],
                 'receipt_code' => $emission_response['result']['reciboID'],
@@ -1420,7 +1475,7 @@ class CopsisController extends Controller
             DB::commit();
 
             // Se solicita la URL de pago para el cliente.
-            switch ($cotization->payment_frequency) {
+            switch ($quotation->payment_frequency) {
 
                 case 'CONTADO' || 'ANUAL':
 
@@ -1451,8 +1506,8 @@ class CopsisController extends Controller
                     "negocioID" => 3,
                     "cuentaID" => 20,
                     "descripcion" => "Pago Póliza",
-                    // "parametro" => "https://gallant-mcnulty.50-62-180-0.plesk.page/#/proceso/" . $cotization->id,
-                    "parametro" => "http://localhost:4200/#/proceso/" . $cotization->id,
+                    "parametro" => "https://certytest.trinitas.mx/#/proceso/" . $quotation->id,
+                    // "parametro" => "http://localhost:4200/#/proceso/" . $quotation->id,
                     "monto" => $emission_response['result']['primas']['primaTotal'],
                     "fp_transaccion" => $payment_frequency,
                     "reference" => $emission_response['result']['noPoliza'],
@@ -1469,7 +1524,7 @@ class CopsisController extends Controller
                         'description' => 'No pudimos proceder con el pago, un agente se pondrá en contacto para continuar.',
                         'http_code' => $payment_url->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X714'
+                        'prefix_code' => $this->prefixCode . 'X815'
                     ]);
                 }
             }
@@ -1527,13 +1582,13 @@ class CopsisController extends Controller
                 'description' => $e->getMessage() . '-L:' . $e->getLine(),
                 'http_code' => 500,
                 'module' => 'CopsisController',
-                'prefix_code' => $this->prefixCode . 'X799'
+                'prefix_code' => $this->prefixCode . 'X899'
             ]);
 
             return response()->json([
                 'title' => 'Error en el servidor',
                 'message' => $e->getMessage() . '-L:' . $e->getLine(),
-                'code' => $this->prefixCode . 'X799'
+                'code' => $this->prefixCode . 'X899'
             ], 500);
         }
     }
@@ -1782,39 +1837,33 @@ class CopsisController extends Controller
                     'code' => $this->prefixCode . 'X802'
                 ], 400);
 
-            switch ($policy->insurer) {
-
-                case 'PRIMERO' || 'ANA':
-
-                    if ($request->status_id != 1) {
-                        $policy_status = 5;
-                        $copsis_confirm_payment = false;
-                    } else {
-                        $policy_status = 2;
-                        $copsis_confirm_payment = true;
-                    }
+            if ($policy->insurer == 'PRIMERO' || $policy->insurer == 'ANA') {
 
 
-                    $policy->update([
-                        'status_id' => $policy_status
-                    ]);
+                if ($request->status_id != 1) {
+                    $policy_status = 5;
+                    $copsis_confirm_payment = false;
+                } else {
+                    $policy_status = 2;
+                    $copsis_confirm_payment = true;
+                }
 
-                    break;
+                $policy->update([
+                    'status_id' => $policy_status
+                ]);
+            } else if ($policy->insurer == 'CHUBB') {
 
-                case 'CHUBB':
+                if ($request->status_id > 0 &&  $request->status_id) {
+                    $policy_status = 2;
+                    $copsis_confirm_payment = true;
+                } else {
+                    $policy_status = 5;
+                    $copsis_confirm_payment = false;
+                }
 
-                    if ($request->status_id > 0 &&  $request->status_id) {
-                        $policy_status = 2;
-                        $copsis_confirm_payment = true;
-                    } else {
-                        $policy_status = 5;
-                        $copsis_confirm_payment = false;
-                    }
-
-                    $policy->update([
-                        'status_id' => $policy_status
-                    ]);
-                    break;
+                $policy->update([
+                    'status_id' => $policy_status
+                ]);
             }
 
             DB::commit();
@@ -2003,7 +2052,7 @@ class CopsisController extends Controller
 
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
-            return $response;
+
             if (!$response['ok']) {
 
                 if (isset($response['result'])) {
@@ -2060,7 +2109,9 @@ class CopsisController extends Controller
                 'x-api-key' => env('api_key_uat')
             ])
                 ->timeout(120)
-                ->get('https://apiuat.copsis.com/v1/impresion/' . $policy->issuance_code . '/poliza/' . $policy->policy_code, []);
+                ->get('https://apiuat.copsis.com/v1/impresion/' . $policy->issuance_code . '/poliza/' . $policy->policy_code, [
+                    "d" => "805/Y+YHzUW3cfBi53XTwtkzgOcbQ+VhFbMbjMdeYJaQNmvG5wra25L/4ml97TC6"
+                ]);
 
             // return $print_pdf;
             // Se trata la respuesta para poder leerla como un objeto

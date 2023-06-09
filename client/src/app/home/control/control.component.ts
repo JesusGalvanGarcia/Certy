@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 export class ControlComponent {
 
   status: any
+  Aut: any
   policy_id: any
 
   constructor(
@@ -39,6 +40,7 @@ export class ControlComponent {
       .subscribe((params: any) => {
 
         this.status = params.status ? params.status : null;
+        this.Aut = params.Aut ? params.Aut : null;
       });
 
     this.validateResponse();
@@ -48,54 +50,87 @@ export class ControlComponent {
 
     const searchData = {
       policy_id: this.policy_id,
-      status_id: this.status
+      status_id: this.status ? this.status : this.Aut ? this.Aut : 0,
     }
 
     this._quotationService.confirmPayment(searchData).
       then(({ title, message }) => {
 
-        if (this.status == 0) { // Error
+        if (this.status) {
+          if (this.status == 0) { // Error
 
-          Swal.fire({
-            title: 'Póliza Emitida',
-            text: 'No se pudo concluir tu pago, un agente se pondrá en contacto contigo para continuar con el proceso.',
-            icon: 'success',
-            confirmButtonColor: '#60CDEE',
-            confirmButtonText: 'Entendido'
-          }).then((result) => {
-            if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Póliza Emitida',
+              text: 'No se pudo concluir tu pago, un agente se pondrá en contacto contigo para continuar con el proceso.',
+              icon: 'success',
+              confirmButtonColor: '#60CDEE',
+              confirmButtonText: 'Entendido'
+            }).then((result) => {
+              if (result.isConfirmed) {
 
-              this.router.navigate(['dashboard']);
-            }
-          })
-        } else if (this.status == 1) { // Aprobado
+                this.router.navigate(['dashboard']);
+              }
+            })
+          } else if (this.status == 1) { // Aprobado
 
-          Swal.fire({
-            title: 'Póliza Emitida',
-            text: 'Pago realizado correctamente.',
-            icon: 'success',
-            confirmButtonColor: '#60CDEE',
-            confirmButtonText: 'Entendido'
-          }).then((result) => {
-            if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Póliza Emitida',
+              text: 'Pago realizado correctamente.',
+              icon: 'success',
+              confirmButtonColor: '#60CDEE',
+              confirmButtonText: 'Entendido'
+            }).then((result) => {
+              if (result.isConfirmed) {
 
-              this.router.navigate(['dashboard']);
-            }
-          })
-        } else if (this.status == 3) { // Rechazado
+                this.router.navigate(['dashboard']);
+              }
+            })
+          } else if (this.status == 3) { // Rechazado
 
-          Swal.fire({
-            title: 'Póliza Emitida',
-            text: 'Tu forma de pago fue rechazada, un agente se pondrá en contacto contigo para continuar con el proceso.',
-            icon: 'success',
-            confirmButtonColor: '#60CDEE',
-            confirmButtonText: 'Entendido'
-          }).then((result) => {
-            if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Póliza Emitida',
+              text: 'Tu forma de pago fue rechazada, un agente se pondrá en contacto contigo para continuar con el proceso.',
+              icon: 'success',
+              confirmButtonColor: '#60CDEE',
+              confirmButtonText: 'Entendido'
+            }).then((result) => {
+              if (result.isConfirmed) {
 
-              this.router.navigate(['dashboard']);
-            }
-          })
+                this.router.navigate(['dashboard']);
+              }
+            })
+          }
+        } else {
+
+          // Se evalúa la respuesta de Chubb
+          if (this.Aut == 0 || this.Aut == 4 || this.Aut == 5 || this.Aut == 6) { // Error
+
+            Swal.fire({
+              title: 'Póliza Emitida',
+              text: 'No se pudo concluir tu pago, un agente se pondrá en contacto contigo para continuar con el proceso.',
+              icon: 'success',
+              confirmButtonColor: '#60CDEE',
+              confirmButtonText: 'Entendido'
+            }).then((result) => {
+              if (result.isConfirmed) {
+
+                this.router.navigate(['dashboard']);
+              }
+            })
+          } else if (this.Aut == 1 || this.Aut == 2 || this.Aut == 3) { // Aprobado
+            Swal.fire({
+              title: 'Póliza Emitida',
+              text: 'Pago realizado correctamente.',
+              icon: 'success',
+              confirmButtonColor: '#60CDEE',
+              confirmButtonText: 'Entendido'
+            }).then((result) => {
+              if (result.isConfirmed) {
+
+                this.router.navigate(['dashboard']);
+              }
+            })
+          }
         }
       })
       .catch(({ title, message, code }) => {
