@@ -49,16 +49,16 @@
         </div>
         <mat-card-content class="mat-card-content" align="start">
 
-            <p class="policy-parragraph mb-4">Póliza: {{policy.policy_code}}</p>
-            <p class="policy-parragraph mb-4">Vehículo: {{policy.vehicle_description}}</p>
-            <p class="policy-parragraph mb-4">Vigencia: {{policy.date_expire | date: 'dd-MM-yyyy'}}</p>
+            <p class="policy-parragraph mb-4">Póliza: {{ policy.policy_number }}</p>
+            <p class="policy-parragraph mb-4">Vehículo: {{ policy.vehicle_description }}</p>
+            <p class="policy-parragraph mb-4">Vigencia: {{ policy.date_expire | date: 'dd-MM-yyyy' }}</p>
 
         </mat-card-content>
         <mat-divider>
         </mat-divider>
         <mat-card-actions align="end">
-            <button mat-icon-button>
-                <mat-icon>download</mat-icon>
+            <button type="button" mat-icon-button (click)="downloadPolicy()" matTooltip="Ver póliza">
+                <mat-icon>visibility</mat-icon>
             </button>
             <!-- <button mat-icon-button>
             <mat-icon>open_in_new</mat-icon>

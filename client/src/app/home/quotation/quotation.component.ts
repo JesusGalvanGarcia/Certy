@@ -33,7 +33,7 @@ export class QuotationComponent {
 
   userFormGroup: any = this._formBuilder.group({
     // complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?$')]],
-    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
+    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
     email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
     cellphone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
     age: ['', [Validators.required, Validators.min(18), Validators.pattern('[0-9]{1,2}')]],
@@ -43,7 +43,7 @@ export class QuotationComponent {
 
   vehicleFormGroup: any = this._formBuilder.group({
     model: ['', [Validators.required, Validators.pattern('\\+?[0-9]{4}')]],
-    brand_id: ['', [Validators.required, Validators.pattern('\\+?[0-9]{1,3}')]],
+    brand_id: ['', [Validators.required, Validators.pattern('\\+?[0-9A-Za-z]{1,3}')]],
     type: ['', [Validators.required]],
     unit_type: ['AUTO', [Validators.required]]
   });
@@ -85,29 +85,37 @@ export class QuotationComponent {
 
   quoters_packs: any = ['base', 'Amplia', 'AMPLIA PLUS', 'AMPLIA PLUS 3%', 'LIMITADA', 'RC']
 
-  anaInfo: any
+  // anaInfo: any
+  qualitasInfo: any
   chuubInfo: any
   primeroInfo: any
 
-  anaLoading: boolean = true
+  // anaLoading: boolean = true
+  qualitasLoading: boolean = true
   chuubLoading: boolean = true
   primeroLoading: boolean = true
 
-  anaActive: boolean = false
+  // anaActive: boolean = false
+  qualitasActive: boolean = false
   chuubActive: boolean = false
   primeroActive: boolean = false
 
-  ana_quotation: any
+  // ana_quotation: any
+  qualitas_quotation: any
   chuub_quotation: any
   primero_quotation: any
 
-  @ViewChild(MatSort) AnaSort: MatSort | any;
+  // @ViewChild(MatSort) AnaSort: MatSort | any;
+  @ViewChild(MatSort) QualitasSort: MatSort | any;
   @ViewChild(MatSort) ChuubSort: MatSort | any;
   @ViewChild(MatSort) PrimeroSort: MatSort | any;
 
   // Table
-  AnaDisplayedColumns: string[] = ['cover', 'sa', 'deductible'];
-  AnaDataSource: MatTableDataSource<AnaData> | any = [];
+  // AnaDisplayedColumns: string[] = ['cover', 'sa', 'deductible'];
+  // AnaDataSource: MatTableDataSource<AnaData> | any = [];
+
+  QualitasDisplayedColumns: string[] = ['cover', 'sa', 'deductible'];
+  QualitasDataSource: MatTableDataSource<QualitasData> | any = [];
 
   ChuubDisplayedColumns: string[] = ['cover', 'sa', 'deductible'];
   ChuubDataSource: MatTableDataSource<ChuubData> | any = [];
@@ -205,7 +213,8 @@ export class QuotationComponent {
 
   ngAfterViewInit() {
 
-    this.AnaDataSource.sort = this.AnaSort;
+    // this.AnaDataSource.sort = this.AnaSort;
+    this.QualitasDataSource.sort = this.QualitasSort;
     this.ChuubDataSource.sort = this.ChuubSort;
     this.PrimeroDataSource.sort = this.PrimeroSort;
   }
@@ -442,7 +451,8 @@ export class QuotationComponent {
 
       this.chuubLoading = true;
       this.primeroLoading = true;
-      this.anaLoading = true;
+      this.qualitasLoading = true;
+      // this.anaLoading = true;
 
       this.vehicleFormGroup.reset()
       this.versionControl.reset()
@@ -535,18 +545,20 @@ export class QuotationComponent {
     };
 
     this._quotationService.homologation(clientData).
-      then(({ ana, chuub, primero }) => {
+      then(({ qualitas, ana, chuub, primero }) => {
 
         this.quotations = true
         this.initial_page = false
 
-        this.anaInfo = ana;
+        // this.anaInfo = ana;
+        this.qualitasInfo = qualitas;
         this.chuubInfo = chuub;
         this.primeroInfo = primero;
 
         this.chuubQuotation();
         this.primeroQuotation();
-        this.anaQuotation();
+        this.qualitasQuotation();
+        // this.anaQuotation();
 
         Swal.close()
       })
@@ -635,37 +647,69 @@ export class QuotationComponent {
       })
   }
 
-  anaQuotation() {
+  qualitasQuotation() {
 
-    this.anaLoading = true;
+    this.qualitasLoading = true;
 
     const searchData = {
-      brand_id: this.anaInfo.negocioID,
-      pack: this.anaInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
+      brand_id: this.qualitasInfo.negocioID,
+      pack: this.qualitasInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
       payment_frequency: this.payment_frequency,
-      vehicle: this.anaInfo.vehiculo,
+      vehicle: this.qualitasInfo.vehiculo,
       age: this.userFormGroup.get('age').value,
       genre: this.userFormGroup.get('genre').value,
       cp: this.userFormGroup.get('cp').value
     }
 
-    this._quotationService.anaQuotation(searchData).
-      then(({ ana_quotation }) => {
+    this._quotationService.qualitasQuotation(searchData).
+      then(({ qualitas_quotation }) => {
 
-        this.ana_quotation = ana_quotation;
+        this.qualitas_quotation = qualitas_quotation;
 
-        this.AnaDataSource = new MatTableDataSource(ana_quotation.coberturas);
-        this.AnaDataSource.sort = this.AnaSort;
+        this.QualitasDataSource = new MatTableDataSource(qualitas_quotation.coberturas);
+        this.QualitasDataSource.sort = this.QualitasSort;
 
-        this.anaLoading = false;
-        this.anaActive = true;
+        this.qualitasLoading = false;
+        this.qualitasActive = true;
       })
       .catch(({ title, message, code }) => {
         console.log(message)
 
-        this.anaLoading = false;
+        this.qualitasLoading = false;
       })
   }
+
+  // anaQuotation() {
+
+  //   this.anaLoading = true;
+
+  //   const searchData = {
+  //     brand_id: this.anaInfo.negocioID,
+  //     pack: this.anaInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
+  //     payment_frequency: this.payment_frequency,
+  //     vehicle: this.anaInfo.vehiculo,
+  //     age: this.userFormGroup.get('age').value,
+  //     genre: this.userFormGroup.get('genre').value,
+  //     cp: this.userFormGroup.get('cp').value
+  //   }
+
+  //   this._quotationService.anaQuotation(searchData).
+  //     then(({ ana_quotation }) => {
+
+  //       this.ana_quotation = ana_quotation;
+
+  //       this.AnaDataSource = new MatTableDataSource(ana_quotation.coberturas);
+  //       this.AnaDataSource.sort = this.AnaSort;
+
+  //       this.anaLoading = false;
+  //       this.anaActive = true;
+  //     })
+  //     .catch(({ title, message, code }) => {
+  //       console.log(message)
+
+  //       this.anaLoading = false;
+  //     })
+  // }
 
   selectQuotation(quoter: number) {
 
@@ -690,10 +734,18 @@ export class QuotationComponent {
 
       case 3:
 
-        this.quoter_name = 'ANA';
-        this.quotation_selected = this.ana_quotation;
-        this.pack_id = this.anaInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
-        this.brand_logo = this.anaInfo.marca.logoMarca;
+        // this.quoter_name = 'ANA';
+        // this.quotation_selected = this.ana_quotation;
+        // this.pack_id = this.anaInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
+        // this.brand_logo = this.anaInfo.marca.logoMarca;
+        break;
+
+      case 4:
+
+        this.quoter_name = 'QUALITAS';
+        this.quotation_selected = this.qualitas_quotation;
+        this.pack_id = this.qualitasInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID;
+        this.brand_logo = this.qualitasInfo.marca.logoMarca;
         break;
     }
 
@@ -1259,6 +1311,12 @@ export class QuotationComponent {
       })
   }
 
+  returnLastDataPage() {
+
+    this.last_data_page = true;
+    this.pay_page = false;
+  }
+
   checkToPay() {
 
     Swal.fire({
@@ -1276,6 +1334,9 @@ export class QuotationComponent {
     } else if (this.quoter_name == 'CHUBB') {
 
       this.chubbEmission();
+    } else if (this.quoter_name == 'QUALITAS') {
+
+      this.qualitasEmission();
     }
   }
 
@@ -1461,6 +1522,97 @@ export class QuotationComponent {
       })
   }
 
+  qualitasEmission() {
+
+    // Consulta al usuario actual
+    let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+
+    // Se separa el nombre del usuario
+    let complete_name = this.userFormGroup.get('complete_name').value;
+
+    const name_array = complete_name.split(" ");
+
+    let name = "";
+    let father_lastname = "";
+    let mother_lastname = "";
+    console.log(name_array);
+    if (name_array.length >= 3) {
+
+      let array_count = 0
+      for (let i = 0; i < name_array.length - 2; i++) {
+
+        name = name + name_array[i]
+
+        array_count++;
+      }
+
+      father_lastname = name_array[array_count]
+      mother_lastname = name_array[array_count + 1]
+
+    } else {
+
+      // for (let i = 0; i < name_array.length - 2; i) {
+
+      //   name += name_array[i]
+      // }
+      name = father_lastname = name_array[0]
+      father_lastname = name_array[1]
+      mother_lastname = ""
+    }
+    console.log(name, father_lastname, mother_lastname)
+    const quotationData: any = {
+      client_id: user_info.user_id,
+      quotation_id: this.quotation_id,
+      cotizacionID: this.quotation_selected.cotizacionID,
+      contratante: {
+        nombre: name,
+        apellidoPaterno: father_lastname,
+        apellidoMaterno: mother_lastname,
+        rfc: this.lastUserFormGroup.get('rfc').value,
+        estadoCivil: "SOLTERO",
+        sexo: this.userFormGroup.get('genre').value,
+        tipoPersona: "FISICA",
+        correo: this.userFormGroup.get('email').value,
+        telefono: this.userFormGroup.get('cellphone').value,
+        direccion: {
+          calle: this.lastUserFormGroup.get('street').value,
+          pais: 'MEXICO',
+          codigoPostal: this.userFormGroup.get('cp').value,
+          colonia: this.suburbControl.value,
+          numeroExterior: this.lastUserFormGroup.get('street_number').value,
+          numeroInterior: this.lastUserFormGroup.get('int_street_number').value
+        }
+      },
+      vehiculo: {
+        serie: this.lastVehicleFormGroup.get('serial_no').value,
+        placas: this.lastVehicleFormGroup.get('plate_no').value,
+        motor: this.lastVehicleFormGroup.get('motor_no').value
+      }
+    }
+
+    this._quotationService.qualitasEmission(quotationData).
+      then(({ url }) => {
+
+        window.location.href = url
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
   // Getters 
 
   get invalidCompleteName() {
@@ -1525,6 +1677,13 @@ export class QuotationComponent {
 }
 
 export interface AnaData {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+export interface QualitasData {
   name: string;
   position: number;
   weight: number;

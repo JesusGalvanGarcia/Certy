@@ -197,6 +197,21 @@ export class QuotationService {
       });
   }
 
+  async qualitasQuotation(searchData: any) {
+
+    return this.api_conect.post('/copsis/qualitasQuotation', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
   async chuubQuotation(searchData: any) {
 
     return this.api_conect.post('/copsis/chuubQuotation', searchData)
@@ -257,9 +272,39 @@ export class QuotationService {
       });
   }
 
+  async qualitasEmission(searchData: any) {
+
+    return this.api_conect.post('/copsis/qualitasEmission', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
   async confirmPayment(searchData: any) {
 
     return this.api_conect.post('/copsis/confirmPayment', searchData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async downloadPolicy(policyData: any) {
+
+    return this.api_conect.post('/copsis/printPDF', policyData)
       .then(({ data }: any) => {
 
         return data;

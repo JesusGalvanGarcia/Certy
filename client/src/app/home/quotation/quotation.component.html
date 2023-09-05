@@ -7,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- Hotjar Tracking Code for Certy Test 2023 -->
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:3506324,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 3506324, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script'); r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
 </head>
 
 <body>
@@ -51,7 +51,7 @@
                                     </label>
                                     <label class="animated fadeIn"
                                         *ngIf="userFormGroup.get('complete_name').hasError('pattern')">
-                                        El nombre y apellidos son inválidos.
+                                        El nombre es incorrecto, se ocupan al menos un nombre y apellidos.
                                     </label>
                                 </mat-error>
                             </mat-form-field>
@@ -281,40 +281,56 @@
                         style="max-width: 60px;">
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-2">
-                <div class="col col-12 col-md-2">
-                    <mat-form-field appearance="outline" class="example-full-width">
-                        <mat-label>Cobertura</mat-label>
-                        <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();"
-                            [disabled]="anaLoading || chuubLoading || primeroLoading">
-                            <mat-option value="1">Amplia</mat-option>
-                            <mat-option value="2">AMPLIA PLUS</mat-option>
-                            <mat-option value="3">AMPLIA PLUS 3%</mat-option>
-                            <mat-option value="4">LIMITADA</mat-option>
-                            <mat-option value="5">RC</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <div class="row">
+                <div class="col col-12 col-md-8">
+                    <div class="row row-cols-1 row-cols-md-3">
+                        <div class="col col-12 col-md-4">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Cobertura</mat-label>
+                                <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();"
+                                    [disabled]="qualitasLoading || chuubLoading || primeroLoading">
+                                    <mat-option value="1">Amplia</mat-option>
+                                    <mat-option value="2">AMPLIA PLUS</mat-option>
+                                    <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                                    <mat-option value="4">LIMITADA</mat-option>
+                                    <mat-option value="5">RC</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-4">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Forma de Pago</mat-label>
+                                <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                                    [disabled]="qualitasLoading || chuubLoading || primeroLoading">
+                                    <mat-option value="CONTADO">Contado</mat-option>
+                                    <mat-option value="SEMESTRAL">Semestral</mat-option>
+                                    <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                                    <mat-option value="MENSUAL">Mensual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col col-12 col-md-4">
+                            <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
+                                (click)="otherCar();" [disabled]="qualitasLoading || chuubLoading || primeroLoading">
+                                Cotizar otro auto
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col col-12 col-md-2">
-                    <mat-form-field appearance="outline" class="example-full-width">
-                        <mat-label>Forma de Pago</mat-label>
-                        <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
-                            [disabled]="anaLoading || chuubLoading || primeroLoading">
-                            <mat-option value="CONTADO">Contado</mat-option>
-                            <mat-option value="SEMESTRAL">Semestral</mat-option>
-                            <mat-option value="TRIMESTRAL">Trimestral</mat-option>
-                            <mat-option value="MENSUAL">Mensual</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col col-12 col-md-2">
-                    <button class="mt-4 mb-4" mat-raised-button style="background-color: #1B479B;color: white;"
-                        (click)="otherCar();" [disabled]="anaLoading || chuubLoading || primeroLoading">
-                        Cotizar otro auto
-                    </button>
+                <div class="col col-12 col-md-4">
+                    <div class="row row-cols-2 row-cols-md-2">
+                        <div class="col">
+                            <label class="quotation-label-title"> Modelo : </label> {{
+                            this.vehicleFormGroup.get('model').value }}
+                        </div>
+                        <div class="col">
+                            <label class="quotation-label-title"> C.P : </label> {{ userFormGroup.get('cp').value }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row row-cols-1 row row-cols-md-2 row-cols-lg-3 mt-4">
+
                 <div class="col mb-4">
                     <mat-card class="example-card">
                         <div class="mt-2 animated fadeIn" align="center" *ngIf="chuubLoading">
@@ -389,6 +405,7 @@
                         </div>
                     </mat-card>
                 </div>
+
                 <div class="col mb-4">
                     <mat-card class="example-card">
                         <div class="mt-2 animated fadeIn" align="center" *ngIf="primeroLoading">
@@ -465,7 +482,8 @@
                         </div>
                     </mat-card>
                 </div>
-                <div class="col mb-4">
+
+                <!-- <div class="col mb-4">
                     <mat-card class="example-card">
                         <div class="mt-2 animated fadeIn" align="center" *ngIf="anaLoading">
                             <mat-spinner></mat-spinner>
@@ -524,6 +542,85 @@
                                 <div class="col" align="right">
                                     <img class="navbar-brand mb-4"
                                         src="https://storage.googleapis.com/quattrocrm/aseguradoras/8_280x140.png"
+                                        alt="certy_logo" style="max-width: 120px;">
+                                </div>
+                                <div class="col" align="center">
+                                    <div class="example-button-container">
+                                        <button mat-mini-fab style="background-color: #5C5C5C;" disabled>
+                                            <mat-icon>question_mark</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                                El vehículo no fue encontrado con la descripción seleccionada.
+                            </p>
+                        </div>
+                    </mat-card>
+                </div> -->
+
+                <div class="col mb-4">
+                    <mat-card class="example-card">
+                        <div class="mt-2 animated fadeIn" align="center" *ngIf="qualitasLoading">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <div class="container" align="center" *ngIf="!qualitasLoading && qualitasActive">
+                            <div class="row mt-4">
+                                <div class="col" align="end">
+                                    <img class="navbar-brand mb-4" src="{{qualitas_quotation.logoGdeAseguradora}}"
+                                        alt="certy_logo" style="max-width: 120px;">
+                                </div>
+                                <div class="col" align="center">
+                                    <div class="example-button-container">
+                                        <button class="button" mat-mini-fab style="background-color: #5C5C5C;"
+                                            data-bs-toggle="modal" data-bs-target="#QualitasModal">
+                                            <mat-icon>question_mark</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1 class="mt-4" style="color: #8904B1; font-size: 50px;">
+
+                                $ {{ qualitas_quotation.primas.primaTotal | number : '1.2-2'}}
+                            </h1>
+                            <p class="mt-4" style="color:#5C5C5C;font-size: 20px;">
+                                Costo total del seguro
+                            </p>
+                            <div class="row row-cols-1 row-cols-md-2 mt-2"
+                                *ngIf="qualitas_quotation.primas.recibos > 1">
+                                <div class="col">
+                                    <label style="color:#5C5C5C;font-size: 20px;"> Pago Inicial de:</label>
+                                    <h1 class="mt-4" style="color: #8904B1; font-size: 20px;">
+                                        $ {{ qualitas_quotation.primas.reciboInicial | number : '1.2-2'}}
+                                    </h1>
+                                </div>
+                                <div class="col">
+                                    <label style="color:#5C5C5C;font-size: 20px;"> {{ (qualitas_quotation.primas.recibos
+                                        - 1)
+                                        }}
+                                        pagos
+                                        de:</label>
+                                    <h1 class="mt-4" style="color: #8904B1; font-size: 20px;">
+                                        $ {{ qualitas_quotation.primas.reciboSubsecuente | number : '1.2-2'}}
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="mt-4" style="color:#5C5C5C; font-size: 20px;">
+                                {{ qualitas_quotation.descripcion }}
+                            </p>
+                            <button class="mt-4 mb-4" mat-raised-button style="background-color: #8904B1;color: white;"
+                                (click)="checkSession(4);">
+                                Comprar
+                            </button>
+                        </div>
+
+                        <div class="container" align="center" *ngIf="!qualitasLoading && !qualitasActive">
+                            <div class="row mt-4">
+                                <div class="col" align="right">
+                                    <img class="navbar-brand mb-4"
+                                        src="https://storage.googleapis.com/quattrocrm/aseguradoras/36_280x140.png"
                                         alt="certy_logo" style="max-width: 120px;">
                                 </div>
                                 <div class="col" align="center">
@@ -865,7 +962,11 @@
                                     Pagar Póliza
                                 </button>
                             </p>
-
+                            <p>
+                                <button type="button" mat-button (click)="returnLastDataPage();">
+                                    Regresar
+                                </button>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -874,7 +975,7 @@
     </div>
 
     <!-- Ana Modal -->
-    <div class="modal fade" id="AnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="AnaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -947,7 +1048,6 @@
                                 <div class="example-table-container">
                                     <table mat-table [dataSource]="AnaDataSource" matSort>
 
-                                        <!-- Cover Column -->
                                         <ng-container matColumnDef="cover">
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header
                                                 sortActionDescription="Sort by number">
@@ -956,7 +1056,6 @@
                                             <td mat-cell *matCellDef="let ana"> {{ana.nombre}} </td>
                                         </ng-container>
 
-                                        <!-- SA Column -->
                                         <ng-container matColumnDef="sa">
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header
                                                 sortActionDescription="Sort by name">
@@ -966,7 +1065,6 @@
                                                 '1.2-2'}} </td>
                                         </ng-container>
 
-                                        <!-- Deductible Column -->
                                         <ng-container matColumnDef="deductible">
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header
                                                 sortActionDescription="Sort by Deductible">
@@ -978,6 +1076,125 @@
 
                                         <tr mat-header-row *matHeaderRowDef="AnaDisplayedColumns; sticky:true"></tr>
                                         <tr mat-row *matRowDef="let row; columns: AnaDisplayedColumns;"></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Qualitas Modal -->
+    <div class="modal fade" id="QualitasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="row row-cols-2">
+                            <div class="col col-11">
+                                <div class="row row-cols-1 row-cols-md-2">
+                                    <div class="col col-12 col-md-4" align="start">
+                                        <img class="navbar-brand mb-4"
+                                            src="https://storage.googleapis.com/quattrocrm/aseguradoras/36_280x140.png"
+                                            alt="certy_logo" style="min-width: 200px;max-width: 250;">
+                                    </div>
+                                    <div class="col col-12 col-md-8" align="start">
+                                        <mat-list>
+                                            <mat-list-item>
+                                                <span matListItemLine>Año:
+                                                    {{vehicleFormGroup.get('model').value}}</span>
+                                                <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI
+                                                    AUT 5
+                                                    ABS CA CE PIEL SM CQ CB</span>
+                                                <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                                <span matListItemLine>Vigencia: 1 Año</span>
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-1">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row  row-cols-1 row-cols-md-2">
+                            <div class="col col-12 col-md-5">
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Cobertura</mat-label>
+                                    <mat-select [(ngModel)]="quoter_pack" (selectionChange)="toQuotations();" disabled>
+                                        <mat-option value="1">Amplia</mat-option>
+                                        <mat-option value="2">AMPLIA PLUS</mat-option>
+                                        <mat-option value="3">AMPLIA PLUS 3%</mat-option>
+                                        <mat-option value="4">LIMITADA</mat-option>
+                                        <mat-option value="5">RC</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-12 col-md-5">
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Forma de Pago</mat-label>
+                                    <mat-select [(ngModel)]="payment_frequency" (selectionChange)="toQuotations();"
+                                        disabled>
+                                        <mat-option value="CONTADO">Contado</mat-option>
+                                        <mat-option value="SEMESTRAL">Semestral</mat-option>
+                                        <mat-option value="TRIMESTRAL">Trimestral</mat-option>
+                                        <mat-option value="MENSUAL">Mensual</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-12 col-md-2" align="center">
+                                <button type="button" class="btn btn-primary btn-lg"
+                                    style="margin-top: 20px;background-color: #8904B1;color: white;"
+                                    (click)="checkSession(4);" data-bs-dismiss="modal">Comprar</button>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="mat-elevation-z8">
+                                <div class="example-table-container">
+                                    <table mat-table [dataSource]="QualitasDataSource" matSort>
+
+                                        <!-- Cover Column -->
+                                        <ng-container matColumnDef="cover">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                                sortActionDescription="Sort by number">
+                                                Cobertura
+                                            </th>
+                                            <td mat-cell *matCellDef="let qualitas"> {{qualitas.nombre}} </td>
+                                        </ng-container>
+
+                                        <!-- SA Column -->
+                                        <ng-container matColumnDef="sa">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                                sortActionDescription="Sort by name">
+                                                S.A.
+                                            </th>
+                                            <td mat-cell *matCellDef="let qualitas"> {{ qualitas.leyendaSumaAsegurada
+                                                }} </td>
+                                        </ng-container>
+
+                                        <!-- Deductible Column -->
+                                        <ng-container matColumnDef="deductible">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                                sortActionDescription="Sort by Deductible">
+                                                Deducible
+                                            </th>
+                                            <td mat-cell *matCellDef="let qualitas"> {{ qualitas.leyendaDeducible ?
+                                                qualitas.leyendaDeducible : 'N/A' }} </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="QualitasDisplayedColumns; sticky:true">
+                                        </tr>
+                                        <tr mat-row *matRowDef="let row; columns: QualitasDisplayedColumns;"></tr>
                                     </table>
                                 </div>
                             </div>
@@ -1090,9 +1307,9 @@
                                                 sortActionDescription="Sort by Deductible">
                                                 Deducible
                                             </th>
-                                            <td mat-cell *matCellDef="let chuub">$ {{(chuub.deducible *
-                                                chuub.sumaAsegurada)
-                                                | number : '1.2-2'}} </td>
+                                            <td mat-cell *matCellDef="let chuub">
+                                                {{ chuub.leyendaDeducible ? chuub.leyendaDeducible : 'N/A'}}
+                                            </td>
                                         </ng-container>
 
                                         <tr mat-header-row *matHeaderRowDef="ChuubDisplayedColumns; sticky:true"></tr>
@@ -1209,7 +1426,8 @@
                                                 sortActionDescription="Sort by Deductible">
                                                 Deducible
                                             </th>
-                                            <td mat-cell *matCellDef="let primero"> {{primero.leyendaDeducible}} </td>
+                                            <td mat-cell *matCellDef="let primero"> {{ primero.leyendaDeducible ?
+                                                primero.leyendaDeducible : 'N/A'}} </td>
                                         </ng-container>
 
                                         <tr mat-header-row *matHeaderRowDef="PrimeroDisplayedColumns; sticky:true"></tr>

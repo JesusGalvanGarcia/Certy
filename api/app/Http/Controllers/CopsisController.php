@@ -27,6 +27,7 @@ class CopsisController extends Controller
 {
 
     private $prefixCode = 'Copsis';
+    private $x_api_key = '4A6uqgBup6Fer2WZOcJJ2cvERi7Aomoox3JjAJ53WSf6tWxY8-CK-DhZnnnCsIfzyKwpd1LSboSLahXf6UOjQuexaSMcB1doo1TwdpnxbrU8cPFbxMiKw4bdDWnvB1Md';
 
     public function consultBrand(Request $request)
     {
@@ -50,12 +51,12 @@ class CopsisController extends Controller
             try {
 
                 $brand = Http::withHeaders([
-                    'x-api-key' => env('api_key_uat'),
+                    'x-api-key' => $this->x_api_key,
                     'Accept' => 'application/json'
                 ])
                     ->timeout(30)
-                    ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/marca', [
-                        'aseguradora' => "PRIMERO",
+                    ->post('https://api.quattrocrm.mx/autos/publics/busqueda/marca', [
+                        'aseguradora' => "QUALITAS",
                         'modelo' => $request->model,
                         'grupoUnidades' => [$request->unit_type]
                     ]);
@@ -160,7 +161,7 @@ class CopsisController extends Controller
             // Se validan los datos de entrada
             $validator = Validator::make($request->all(), [
                 'model' => 'Required|Integer|NotIn:0|Digits:4',
-                'brand_id' => 'Required|Integer|NotIn:0|MaxDigits:4',
+                'brand_id' => 'Required|String',
                 'unit_type' => 'Required|String'
             ]);
 
@@ -176,11 +177,11 @@ class CopsisController extends Controller
             try {
 
                 $type = Http::withHeaders([
-                    'x-api-key' => env('api_key_uat')
+                    'x-api-key' => $this->x_api_key
                 ])
                     ->timeout(30)
-                    ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/tipo', [
-                        'aseguradora' => "PRIMERO",
+                    ->post('https://api.quattrocrm.mx/autos/publics/busqueda/tipo', [
+                        'aseguradora' => "QUALITAS",
                         'modelo' => $request->model,
                         'marca' =>  $request->brand_id,
                         'grupoUnidades' => [$request->unit_type]
@@ -289,7 +290,7 @@ class CopsisController extends Controller
             // Se validan los datos de entrada
             $validator = Validator::make($request->all(), [
                 'model' => 'Required|Integer|NotIn:0|Digits:4',
-                'brand_id' => 'Required|Integer|NotIn:0|MaxDigits:4',
+                'brand_id' => 'Required|String',
                 'type' => 'Required|String',
                 'unit_type' => 'Required|String'
             ]);
@@ -306,11 +307,11 @@ class CopsisController extends Controller
             try {
 
                 $version = Http::withHeaders([
-                    'x-api-key' => env('api_key_uat')
+                    'x-api-key' => $this->x_api_key
                 ])
                     ->timeout(30)
-                    ->post('https://apiuat.quattrocrm.mx/autos/publics/busqueda/version', [
-                        'aseguradora' => "PRIMERO",
+                    ->post('https://api.quattrocrm.mx/autos/publics/busqueda/version', [
+                        'aseguradora' => "QUALITAS",
                         'modelo' => $request->model,
                         'marca' =>  $request->brand_id,
                         'tipo' =>  $request->type,
@@ -472,9 +473,10 @@ class CopsisController extends Controller
 
             else {
 
-                if (!$client->cellphone)
+                if (!$client->cellphone || ($client->complete_name != $request->complete_name))
                     // Se actualiza la información del cliente
                     $client->update([
+                        'complete_name' => $request->complete_name,
                         'cellphone' => $request->cellphone,
                         'cp' => $request->cp,
                         'age' => $request->age,
@@ -484,14 +486,14 @@ class CopsisController extends Controller
 
             // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
             $homologation = Http::withHeaders([
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
-                ->post('https://apiuat.quattrocrm.mx/autos/publics/homologacion', [
-                    'grupoNegocioID' => 195,
-                    'aseguradora' => "PRIMERO",
+                ->post('https://api.quattrocrm.mx/autos/publics/homologacion', [
+                    'grupoNegocioID' => 298,
+                    'aseguradora' => "QUALITAS",
                     'clave' => $request->amis,
                     'modelo' => $request->model,
-                    'tipoHomologacion' => "NOQUALITAS",
+                    'tipoHomologacion' => "QUALITAS",
                     'tipoUnidad' => $request->unit_type,
                 ]);
 
@@ -521,9 +523,9 @@ class CopsisController extends Controller
             return response()->json([
                 'title' => 'Proceso correcto',
                 'message' => 'Homologación consultada.',
-                'ana' => $response['result'][0],
-                'chuub' => $response['result'][2],
-                'primero' => $response['result'][1]
+                'chuub' => $response['result'][1],
+                'primero' => $response['result'][0],
+                'qualitas' => $response['result'][2]
 
             ]);
         } catch (Exception $e) {
@@ -586,10 +588,10 @@ class CopsisController extends Controller
 
             // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
             $chuub_quotation = Http::withHeaders([
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
                 ->timeout(120)
-                ->post('https://apiuat.quattrocrm.mx/autos/publics/cotizacion', [
+                ->post('https://api.quattrocrm.mx/autos/publics/cotizacion', [
                     'negocioID' => $request->brand_id,
                     'paquete' => $request->pack,
                     'vigenciaDe' => Carbon::now()->format('Y-m-d'),
@@ -689,7 +691,7 @@ class CopsisController extends Controller
 
             // Se validan los datos de entrada
             $validator = Validator::make($request->all(), [
-                'brand_id' => 'Required|Integer|NotIn:0',
+                'brand_id' => 'Required|Integer',
                 'pack' => 'Required|Integer|NotIn:0',
                 'payment_frequency' => 'Required|String',
                 'cp' => 'Required|Integer|NotIn:0|Digits:5',
@@ -725,10 +727,10 @@ class CopsisController extends Controller
 
             // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
             $primero_quotation = Http::withHeaders([
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
                 ->timeout(120)
-                ->post('https://apiuat.quattrocrm.mx/autos/publics/cotizacion', [
+                ->post('https://api.quattrocrm.mx/autos/publics/cotizacion', [
                     'negocioID' => $request->brand_id,
                     'paquete' => $request->pack,
                     'vigenciaDe' => Carbon::now()->format('Y-m-d'),
@@ -823,144 +825,144 @@ class CopsisController extends Controller
         }
     }
 
-    public function anaQuotation(Request $request)
-    {
-        try {
+    // public function anaQuotation(Request $request)
+    // {
+    //     try {
 
-            // Se validan los datos de entrada
-            $validator = Validator::make($request->all(), [
-                'brand_id' => 'Required|Integer|NotIn:0',
-                'pack' => 'Required|Integer|NotIn:0',
-                'payment_frequency' => 'Required|String',
-                'cp' => 'Required|Integer|NotIn:0|Digits:5',
-                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
-                'genre' => 'Required|String',
-                'vehicle' => 'Required|Array'
-            ]);
+    //         // Se validan los datos de entrada
+    //         $validator = Validator::make($request->all(), [
+    //             'brand_id' => 'Required|Integer|NotIn:0',
+    //             'pack' => 'Required|Integer|NotIn:0',
+    //             'payment_frequency' => 'Required|String',
+    //             'cp' => 'Required|Integer|NotIn:0|Digits:5',
+    //             'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+    //             'genre' => 'Required|String',
+    //             'vehicle' => 'Required|Array'
+    //         ]);
 
-            // Respuesta en caso de que la validación falle
-            if ($validator->fails())
-                return response()->json([
-                    'title' => 'Datos Faltantes',
-                    'message' => $validator->messages()->first(),
-                    'code' => $this->prefixCode . 'X601'
-                ], 400);
+    //         // Respuesta en caso de que la validación falle
+    //         if ($validator->fails())
+    //             return response()->json([
+    //                 'title' => 'Datos Faltantes',
+    //                 'message' => $validator->messages()->first(),
+    //                 'code' => $this->prefixCode . 'X601'
+    //             ], 400);
 
-            // Se validan los datos del vehículo
-            $vehicle_validator = Validator::make($request->vehicle, [
-                'descripcion' => 'Required|String',
-                'clave' => 'Required|String',
-                'modelo' => 'Required|Integer|NotIn:0|Digits:4|Min:2003',
-                'valorUnidad' => 'Required|Numeric|Min:0'
-            ]);
+    //         // Se validan los datos del vehículo
+    //         $vehicle_validator = Validator::make($request->vehicle, [
+    //             'descripcion' => 'Required|String',
+    //             'clave' => 'Required|String',
+    //             'modelo' => 'Required|Integer|NotIn:0|Digits:4|Min:2003',
+    //             'valorUnidad' => 'Required|Numeric|Min:0'
+    //         ]);
 
-            // Respuesta en caso de que la validación del vehículo falle
-            if ($vehicle_validator->fails())
-                return response()->json([
-                    'title' => 'Datos Faltantes',
-                    'message' => $vehicle_validator->messages()->first(),
-                    'code' => $this->prefixCode . 'X602'
-                ], 400);
+    //         // Respuesta en caso de que la validación del vehículo falle
+    //         if ($vehicle_validator->fails())
+    //             return response()->json([
+    //                 'title' => 'Datos Faltantes',
+    //                 'message' => $vehicle_validator->messages()->first(),
+    //                 'code' => $this->prefixCode . 'X602'
+    //             ], 400);
 
-            // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
-            $ana_quotation = Http::withHeaders([
-                'x-api-key' => env('api_key_uat')
-            ])
-                ->timeout(120)
-                ->post('https://apiuat.quattrocrm.mx/autos/publics/cotizacion', [
-                    'negocioID' => $request->brand_id,
-                    'paquete' => $request->pack,
-                    'vigenciaDe' => Carbon::now()->format('Y-m-d'),
-                    'vigenciaA' => Carbon::now()->addYear()->format('Y-m-d'),
-                    'frecuenciaPago' => $request->payment_frequency,
-                    'tipoSuma' => "COMERCIAL",
-                    'plataforma' => "CERTY",
-                    'vehiculo' => $request->vehicle,
-                    'asegurado' => [
-                        'edad' => $request->age,
-                        'sexo' => $request->genre,
-                        'tipoPersona' => "FISICA",
-                        'codigoPostal' => $request->cp
-                    ]
-                ]);
+    //         // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
+    //         $ana_quotation = Http::withHeaders([
+    //             'x-api-key' => $this->x_api_key
+    //         ])
+    //             ->timeout(120)
+    //             ->post('https://api.quattrocrm.mx/autos/publics/cotizacion', [
+    //                 'negocioID' => $request->brand_id,
+    //                 'paquete' => $request->pack,
+    //                 'vigenciaDe' => Carbon::now()->format('Y-m-d'),
+    //                 'vigenciaA' => Carbon::now()->addYear()->format('Y-m-d'),
+    //                 'frecuenciaPago' => $request->payment_frequency,
+    //                 'tipoSuma' => "COMERCIAL",
+    //                 'plataforma' => "CERTY",
+    //                 'vehiculo' => $request->vehicle,
+    //                 'asegurado' => [
+    //                     'edad' => $request->age,
+    //                     'sexo' => $request->genre,
+    //                     'tipoPersona' => "FISICA",
+    //                     'codigoPostal' => $request->cp
+    //                 ]
+    //             ]);
 
-            // Se trata la respuesta para poder leerla como un objeto
-            $response = json_decode($ana_quotation, true);
+    //         // Se trata la respuesta para poder leerla como un objeto
+    //         $response = json_decode($ana_quotation, true);
 
-            if (!$response['ok']) {
+    //         if (!$response['ok']) {
 
-                if (isset($response['result'])) {
+    //             if (isset($response['result'])) {
 
-                    ErrorsLog::create([
-                        'description' => $response['result']['error'],
-                        'http_code' => $ana_quotation->status(),
-                        'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X603'
-                    ]);
+    //                 ErrorsLog::create([
+    //                     'description' => $response['result']['error'],
+    //                     'http_code' => $ana_quotation->status(),
+    //                     'module' => 'CopsisController',
+    //                     'prefix_code' => $this->prefixCode . 'X603'
+    //                 ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $response['result']['error'],
-                        'code' => $this->prefixCode . 'X604'
-                    ], 400);
-                } else {
-                    ErrorsLog::create([
-                        'description' => $response['message'],
-                        'http_code' => $ana_quotation->status(),
-                        'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X605'
-                    ]);
+    //                 return response()->json([
+    //                     'title' => 'Error Copsis',
+    //                     'message' => $response['result']['error'],
+    //                     'code' => $this->prefixCode . 'X604'
+    //                 ], 400);
+    //             } else {
+    //                 ErrorsLog::create([
+    //                     'description' => $response['message'],
+    //                     'http_code' => $ana_quotation->status(),
+    //                     'module' => 'CopsisController',
+    //                     'prefix_code' => $this->prefixCode . 'X605'
+    //                 ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X606'
-                    ], 400);
-                }
-            }
+    //                 return response()->json([
+    //                     'title' => 'Error Copsis',
+    //                     'message' => $response['message'],
+    //                     'code' => $this->prefixCode . 'X606'
+    //                 ], 400);
+    //             }
+    //         }
 
-            // Si la respuesta falla se inserta en un log los motivos de las fallas
-            if ($ana_quotation->failed()) {
+    //         // Si la respuesta falla se inserta en un log los motivos de las fallas
+    //         if ($ana_quotation->failed()) {
 
-                foreach ($response['errors'] as $error) {
+    //             foreach ($response['errors'] as $error) {
 
-                    ErrorsLog::create([
-                        'description' => $error,
-                        'http_code' => $ana_quotation->status(),
-                        'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X607'
-                    ]);
-                }
+    //                 ErrorsLog::create([
+    //                     'description' => $error,
+    //                     'http_code' => $ana_quotation->status(),
+    //                     'module' => 'CopsisController',
+    //                     'prefix_code' => $this->prefixCode . 'X607'
+    //                 ]);
+    //             }
 
-                return response()->json([
-                    'title' => 'Error Copsis',
-                    'message' => $response['errors'],
-                    'code' => $this->prefixCode . 'X608'
-                ], 400);
-            }
+    //             return response()->json([
+    //                 'title' => 'Error Copsis',
+    //                 'message' => $response['errors'],
+    //                 'code' => $this->prefixCode . 'X608'
+    //             ], 400);
+    //         }
 
-            return response()->json([
-                'title' => 'Proceso Completado',
-                'message' => 'Cotización consultada correctamente',
-                'ana_quotation' => $response['result']
+    //         return response()->json([
+    //             'title' => 'Proceso Completado',
+    //             'message' => 'Cotización consultada correctamente',
+    //             'ana_quotation' => $response['result']
 
-            ]);
-        } catch (Exception $e) {
+    //         ]);
+    //     } catch (Exception $e) {
 
-            ErrorsLog::create([
-                'description' => $e->getMessage() . '-L:' . $e->getLine(),
-                'http_code' => 500,
-                'module' => 'CopsisController',
-                'prefix_code' => $this->prefixCode . 'X699'
-            ]);
+    //         ErrorsLog::create([
+    //             'description' => $e->getMessage() . '-L:' . $e->getLine(),
+    //             'http_code' => 500,
+    //             'module' => 'CopsisController',
+    //             'prefix_code' => $this->prefixCode . 'X699'
+    //         ]);
 
-            return response()->json([
-                'title' => 'Error en el servidor',
-                'message' => $e->getMessage() . '-L:' . $e->getLine(),
-                'code' => $this->prefixCode . 'X499'
-            ], 500);
-        }
-    }
+    //         return response()->json([
+    //             'title' => 'Error en el servidor',
+    //             'message' => $e->getMessage() . '-L:' . $e->getLine(),
+    //             'code' => $this->prefixCode . 'X499'
+    //         ], 500);
+    //     }
+    // }
 
     // Emite póliza y pago en pasarela aseguradora
     public function chubbEmission(Request $request)
@@ -1029,7 +1031,7 @@ class CopsisController extends Controller
 
             $quotation = Policy::find($request->quotation_id);
 
-            if ($quotation->status_id != 1)
+            if (!$quotation || $quotation->status_id != 1)
                 return response()->json([
                     'title' => 'Datos Incorrectos',
                     'message' => 'Esta cotización ya no es valida',
@@ -1041,7 +1043,7 @@ class CopsisController extends Controller
                 'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
             ])
                 ->timeout(120)
-                ->post('https://apiuat.copsis.com/api/oauth/token', []);
+                ->post('https://api.copsis.com/api/oauth/token', []);
 
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
@@ -1099,17 +1101,17 @@ class CopsisController extends Controller
             $chuub_emission = Http::withHeaders([
                 'Authorization' => "Bearer " . $auth_token,
                 'content_type' => 'application/json',
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
                 ->timeout(120)
-                ->post('https://apiuat.copsis.com/v1/polizas/auto/quattro', [
+                ->post('https://api.copsis.com/v1/polizas/auto/quattro', [
                     "cotizacionID" => $request->cotizacionID,
                     "urlRetorno" => "https://certytest.trinitas.mx/#/proceso/" . $quotation->id,
                     // "urlRetorno" => "http://localhost:4200/#/proceso/" . $quotation->id,
                     "contratante" => $request->contratante,
                     "vehiculo" => $request->vehiculo,
                     "quattroPoliza" => [
-                        "grupoEstructuraID" => 10,
+                        "grupoEstructuraID" => 2,
                         "vendedorID" => "l66xHtlkmi56Uqz3MEYuqw=="
                     ]
                 ]);
@@ -1296,9 +1298,9 @@ class CopsisController extends Controller
                 ], 400);
 
             // Consulta de la cotización para asignar la póliza
-            $quotation = Policy::find($request->quotation_id);
+            $quotation = Policy::where('status_id', 1)->find($request->quotation_id);
 
-            if ($quotation->status_id != 1)
+            if (!$quotation)
                 return response()->json([
                     'title' => 'Datos Incorrectos',
                     'message' => 'Esta cotización ya no es valida',
@@ -1310,7 +1312,7 @@ class CopsisController extends Controller
                 'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
             ])
                 ->timeout(120)
-                ->post('https://apiuat.copsis.com/api/oauth/token', []);
+                ->post('https://api.copsis.com/api/oauth/token', []);
 
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
@@ -1368,15 +1370,15 @@ class CopsisController extends Controller
             $primero_emission = Http::withHeaders([
                 'Authorization' => "Bearer " . $auth_token,
                 'content_type' => 'application/json',
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
-                ->timeout(120)
-                ->post('https://apiuat.copsis.com/v1/polizas/auto/quattro', [
+                ->timeout(500)
+                ->post('https://api.copsis.com/v1/polizas/auto/quattro', [
                     "cotizacionID" => $request->cotizacionID,
                     "contratante" => $request->contratante,
                     "vehiculo" => $request->vehiculo,
                     "quattroPoliza" => [
-                        "grupoEstructuraID" => 10,
+                        "grupoEstructuraID" => 2,
                         "vendedorID" => "l66xHtlkmi56Uqz3MEYuqw=="
                     ]
                 ]);
@@ -1499,7 +1501,7 @@ class CopsisController extends Controller
             $payment_url = Http::withHeaders([
                 'Authorization' => "Bearer " . $auth_token,
                 'content_type' => 'application/json',
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
                 ->timeout(120)
                 ->post('https://quattro-secure-d4f4hpx6ga-uc.a.run.app/secure/transaccion', [
@@ -1508,7 +1510,7 @@ class CopsisController extends Controller
                     "descripcion" => "Pago Póliza",
                     "parametro" => "https://certytest.trinitas.mx/#/proceso/" . $quotation->id,
                     // "parametro" => "http://localhost:4200/#/proceso/" . $quotation->id,
-                    "monto" => $emission_response['result']['primas']['primaTotal'],
+                    "monto" => $emission_response['result']['recibos'][0]['primaTotal'],
                     "fp_transaccion" => $payment_frequency,
                     "reference" => $emission_response['result']['noPoliza'],
                     "entidad" => $emission_response['result']['emisionID'],
@@ -1676,7 +1678,7 @@ class CopsisController extends Controller
                 'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
             ])
                 ->timeout(120)
-                ->post('https://apiuat.copsis.com/api/oauth/token', []);
+                ->post('https://api.copsis.com/api/oauth/token', []);
 
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
@@ -1718,7 +1720,7 @@ class CopsisController extends Controller
                 'Authorization' => "Bearer " . $auth_token
             ])
                 ->timeout(120)
-                ->put('https://apiuat.quattrocrm.mx/autos/emision', [
+                ->put('https://api.quattrocrm.mx/autos/emision', [
                     "cotizacionID" => 0,
                     "contratante" => [
                         "nombre" => "Jose",
@@ -1837,8 +1839,7 @@ class CopsisController extends Controller
                     'code' => $this->prefixCode . 'X802'
                 ], 400);
 
-            if ($policy->insurer == 'PRIMERO' || $policy->insurer == 'ANA') {
-
+            if ($policy->insurer == 'PRIMERO' || $policy->insurer == 'ANA' || $policy->insurer == 'QUALITAS') {
 
                 if ($request->status_id != 1) {
                     $policy_status = 5;
@@ -1875,7 +1876,7 @@ class CopsisController extends Controller
             //         'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
             //     ])
             //         ->timeout(120)
-            //         ->post('https://apiuat.copsis.com/api/oauth/token', []);
+            //         ->post('https://api.copsis.com/api/oauth/token', []);
 
             //     // Se trata la respuesta para poder leerla como un objeto
             //     $response = json_decode($token, true);
@@ -1933,10 +1934,10 @@ class CopsisController extends Controller
             //     $confirm_payment = Http::withHeaders([
             //         'Authorization' => "Bearer " . $auth_token,
             //         'content_type' => 'application/json',
-            //         'x-api-key' => env('api_key_uat')
+            //         'x-api-key' => $this->x_api_key
             //     ])
             //         ->timeout(120)
-            //         ->post('https://apiuat.quattrocrm.mx/polizas/pagador/pago', [
+            //         ->post('https://api.quattrocrm.mx/polizas/pagador/pago', [
             //             "fechaPago" => Carbon::now()->format('Y-m-d'),
             //             "comentario" => 'Pago de póliza' . $policy->policy_code . 'por Trintias.',
             //             "recibo" => [
@@ -2048,7 +2049,7 @@ class CopsisController extends Controller
                 'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
             ])
                 ->timeout(120)
-                ->post('https://apiuat.copsis.com/api/oauth/token', []);
+                ->post('https://api.copsis.com/api/oauth/token', []);
 
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
@@ -2061,13 +2062,13 @@ class CopsisController extends Controller
                         'description' => $response['result']['error'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X805'
+                        'prefix_code' => $this->prefixCode . 'X903'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['result']['error'],
-                        'code' => $this->prefixCode . 'X806'
+                        'code' => $this->prefixCode . 'X904'
                     ], 400);
                 } else {
 
@@ -2075,13 +2076,13 @@ class CopsisController extends Controller
                         'description' => $response['message'],
                         'http_code' => $token->status(),
                         'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X807'
+                        'prefix_code' => $this->prefixCode . 'X905'
                     ]);
 
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X808'
+                        'code' => $this->prefixCode . 'X906'
                     ], 400);
                 }
             }
@@ -2095,7 +2096,7 @@ class CopsisController extends Controller
                         'description' => $error,
                         'http_code' => $token->status(),
                         'module' => 'CopsisController',
-                        'prefix_code' => $this->prefixCode . 'X809'
+                        'prefix_code' => $this->prefixCode . 'X907'
                     ]);
                 }
             }
@@ -2106,18 +2107,52 @@ class CopsisController extends Controller
             $print_pdf = Http::withHeaders([
                 'Authorization' => "Bearer " . $auth_token,
                 'content_type' => 'application/json',
-                'x-api-key' => env('api_key_uat')
+                'x-api-key' => $this->x_api_key
             ])
                 ->timeout(120)
-                ->get('https://apiuat.copsis.com/v1/impresion/' . $policy->issuance_code . '/poliza/' . $policy->policy_code, [
+                ->get('https://api.copsis.com/v1/impresion/' . $policy->issuance_code . '/poliza/' . $policy->policy_code, [
                     "d" => "805/Y+YHzUW3cfBi53XTwtkzgOcbQ+VhFbMbjMdeYJaQNmvG5wra25L/4ml97TC6"
                 ]);
 
-            // return $print_pdf;
             // Se trata la respuesta para poder leerla como un objeto
             $response_pdf = json_decode($print_pdf, true);
 
-            return $response_pdf;
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($print_pdf->failed()) {
+
+                foreach ($response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $print_pdf->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X703'
+                    ]);
+                }
+            }
+
+            if (!$response['ok']) {
+
+                ErrorsLog::create([
+                    'description' => $response['result']['error'],
+                    'http_code' => $print_pdf->status(),
+                    'module' => 'CopsisController',
+                    'prefix_code' => $this->prefixCode . 'X704'
+                ]);
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $response['result']['error'],
+                    'code' => $this->prefixCode . 'X706'
+                ], 400);
+            }
+
+            return response()->json([
+                'title' => 'Proceso Completado',
+                'message' => 'Cotización consultada correctamente',
+                'pdfs' => $response_pdf['result']['pdfs']
+
+            ]);
         } catch (Exception $e) {
 
             ErrorsLog::create([
@@ -2134,52 +2169,509 @@ class CopsisController extends Controller
             ], 500);
         }
     }
+
+    public function qualitasQuotation(Request $request)
+    {
+        try {
+
+            // Se validan los datos de entrada
+            $validator = Validator::make($request->all(), [
+                'brand_id' => 'Required|Integer',
+                'pack' => 'Required|Integer|NotIn:0',
+                'payment_frequency' => 'Required|String',
+                'cp' => 'Required|Integer|NotIn:0|Digits:5',
+                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+                'genre' => 'Required|String',
+                'vehicle' => 'Required|Array'
+            ]);
+
+            // Respuesta en caso de que la validación falle
+            if ($validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X1201'
+                ], 400);
+
+            // Se validan los datos del vehículo
+            $vehicle_validator = Validator::make($request->vehicle, [
+                'descripcion' => 'Required|String',
+                'ocupantes' => 'Required|Integer|NotIn:0|Min:1',
+                'tipoUnidad' => 'Required|String',
+                'tarifa' => 'Required|Numeric|Min:0',
+                'clave' => 'Required|String',
+                'modelo' => 'Required|Integer|NotIn:0|Digits:4|Min:2003'
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($vehicle_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $vehicle_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X1202'
+                ], 400);
+
+            // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
+            $qualitas_quotation = Http::withHeaders([
+                'x-api-key' => $this->x_api_key
+            ])
+                ->timeout(120)
+                ->post('https://api.quattrocrm.mx/autos/publics/cotizacion', [
+                    'negocioID' => $request->brand_id,
+                    'paquete' => $request->pack,
+                    'vigenciaDe' => Carbon::now()->format('Y-m-d'),
+                    'vigenciaA' => Carbon::now()->addYear()->format('Y-m-d'),
+                    'frecuenciaPago' => $request->payment_frequency,
+                    'tipoSuma' => "COMERCIAL",
+                    'plataforma' => "CERTY",
+                    'vehiculo' => $request->vehicle,
+                    'asegurado' => [
+                        'edad' => $request->age,
+                        'sexo' => $request->genre,
+                        'tipoPersona' => "FISICA",
+                        'codigoPostal' => $request->cp
+                    ]
+                ]);
+
+            // Se trata la respuesta para poder leerla como un objeto
+            $response = json_decode($qualitas_quotation, true);
+
+            if (!$response['ok']) {
+
+                if (isset($response['result'])) {
+
+                    ErrorsLog::create([
+                        'description' => $response['result']['error'],
+                        'http_code' => $qualitas_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X1204'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['result']['error'],
+                        'code' => $this->prefixCode . 'X1205'
+                    ], 400);
+                } else {
+                    ErrorsLog::create([
+                        'description' => $response['message'],
+                        'http_code' => $qualitas_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X1206'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['message'],
+                        'code' => $this->prefixCode . 'X1207'
+                    ], 400);
+                }
+            }
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($qualitas_quotation->failed()) {
+
+                foreach ($response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $qualitas_quotation->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X1208'
+                    ]);
+                }
+
+                return response()->json([
+                    'title' => 'Error Copsis',
+                    'message' => $response['errors'],
+                    'code' => $this->prefixCode . 'X1209'
+                ], 400);
+            }
+
+            return response()->json([
+                'title' => 'Proceso completo',
+                'message' => 'Cotización consultada correctamente',
+                'qualitas_quotation' => $response['result']
+            ]);
+        } catch (Exception $e) {
+
+            ErrorsLog::create([
+                'description' => $e->getMessage() . '-L:' . $e->getLine(),
+                'http_code' => 500,
+                'module' => 'CopsisController',
+                'prefix_code' => $this->prefixCode . 'X1299'
+            ]);
+
+            return response()->json([
+                'title' => 'Error en el servidor',
+                'message' => $e->getMessage() . '-L:' . $e->getLine(),
+                'code' => $this->prefixCode . 'X1299'
+            ], 500);
+        }
+    }
+
+    public function qualitasEmission(Request $request)
+    {
+        try {
+
+            // Se validan los datos de entrada
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'Required|Integer|NotIn:0',
+                'quotation_id' => 'Required|Integer|NotIn:0',
+                'cotizacionID' => 'Required|Integer|NotIn:0',
+                'contratante' => 'Required|Array',
+                'vehiculo' => 'Required|Array'
+            ]);
+
+            // Respuesta en caso de que la validación falle
+            if ($validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X1301'
+                ], 400);
+
+            // Se validan los datos del cliente
+            $client_validator = Validator::make($request->contratante, [
+                'nombre' => 'Required|String',
+                'apellidoPaterno' => 'Required|String',
+                'apellidoMaterno' => 'String|Nullable',
+                'rfc' => 'Required|String',
+                'estadoCivil' => 'Required|String',
+                'sexo' => 'Required|String',
+                'tipoPersona' => 'Required|String',
+                'correo' => 'Required|String',
+                'telefono' => 'Required|String',
+                'direccion' => 'Required|Array',
+                'direccion.calle' => 'Required|String',
+                'direccion.pais' => 'Required|String',
+                'direccion.codigoPostal' => 'Required|Numeric',
+                'direccion.colonia' => 'Required|String',
+                'direccion.numeroExterior' => 'String|Nullable',
+                'direccion.numeroInterior' => 'String|Nullable',
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($client_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $client_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X1302'
+                ], 400);
+
+            // Se validan los datos del vehículo
+            $vehicle_validator = Validator::make($request->vehiculo, [
+                'serie' => 'Required|String',
+                'placas' => 'String|Nullable',
+                'motor' => 'String|Nullable'
+            ]);
+
+            // Respuesta en caso de que la validación del vehículo falle
+            if ($vehicle_validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $vehicle_validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X1303'
+                ], 400);
+
+            $quotation = Policy::find($request->quotation_id);
+
+            if (!$quotation || $quotation->status_id != 1)
+                return response()->json([
+                    'title' => 'Datos Incorrectos',
+                    'message' => 'Esta cotización ya no es valida',
+                    'code' => $this->prefixCode . 'X1304'
+                ], 400);
+
+            // Conexión con Copsis para obtener el token de autenticación
+            $token = Http::withHeaders([
+                'Authorization' => "Basic Q0VSVFlfVFJJTklUQVM6UXpOU1ZGbGZNakF5TXpBeU1qUT0="
+            ])
+                ->timeout(120)
+                ->post('https://api.copsis.com/api/oauth/token', []);
+
+            // Se trata la respuesta para poder leerla como un objeto
+            $response = json_decode($token, true);
+
+            if (!$response['ok']) {
+
+                if (isset($response['result'])) {
+
+                    ErrorsLog::create([
+                        'description' => $response['result']['error'],
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisChubbToken',
+                        'prefix_code' => $this->prefixCode . 'X1305'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['result']['error'],
+                        'code' => $this->prefixCode . 'X1306'
+                    ], 400);
+                } else {
+
+                    ErrorsLog::create([
+                        'description' => $response['message'],
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisChubbToken',
+                        'prefix_code' => $this->prefixCode . 'X1307'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $response['message'],
+                        'code' => $this->prefixCode . 'X1308'
+                    ], 400);
+                }
+            }
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($token->failed()) {
+
+                foreach ($response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X1309'
+                    ]);
+                }
+            }
+
+            $auth_token = $response['result']['token'];
+
+            // Conexión con Copsis emitir la póliza
+            $qualitas_emission = Http::withHeaders([
+                'Authorization' => "Bearer " . $auth_token,
+                'content_type' => 'application/json',
+                'x-api-key' => $this->x_api_key
+            ])
+                ->timeout(500)
+                ->post('https://api.copsis.com/v1/polizas/auto/quattro', [
+                    "cotizacionID" => $request->cotizacionID,
+                    "contratante" => $request->contratante,
+                    "vehiculo" => $request->vehiculo,
+                    "quattroPoliza" => [
+                        // "grupoEstructuraID" => 10,
+                        "grupoEstructuraID" => 2,
+                        "vendedorID" => "l66xHtlkmi56Uqz3MEYuqw=="
+                    ]
+                ]);
+
+            // Se trata la respuesta para poder leerla como un objeto
+            $emission_response = json_decode($qualitas_emission, true);
+
+            if (!$emission_response['ok']) {
+
+                if (isset($emission_response['result'])) {
+
+                    ErrorsLog::create([
+                        'description' => $emission_response['result']['error'],
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisChubbToken',
+                        'prefix_code' => $this->prefixCode . 'X1310'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $emission_response['result']['error'],
+                        'code' => $this->prefixCode . 'X1311'
+                    ], 400);
+                } else {
+
+                    ErrorsLog::create([
+                        'description' => $emission_response['message'],
+                        'http_code' => $token->status(),
+                        'module' => 'CopsisChubbToken',
+                        'prefix_code' => $this->prefixCode . 'X1312'
+                    ]);
+
+                    return response()->json([
+                        'title' => 'Error Copsis',
+                        'message' => $emission_response['message'],
+                        'code' => $this->prefixCode . 'X1313'
+                    ], 400);
+                }
+            }
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($qualitas_emission->failed()) {
+
+                foreach ($emission_response['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => $error,
+                        'http_code' => $qualitas_emission->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X1314'
+                    ]);
+                }
+            }
+
+            DB::beginTransaction();
+
+            // Se guarda la emisión en el registro de emisiones realizadas.
+            EmittedPolicy::create([
+                'policy_id' => $emission_response['result']['polizaID'],
+                'receipt_id' => $emission_response['result']['reciboID'],
+                'policy_number' => $emission_response['result']['noPoliza'],
+                'emission_id' => $emission_response['result']['emisionID'],
+                'insurer' => $emission_response['result']['aseguradora'],
+                'date_init' => $emission_response['result']['vigenciaDe'],
+                'date_expires' => $emission_response['result']['vigenciaA'],
+                'emission_date' => $emission_response['result']['fechaEmision'],
+                'payment_frequency' => $emission_response['result']['frecuenciaPago'],
+                'status_id' => 1
+            ]);
+
+            DB::commit();
+
+            DB::beginTransaction();
+            // Se evalúa si la cotización tenia una emisión anterior y se cancela
+            if ($quotation->policy_code) {
+
+                $emitted_policy = EmittedPolicy::where('policy_id', $quotation->policy_code)->first();
+
+                if ($emitted_policy) {
+
+                    $emitted_policy->update([
+                        'status_id' => 2
+                    ]);
+                }
+            }
+
+            // Se actualiza/inserta la emisión en la cotización.
+            $quotation->update([
+                'issuance_date' => $emission_response['result']['fechaEmision'],
+                'issuance_code' => $emission_response['result']['emisionID'],
+                'receipt_code' => $emission_response['result']['reciboID'],
+                'policy_code' => $emission_response['result']['polizaID'],
+                'policy_number' => $emission_response['result']['noPoliza'],
+                'init_date' => $emission_response['result']['vigenciaDe'],
+                'date_expire' => $emission_response['result']['vigenciaA'],
+                'status_id' => 5
+            ]);
+
+            DB::commit();
+
+            // Se solicita la URL de pago para el cliente.
+            switch ($quotation->payment_frequency) {
+
+                case 'CONTADO' || 'ANUAL':
+
+                    $payment_frequency = 1;
+                    break;
+
+                case 'SEMESTRAL':
+                    $payment_frequency = 2;
+                    break;
+
+                case 'TRIMESTRAL':
+                    $payment_frequency = 3;
+                    break;
+
+                case 'MENSUAL':
+                    $payment_frequency = 4;
+                    break;
+            }
+
+            // Se solicita la URL de pago para el cliente.
+            $payment_url = Http::withHeaders([
+                'Authorization' => "Bearer " . $auth_token,
+                'content_type' => 'application/json',
+                'x-api-key' => $this->x_api_key
+            ])
+                ->timeout(120)
+                ->post('https://quattro-secure-d4f4hpx6ga-uc.a.run.app/secure/transaccion', [
+                    "negocioID" => 3,
+                    "cuentaID" => 52,
+                    "descripcion" => "Pago Póliza",
+                    "parametro" => "https://certytest.trinitas.mx/#/proceso/" . $quotation->id,
+                    // "parametro" => "http://localhost:4200/#/proceso/" . $quotation->id,
+                    "monto" => $emission_response['result']['recibos'][0]['primaTotal'],
+                    "fp_transaccion" => $payment_frequency,
+                    "reference" => $emission_response['result']['noPoliza'],
+                    "entidad" => $emission_response['result']['emisionID'],
+                    "tp_operation" => $emission_response['result']['recibos'][0]['referencia'],
+                ]);
+
+            // Si la respuesta falla se inserta en un log los motivos de las fallas
+            if ($payment_url->failed()) {
+
+                foreach ($payment_url['errors'] as $error) {
+
+                    ErrorsLog::create([
+                        'description' => 'No pudimos proceder con el pago, un agente se pondrá en contacto para continuar.',
+                        'http_code' => $payment_url->status(),
+                        'module' => 'CopsisController',
+                        'prefix_code' => $this->prefixCode . 'X815'
+                    ]);
+                }
+            }
+
+            // Tratamiento de la respuesta para obtener la URL de pago
+            // $error_first_slice = Str::after($payment_url, '<status>');
+            // $error_second_slice = Str::before($error_first_slice, '</status>');
+
+            // if ($error_second_slice != 'ok') {
+
+            //     // if (isset($emission_response['result'])) {
+
+            //     ErrorsLog::create([
+            //         'description' => $payment_url,
+            //         'http_code' => $payment_url->status(),
+            //         'module' => 'CopsisChubbToken',
+            //         'prefix_code' => $this->prefixCode . 'X710'
+            //     ]);
+
+            //     return response()->json([
+            //         'title' => 'Error Copsis',
+            //         'message' => 'No pudimos concluir el pago, un agente te contactara dentro de poco.',
+            //         'code' => $this->prefixCode . 'X711'
+            //     ], 400);
+            //     // } else {
+
+            //     //     ErrorsLog::create([
+            //     //         'description' => $emission_response['message'],
+            //     //         'http_code' => $token->status(),
+            //     //         'module' => 'CopsisChubbToken',
+            //     //         'prefix_code' => $this->prefixCode . 'X712'
+            //     //     ]);
+
+            //     //     return response()->json([
+            //     //         'title' => 'Error Copsis',
+            //     //         'message' => $emission_response['message'],
+            //     //         'code' => $this->prefixCode . 'X713'
+            //     //     ], 400);
+            //     // }
+            // }
+
+            // Tratamiento de la respuesta para obtener la URL de pago
+            $first_slice = Str::after($payment_url, '<url_wp>');
+            $url = Str::before($first_slice, '</url_wp>');
+
+            return response()->json([
+                'title' => 'Proceso Completado',
+                'message' => 'Emisión realizada correctamente',
+                'url' => $url
+
+            ]);
+        } catch (Exception $e) {
+
+            ErrorsLog::create([
+                'description' => $e->getMessage() . '-L:' . $e->getLine(),
+                'http_code' => 500,
+                'module' => 'CopsisController',
+                'prefix_code' => $this->prefixCode . 'X1399'
+            ]);
+
+            return response()->json([
+                'title' => 'Error en el servidor',
+                'message' => $e->getMessage() . '-L:' . $e->getLine(),
+                'code' => $this->prefixCode . 'X1399'
+            ], 500);
+        }
+    }
 }
-
-
-// {
-//     "ok": true,
-//     "result": {
-//         "polizaID": 165761,
-//         "reciboID": 512316,
-//         "noPoliza": "E1261001738-0",
-//         "inciso": "1",
-//         "emisionID": 501453,
-//         "aseguradora": "PRIMERO",
-//         "paqueteQuattro": 323,
-//         "vigenciaDe": "2023-05-15",
-//         "vigenciaA": "2024-05-15",
-//         "fechaEmision": "2023-05-15",
-//         "frecuenciaPago": "CONTADO",
-//         "primas": {
-//             "primaNeta": 4127.04,
-//             "derecho": 600,
-//             "recargo": 0,
-//             "iva": 756.33,
-//             "ajuste1": 0,
-//             "ajuste2": 0,
-//             "primaTotal": 5483.37,
-//             "comision": 0
-//         },
-//         "recibos": [
-//             {
-//                 "primaNeta": 4127.04,
-//                 "derecho": 600,
-//                 "recargo": 0,
-//                 "iva": 756.33,
-//                 "ajuste1": 0,
-//                 "ajuste2": 0,
-//                 "cargoExtra": 0,
-//                 "primaTotal": 5483.37,
-//                 "comision": 0,
-//                 "serie": 1,
-//                 "totalSerie": 1,
-//                 "vigenciaDe": "2023-05-15",
-//                 "vigenciaA": "2024-05-15",
-//                 "vencimiento": "2023-06-14",
-//                 "referencia": "11771723"
-//             }
-//         ],
-//         "polizaIDEnc": "shNVD2TxFeSvsVRHhaLJcA=="
-//     }
-// }

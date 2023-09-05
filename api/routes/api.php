@@ -23,12 +23,14 @@ Route::post('/copsis/brand', [CopsisController::class, 'consultBrand']);
 Route::post('/copsis/type', [CopsisController::class, 'consultType']);
 Route::post('/copsis/version', [CopsisController::class, 'consultVersion']);
 Route::post('/copsis/homologation', [CopsisController::class, 'homologation']);
-Route::post('/copsis/chuubQuotation', [CopsisController::class, 'chuubQuotation']);
-Route::post('/copsis/anaQuotation', [CopsisController::class, 'anaQuotation']);
 Route::post('/copsis/primeroQuotation', [CopsisController::class, 'primeroQuotation']);
-Route::post('/copsis/chubbEmission', [CopsisController::class, 'chubbEmission']);
 Route::post('/copsis/primeroEmission', [CopsisController::class, 'primeroEmission']);
-Route::post('/copsis/anaEmission', [CopsisController::class, 'anaEmission']);
+Route::post('/copsis/qualitasQuotation', [CopsisController::class, 'qualitasQuotation']);
+Route::post('/copsis/qualitasEmission', [CopsisController::class, 'qualitasEmission']);
+Route::post('/copsis/chuubQuotation', [CopsisController::class, 'chuubQuotation']);
+Route::post('/copsis/chubbEmission', [CopsisController::class, 'chubbEmission']);
+// Route::post('/copsis/anaQuotation', [CopsisController::class, 'anaQuotation']);
+// Route::post('/copsis/anaEmission', [CopsisController::class, 'anaEmission']);
 Route::post('/copsis/confirmPayment', [CopsisController::class, 'confirmPayment']);
 Route::post('/copsis/printPDF', [CopsisController::class, 'printPDF']);
 
