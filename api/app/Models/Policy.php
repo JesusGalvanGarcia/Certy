@@ -41,6 +41,7 @@ class Policy extends Model
         'policy_number',
         'init_date',
         'date_expire',
-        'status_id'
+        'status_id',
+        'lead_id'
     ];
 }

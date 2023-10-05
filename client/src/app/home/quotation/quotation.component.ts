@@ -33,8 +33,8 @@ export class QuotationComponent {
 
   userFormGroup: any = this._formBuilder.group({
     // complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?$')]],
-    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
-    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
+    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
+    email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
     cellphone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
     age: ['', [Validators.required, Validators.min(18), Validators.pattern('[0-9]{1,2}')]],
     cp: ['', [Validators.required, Validators.pattern('\\+?[0-9]{5}')]],
@@ -136,14 +136,14 @@ export class QuotationComponent {
   display_recovery_modal: string = 'none'
 
   loginFormGroup: any = this._formBuilder.group({
-    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]]
+    email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
+    password: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?.&]{4,}$')]]
   });
 
   registerFormGroup: any = this._formBuilder.group({
-    complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{4,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
-    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
+    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
+    email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
+    password: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?.&]{4,}$')]],
     terms: [null, Validators.requiredTrue]
   });
 
@@ -153,7 +153,7 @@ export class QuotationComponent {
 
   actualizeFormGroup: any = this._formBuilder.group({
     secure_code: ['', [Validators.required, Validators.pattern('\\+?[0-9]{6}')]],
-    password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
+    password: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?.&]{4,}$')]],
   });
 
 
@@ -172,6 +172,10 @@ export class QuotationComponent {
   filteredSuburbs: Observable<string[]> | any;
 
   suburbs: any = []
+
+
+  ////////////////////////// CRM ////////////////////////////
+  CRM_id_register: string = '';
 
   constructor(
     private _quotationService: QuotationService,
@@ -541,8 +545,14 @@ export class QuotationComponent {
       genre: this.userFormGroup.get('genre').value,
       amis: this.versionControl.value.amis,
       model: this.vehicleFormGroup.get('model').value,
-      unit_type: this.vehicleFormGroup.get('unit_type').value
+      unit_type: this.vehicleFormGroup.get('unit_type').value,
+      vehicle_type: this.vehicleFormGroup.get('type').value
     };
+
+    // Si no existe sesión se manda a actualizar, si tiene sesión se almacena la información.
+    if (this.quotation_id == 0) {
+      this.checkSessionIsActive((!this.user_info) ? 3 : 2);
+    }
 
     this._quotationService.homologation(clientData).
       then(({ qualitas, ana, chuub, primero }) => {
@@ -764,6 +774,7 @@ export class QuotationComponent {
       then(({ quotation }) => {
 
         this.quotation = quotation;
+        this.CRM_id_register = quotation.lead_id;
 
         this.lastVehicleFormGroup.patchValue({
           serial_no: quotation.serial_no,
@@ -785,6 +796,7 @@ export class QuotationComponent {
         this.payment_frequency = quotation.payment_frequency
 
         this.toQuotations();
+
       })
       .catch(({ title, message, code }) => {
         console.log(message)
@@ -816,7 +828,8 @@ export class QuotationComponent {
       vehicle_code: this.quotation_selected.clave,
       insurer: this.quoter_name,
       insurer_logo: this.quotation_selected.logoGdeAseguradora,
-      total_amount: this.quotation_selected.primas.primaTotal
+      total_amount: this.quotation_selected.primas.primaTotal,
+      lead_id: this.CRM_id_register
     };
 
     this._quotationService.storeQuotation(quotationData).
@@ -905,10 +918,16 @@ export class QuotationComponent {
 
     if (this._loginService.isAuthenticated()) {
 
-      if (this.quotation_id > 0)
+      this.updateLead(4);
+
+      if (this.quotation_id > 0) {
+
         this.updateQuotation();
-      else
+      }
+      else {
+
         this.storeQuotation();
+      }
 
     } else {
 
@@ -969,7 +988,7 @@ export class QuotationComponent {
         this._templateComponent.loginListener(true);
 
         this.closeLoginModal();
-
+        this.updateLead(4)
         this.storeQuotation();
 
       })
@@ -1040,6 +1059,8 @@ export class QuotationComponent {
       then(({ register }) => {
 
         this._templateComponent.loginListener(true);
+
+        this.updateLead(4);
 
         this.closeRegisterModal();
 
@@ -1168,8 +1189,6 @@ export class QuotationComponent {
     this._loginService.actualizePassword(searchData).
       then(({ title, message }) => {
 
-        this.storeQuotation();
-
         Swal.fire({
           title: title,
           text: message,
@@ -1180,6 +1199,8 @@ export class QuotationComponent {
           if (result.isConfirmed) {
 
             this._templateComponent.loginListener(true);
+
+            this.updateLead(4);
 
             this.closeRecoveryModal();
 
@@ -1326,6 +1347,8 @@ export class QuotationComponent {
       text: 'Procesando'
     })
     Swal.showLoading()
+
+    this.updateLead(5);
 
     if (this.quoter_name == 'PRIMERO') {
 
@@ -1535,7 +1558,7 @@ export class QuotationComponent {
     let name = "";
     let father_lastname = "";
     let mother_lastname = "";
-    console.log(name_array);
+
     if (name_array.length >= 3) {
 
       let array_count = 0
@@ -1559,7 +1582,7 @@ export class QuotationComponent {
       father_lastname = name_array[1]
       mother_lastname = ""
     }
-    console.log(name, father_lastname, mother_lastname)
+
     const quotationData: any = {
       client_id: user_info.user_id,
       quotation_id: this.quotation_id,
@@ -1609,6 +1632,134 @@ export class QuotationComponent {
           allowEscapeKey: false,
           allowEnterKey: false
         })
+
+      })
+  }
+
+  // SUGAR CRM
+
+  checkSessionIsActive(process: number) {
+
+    // 1 Sin sesión activa y en el primer formulario datos del usuarios
+    if (!this.user_info && process == 1) {
+      this.saveLead(process);
+    }
+
+    // 2 Con sesión activa, segundo formulario información del auto a cotizar
+    else if (this.user_info && process == 2) {
+
+      this.saveLead(process);
+    }
+
+    // 3 Sin sesión activa y segundo formulario información a cotizar
+
+    else if (!this.user_info && process == 3) {
+
+      this.updateLead(process);
+    }
+  }
+
+  saveLead(process: number) {
+
+    let brand: any;
+    let user_info: any;
+
+    if (process != 1) {
+
+      brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value);
+
+      user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+    }
+
+    const leadData: any = {
+      client_id: user_info ? user_info.user_id : '',
+      complete_name: this.userFormGroup.get('complete_name').value,
+      email: this.userFormGroup.get('email').value,
+      phone: this.userFormGroup.get('cellphone').value,
+      age: this.userFormGroup.get('age').value,
+      genre: this.userFormGroup.get('genre').value,
+      process_description: process == 1 ? "Datos de Contacto" : "Cotizacion",
+      model: this.vehicleFormGroup.get('model').value,
+      brand: brand ? brand.nombre : '',
+      vehicle_type: this.vehicleFormGroup.get('type').value,
+      vehicle: this.versionControl.value.descripcion
+    }
+
+    this._quotationService.saveLead(leadData).
+      then(({ crm_id }) => {
+
+        this.CRM_id_register = crm_id;
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
+
+        Swal.fire({
+          icon: 'warning',
+          title: title,
+          text: message,
+          footer: code,
+          confirmButtonColor: '#06B808',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false
+        })
+
+      })
+  }
+
+  updateLead(process: number) {
+
+    let brand: any;
+    let user_info: any;
+
+    if (this.quotation_id == 0) {
+
+      brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value);
+
+      // user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+    }
+
+    let process_description = '';
+
+    switch (process) {
+
+      case 3:
+        process_description = 'Cotizacion';
+        break;
+
+      case 4:
+        process_description = 'Aseguradora seleccionada';
+        break;
+
+      case 5:
+        process_description = 'Pago';
+        break;
+    }
+
+    const leadData: any = {
+      // client_id: user_info ? user_info.user_id : '',
+      lead_id: this.CRM_id_register,
+      complete_name: this.userFormGroup.get('complete_name').value,
+      email: this.userFormGroup.get('email').value,
+      phone: this.userFormGroup.get('cellphone').value,
+      age: this.userFormGroup.get('age').value,
+      genre: this.userFormGroup.get('genre').value,
+      process_description: process_description,
+      model: this.vehicleFormGroup.get('model').value,
+      brand: this.quotation_id > 0 ? this.quotation.brand : brand.nombre,
+      vehicle_type: this.vehicleFormGroup.get('type').value,
+      vehicle: this.versionControl.value.descripcion,
+      insurer: this.quoter_name
+    }
+
+    this._quotationService.updateLead(leadData).
+      then(({ url }) => {
+
+        // window.location.href = url
+      })
+      .catch(({ title, message, code }) => {
+        console.log(message)
 
       })
   }

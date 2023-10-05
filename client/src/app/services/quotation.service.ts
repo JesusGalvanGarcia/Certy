@@ -316,4 +316,35 @@ export class QuotationService {
         throw data;
       });
   }
+
+  async saveLead(leadData: any) {
+
+    return this.api_conect.post('/crm', leadData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
+  async updateLead(leadData: any) {
+
+    return this.api_conect.put('/crm/1', leadData)
+      .then(({ data }: any) => {
+
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
 }

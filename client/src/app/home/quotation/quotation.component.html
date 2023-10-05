@@ -162,9 +162,10 @@
                                     </mat-button-toggle-group>
                                 </div>
                                 <div class="col mt-4" align="end">
-                                    <button mat-button matStepperNext class="btn btn-info"
+                                    <button type="button" mat-button matStepperNext class="btn btn-info"
                                         style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
-                                        [disabled]="userFormGroup.invalid">Siguiente</button>
+                                        [disabled]="userFormGroup.invalid"
+                                        (click)="checkSessionIsActive(1);">Siguiente</button>
                                 </div>
                             </div>
                         </form>
@@ -757,16 +758,16 @@
                                 <mat-label>Calle</mat-label>
                                 <input matInput formControlName="street">
                                 <mat-error class="animated fadeIn" *ngIf="invalidStreet">
-                                    <p class="animated fadeIn"
+                                    <label class="animated fadeIn"
                                         *ngIf="lastUserFormGroup.get('street').hasError('required')">
                                         La calle es requerida.
-                                    </p>
-                                    <p class="animated fadeIn"
+                                    </label>
+                                    <label class="animated fadeIn"
                                         *ngIf="lastUserFormGroup.get('street').hasError('minlength')">
                                         La calle debe contener al menos
                                         {{lastUserFormGroup.get('street').errors.minlength.requiredLength}}
                                         caracteres.
-                                    </p>
+                                    </label>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
@@ -835,20 +836,20 @@
                                             <mat-label>Número interior</mat-label>
                                             <input matInput formControlName="int_street_number" maxlength="8">
                                             <mat-error class="animated fadeIn" *ngIf="invalidIntStreetNumber">
-                                                <p class="animated fadeIn"
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('int_street_number').hasError('required')">
                                                     El número interior es requerido.
-                                                </p>
-                                                <p class="animated fadeIn"
+                                                </label>
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('int_street_number').hasError('minlength')">
                                                     El número interior debe contener al menos
                                                     {{lastUserFormGroup.get('int_street_number').errors.minlength.requiredLength}}
                                                     caracteres.
-                                                </p>
-                                                <p class="animated fadeIn"
+                                                </label>
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('int_street_number').hasError('pattern')">
                                                     El número interior es invalido.
-                                                </p>
+                                                </label>
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
@@ -857,20 +858,20 @@
                                             <mat-label>Número exterior</mat-label>
                                             <input matInput formControlName="street_number" maxlength="8">
                                             <mat-error class="animated fadeIn" *ngIf="invalidStreetNumber">
-                                                <p class="animated fadeIn"
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('street_number').hasError('required')">
                                                     El número exterior es requerido.
-                                                </p>
-                                                <p class="animated fadeIn"
+                                                </label>
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('street_number').hasError('minlength')">
                                                     El número exterior debe contener al menos
                                                     {{lastUserFormGroup.get('street_number').errors.minlength.requiredLength}}
                                                     caracteres.
-                                                </p>
-                                                <p class="animated fadeIn"
+                                                </label>
+                                                <label class="animated fadeIn"
                                                     *ngIf="lastUserFormGroup.get('street_number').hasError('pattern')">
                                                     El número exterior es invalido.
-                                                </p>
+                                                </label>
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
@@ -1108,9 +1109,8 @@
                                             <mat-list-item>
                                                 <span matListItemLine>Año:
                                                     {{vehicleFormGroup.get('model').value}}</span>
-                                                <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI
-                                                    AUT 5
-                                                    ABS CA CE PIEL SM CQ CB</span>
+                                                <span matListItemLine>Descripción: {{ qualitas_quotation?.descripcion
+                                                    }}</span>
                                                 <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
@@ -1227,9 +1227,8 @@
                                             <mat-list-item>
                                                 <span matListItemLine>Año:
                                                     {{vehicleFormGroup.get('model').value}}</span>
-                                                <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI
-                                                    AUT 5
-                                                    ABS CA CE PIEL SM CQ CB</span>
+                                                <span matListItemLine>Descripción: {{ chuub_quotation?.descripcion
+                                                    }}</span>
                                                 <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
@@ -1346,9 +1345,8 @@
                                             <mat-list-item>
                                                 <span matListItemLine>Año:
                                                     {{vehicleFormGroup.get('model').value}}</span>
-                                                <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI
-                                                    AUT 5
-                                                    ABS CA CE PIEL SM CQ CB</span>
+                                                <span matListItemLine>Descripción: {{ primero_quotation?.descripcion
+                                                    }}</span>
                                                 <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
@@ -1458,7 +1456,7 @@
                     <div class="container" align="center">
                         <form autocomplete="off" [formGroup]="loginFormGroup" (ngSubmit)="validateLoginForm()">
                             <div class="col mt-4 mb-4">
-                                <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-form-field class="mb-4" style="width: 100%;" appearance="outline">
                                     <mat-label>Correo Electrónico</mat-label>
                                     <input matInput formControlName="email">
                                     <mat-icon matSuffix>account_circle</mat-icon>
@@ -1480,7 +1478,7 @@
                                 </mat-form-field>
                                 <br>
 
-                                <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-form-field class="mb-4" appearance="outline" style="width: 100%;">
                                     <mat-label>Contraseña</mat-label>
                                     <input [type]="visibility ? 'text' : 'password'" matInput
                                         formControlName="password">
@@ -1494,12 +1492,6 @@
                                             La contraseña es requerida.
                                         </label>
                                         <label class="animated fadeIn"
-                                            *ngIf="loginFormGroup.get('password').hasError('minlength')">
-                                            La contraseña debe contener al menos
-                                            {{loginFormGroup.get('password').errors.minlength.requiredLength}}
-                                            caracteres.
-                                        </label>
-                                        <label class="animated fadeIn"
                                             *ngIf="loginFormGroup.get('password').hasError('maxlength')">
                                             La contraseña debe contener máximo
                                             {{loginFormGroup.get('password').errors.maxlength.requiredLength}}
@@ -1507,8 +1499,8 @@
                                         </label>
                                         <label class="animated fadeIn"
                                             *ngIf="loginFormGroup.get('password').hasError('pattern')">
-                                            La contraseña es invalida. Se permiten letras, números y los caracteres
-                                            especiales @ $ ! % * ? &.
+                                            Se permiten letras, números y los caracteres
+                                            especiales @ $ ! % * ? &. Longitud minima 5.
                                         </label>
                                     </mat-error>
                                 </mat-form-field>
@@ -1549,7 +1541,7 @@
                         <form autocomplete="disabled" [formGroup]="registerFormGroup"
                             (ngSubmit)="validateRegisterForm()">
                             <div class="col mt-4 mb-4">
-                                <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-form-field class="mb-4" appearance="outline" style="width: 100%;">
                                     <mat-label>Nombre y Apellidos</mat-label>
                                     <input matInput formControlName="complete_name">
                                     <mat-icon matSuffix>account_circle</mat-icon>
@@ -1566,13 +1558,13 @@
                                         </label>
                                         <label class="animated fadeIn"
                                             *ngIf="registerFormGroup.get('complete_name').hasError('pattern')">
-                                            El nombre es invalido.
+                                            El nombre es incorrecto, se ocupan al menos un nombre y apellidos.
                                         </label>
                                     </mat-error>
                                 </mat-form-field>
                                 <br>
 
-                                <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+                                <mat-form-field class="mb-4" style="width: 100%;" appearance="outline">
                                     <mat-label>Correo Electrónico</mat-label>
                                     <input matInput formControlName="email">
                                     <mat-icon matSuffix>email</mat-icon>
@@ -1595,7 +1587,7 @@
                                 </mat-form-field>
                                 <br>
 
-                                <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-form-field class="mb-4" appearance="outline" style="width: 100%;">
                                     <mat-label>Contraseña</mat-label>
                                     <input [type]="visibility ? 'text' : 'password'" matInput
                                         formControlName="password">
@@ -1609,21 +1601,15 @@
                                             La contraseña es requerida.
                                         </label>
                                         <label class="animated fadeIn"
-                                            *ngIf="registerFormGroup.get('password').hasError('minlength')">
-                                            La contraseña debe contener al menos
-                                            {{registerFormGroup.get('password').errors.minlength.requiredLength}}
-                                            caracteres.
-                                        </label>
-                                        <label class="animated fadeIn"
                                             *ngIf="registerFormGroup.get('password').hasError('maxlength')">
                                             La contraseña debe contener máximo
                                             {{registerFormGroup.get('password').errors.maxlength.requiredLength}}
                                             caracteres.
                                         </label>
-                                        <label class="animated fadeIn"
+                                        <label class="animated fadeIn mb-4"
                                             *ngIf="registerFormGroup.get('password').hasError('pattern')">
-                                            La contraseña es invalida. Se permiten letras, números y los caracteres
-                                            especiales @ $ ! % * ? &.
+                                            Se permiten letras, números y los caracteres
+                                            especiales @ $ ! % * ? &. Longitud minima 5.
                                         </label>
                                     </mat-error>
                                 </mat-form-field>
@@ -1673,7 +1659,7 @@
                             (ngSubmit)="validateRecoveryForm()" *ngIf="!next_step">
                             <div class="col mt-4 mb-4">
 
-                                <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+                                <mat-form-field class="mt-2 mb-4" style="width: 100%;" appearance="outline">
                                     <mat-label>Correo Electrónico</mat-label>
                                     <input matInput formControlName="email">
                                     <mat-icon matSuffix>email</mat-icon>
@@ -1740,7 +1726,7 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                <mat-form-field class="mt-4" appearance="outline" style="width: 100%;">
                                     <mat-label>Nueva Contraseña</mat-label>
                                     <input [type]="visibility ? 'text' : 'password'" matInput
                                         formControlName="password">
@@ -1754,21 +1740,15 @@
                                             La contraseña es requerida.
                                         </label>
                                         <label class="animated fadeIn"
-                                            *ngIf="actualizeFormGroup.get('password').hasError('minlength')">
-                                            La contraseña debe contener al menos
-                                            {{actualizeFormGroup.get('password').errors.minlength.requiredLength}}
-                                            caracteres.
-                                        </label>
-                                        <label class="animated fadeIn"
                                             *ngIf="actualizeFormGroup.get('password').hasError('maxlength')">
                                             La contraseña debe contener máximo
                                             {{registerFormGroup.get('password').errors.maxlength.requiredLength}}
                                             caracteres.
                                         </label>
-                                        <label class="animated fadeIn"
+                                        <label class="animated fadeIn mb-4"
                                             *ngIf="actualizeFormGroup.get('password').hasError('pattern')">
-                                            La contraseña es invalida. Se permiten letras, números y los caracteres
-                                            especiales @ $ ! % * ? &.
+                                            Se permiten letras, números y los caracteres
+                                            especiales @ $ ! % * ? &. Longitud minima 5.
                                         </label>
                                     </mat-error>
                                 </mat-form-field>

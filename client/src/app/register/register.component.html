@@ -41,7 +41,7 @@
                         <div class="card-text">
                             <form autocomplete="disabled" [formGroup]="form" (ngSubmit)="validateForm()">
                                 <div class="col mt-4 mb-4">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-form-field class="mb-4" appearance="outline" style="width: 100%;">
                                         <mat-label>Nombre y Apellidos</mat-label>
                                         <input matInput formControlName="complete_name">
                                         <mat-icon matSuffix>account_circle</mat-icon>
@@ -58,13 +58,13 @@
                                             </label>
                                             <label class="animated fadeIn"
                                                 *ngIf="form.get('complete_name').hasError('pattern')">
-                                                El nombre es invalido.
+                                                El nombre es incorrecto, se ocupan al menos un nombre y apellidos.
                                             </label>
                                         </mat-error>
                                     </mat-form-field>
                                     <br>
 
-                                    <mat-form-field class="mt-2" style="width: 100%;" appearance="outline">
+                                    <mat-form-field class="mb-4" style="width: 100%;" appearance="outline">
                                         <mat-label>Correo Electrónico</mat-label>
                                         <input matInput formControlName="email">
                                         <mat-icon matSuffix>email</mat-icon>
@@ -86,7 +86,7 @@
                                     </mat-form-field>
                                     <br>
 
-                                    <mat-form-field class="mt-2" appearance="outline" style="width: 100%;">
+                                    <mat-form-field class="mb-4" appearance="outline" style="width: 100%;">
                                         <mat-label>Contraseña</mat-label>
                                         <input [type]="visibility ? 'text' : 'password'" matInput
                                             formControlName="password">
@@ -100,19 +100,14 @@
                                                 La contraseña es requerida.
                                             </label>
                                             <label class="animated fadeIn"
-                                                *ngIf="form.get('password').hasError('minlength')">
-                                                La contraseña debe contener al menos
-                                                {{form.get('password').errors.minlength.requiredLength}} caracteres.
-                                            </label>
-                                            <label class="animated fadeIn"
                                                 *ngIf="form.get('password').hasError('maxlength')">
                                                 La contraseña debe contener máximo
                                                 {{form.get('password').errors.maxlength.requiredLength}} caracteres.
                                             </label>
                                             <label class="animated fadeIn"
                                                 *ngIf="form.get('password').hasError('pattern')">
-                                                La contraseña es invalida. Se permiten letras, números y los caracteres
-                                                especiales @ $ ! % * ? &.
+                                                Se permiten letras, números y los caracteres
+                                                especiales @ $ ! % * ? & . Longitud minima 5
                                             </label>
                                         </mat-error>
                                     </mat-form-field>

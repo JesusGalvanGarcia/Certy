@@ -172,7 +172,8 @@ class QuotationController extends Controller
                 'insurer_logo' => $request->insurer_logo,
                 'paid_amount' => 0,
                 'total_amount' => $request->total_amount,
-                'status_id' => 1
+                'status_id' => 1,
+                'lead_id' => $request->lead_id
             ]);
 
             DB::commit();

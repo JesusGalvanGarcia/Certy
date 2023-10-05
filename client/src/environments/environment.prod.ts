@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseURL: 'https://certytest.trinitas.mx/CertyApi/api',
+  baseURL: 'https://certy.trinitas.mx/CertyApi/api'
 };

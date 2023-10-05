@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 use App\Services\CopsisService;
+use App\Services\CRMService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Client\Pool;
@@ -1048,6 +1049,7 @@ class CopsisController extends Controller
             // Se trata la respuesta para poder leerla como un objeto
             $response = json_decode($token, true);
 
+            // Se evalúa la respuesta
             if (!$response['ok']) {
 
                 if (isset($response['result'])) {
@@ -1062,22 +1064,38 @@ class CopsisController extends Controller
                     return response()->json([
                         'title' => 'Error Copsis',
                         'message' => $response['result']['error'],
-                        'code' => $this->prefixCode . 'X706'
+                        'code' => $this->prefixCode . 'X705'
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X707'
-                    ]);
+                    if (isset($response['message'])) {
+                        ErrorsLog::create([
+                            'description' => $response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X706'
+                        ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X708'
-                    ], 400);
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $response['message'],
+                            'code' => $this->prefixCode . 'X706'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X707'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X707'
+                        ], 400);
+                    }
                 }
             }
 
@@ -1095,6 +1113,7 @@ class CopsisController extends Controller
                 }
             }
 
+            // Se extrae el token de la respuesta.
             $auth_token = $response['result']['token'];
 
             // Conexión con Copsis emitir la póliza
@@ -1137,18 +1156,34 @@ class CopsisController extends Controller
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $emission_response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X712'
-                    ]);
+                    if (isset($response['message'])) {
+                        ErrorsLog::create([
+                            'description' => $emission_response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X712'
+                        ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $emission_response['message'],
-                        'code' => $this->prefixCode . 'X713'
-                    ], 400);
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $emission_response['message'],
+                            'code' => $this->prefixCode . 'X712'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $emission_response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X713'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X713'
+                        ], 400);
+                    }
                 }
             }
 
@@ -1324,7 +1359,7 @@ class CopsisController extends Controller
                     ErrorsLog::create([
                         'description' => $response['result']['error'],
                         'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
+                        'module' => 'CopsisPrimeroToken',
                         'prefix_code' => $this->prefixCode . 'X805'
                     ]);
 
@@ -1335,18 +1370,34 @@ class CopsisController extends Controller
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X807'
-                    ]);
+                    if (isset($response['message'])) {
+                        ErrorsLog::create([
+                            'description' => $response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisPrimeroToken',
+                            'prefix_code' => $this->prefixCode . 'X807'
+                        ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X808'
-                    ], 400);
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $response['message'],
+                            'code' => $this->prefixCode . 'X807'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisPrimeroToken',
+                            'prefix_code' => $this->prefixCode . 'X808'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X808'
+                        ], 400);
+                    }
                 }
             }
 
@@ -1393,7 +1444,7 @@ class CopsisController extends Controller
                     ErrorsLog::create([
                         'description' => $emission_response['result']['error'],
                         'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
+                        'module' => 'CopsisPrimeroToken',
                         'prefix_code' => $this->prefixCode . 'X810'
                     ]);
 
@@ -1404,18 +1455,35 @@ class CopsisController extends Controller
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $emission_response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X812'
-                    ]);
+                    if (isset($emission_response['message'])) {
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $emission_response['message'],
-                        'code' => $this->prefixCode . 'X813'
-                    ], 400);
+                        ErrorsLog::create([
+                            'description' => $emission_response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisPrimeroToken',
+                            'prefix_code' => $this->prefixCode . 'X812'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $emission_response['message'],
+                            'code' => $this->prefixCode . 'X812'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $emission_response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisPrimeroToken',
+                            'prefix_code' => $this->prefixCode . 'X813'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X813'
+                        ], 400);
+                    }
                 }
             }
 
@@ -1839,14 +1907,18 @@ class CopsisController extends Controller
                     'code' => $this->prefixCode . 'X802'
                 ], 400);
 
+            $process_description = '';
+
             if ($policy->insurer == 'PRIMERO' || $policy->insurer == 'ANA' || $policy->insurer == 'QUALITAS') {
 
                 if ($request->status_id != 1) {
                     $policy_status = 5;
                     $copsis_confirm_payment = false;
+                    $process_description = 'Emitido sin pago';
                 } else {
                     $policy_status = 2;
                     $copsis_confirm_payment = true;
+                    $process_description = 'Emitido con pago';
                 }
 
                 $policy->update([
@@ -1857,15 +1929,41 @@ class CopsisController extends Controller
                 if ($request->status_id > 0 &&  $request->status_id) {
                     $policy_status = 2;
                     $copsis_confirm_payment = true;
+                    $process_description = 'Emitido con pago';
                 } else {
                     $policy_status = 5;
                     $copsis_confirm_payment = false;
+
+                    $process_description = 'Emitido sin pago';
                 }
 
                 $policy->update([
                     'status_id' => $policy_status
                 ]);
             }
+
+            $client_info = Client::find($policy->client_id);
+
+            // Se consulta el token para poder actualizar el Lead
+            $token = CRMService::getToken();
+
+            $lead_data = collect([
+                "client_id" => $policy->client_id,
+                "lead_id" => $policy->lead_id,
+                "name" => $client_info->complete_name,
+                "email" => $client_info->email,
+                "phone" => $client_info->cellphone,
+                "age" => $client_info->age,
+                "genre" => $client_info->genre,
+                "process_description" => $process_description,
+                "model" => $policy->model,
+                "brand" => $policy->brand,
+                "vehicle_type" => $policy->type,
+                "vehicle" => $policy->vehicle_description,
+                "insurer" => $policy->insurer
+            ]);
+
+            $response =  CRMService::updateLead($token, $lead_data);
 
             DB::commit();
 
@@ -2411,18 +2509,34 @@ class CopsisController extends Controller
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X1307'
-                    ]);
+                    if (isset($response['message'])) {
+                        ErrorsLog::create([
+                            'description' => $response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X1307'
+                        ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $response['message'],
-                        'code' => $this->prefixCode . 'X1308'
-                    ], 400);
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $response['message'],
+                            'code' => $this->prefixCode . 'X1307'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisQualitasToken',
+                            'prefix_code' => $this->prefixCode . 'X1308'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X1308'
+                        ], 400);
+                    }
                 }
             }
 
@@ -2481,18 +2595,34 @@ class CopsisController extends Controller
                     ], 400);
                 } else {
 
-                    ErrorsLog::create([
-                        'description' => $emission_response['message'],
-                        'http_code' => $token->status(),
-                        'module' => 'CopsisChubbToken',
-                        'prefix_code' => $this->prefixCode . 'X1312'
-                    ]);
+                    if (isset($emission_response['message'])) {
+                        ErrorsLog::create([
+                            'description' => $emission_response['message'],
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisChubbToken',
+                            'prefix_code' => $this->prefixCode . 'X1312'
+                        ]);
 
-                    return response()->json([
-                        'title' => 'Error Copsis',
-                        'message' => $emission_response['message'],
-                        'code' => $this->prefixCode . 'X1313'
-                    ], 400);
+                        return response()->json([
+                            'title' => 'Error Copsis',
+                            'message' => $emission_response['message'],
+                            'code' => $this->prefixCode . 'X1312'
+                        ], 400);
+                    } else {
+
+                        ErrorsLog::create([
+                            'description' => $emission_response,
+                            'http_code' => $token->status(),
+                            'module' => 'CopsisQualitasEmission',
+                            'prefix_code' => $this->prefixCode . 'X1313'
+                        ]);
+
+                        return response()->json([
+                            'title' => 'Problema Conexión',
+                            'message' => 'Estamos teniendo inconvenientes para conectarte con la aseguradora, inténtelo nuevamente.',
+                            'code' => $this->prefixCode . 'X1313'
+                        ], 400);
+                    }
                 }
             }
 

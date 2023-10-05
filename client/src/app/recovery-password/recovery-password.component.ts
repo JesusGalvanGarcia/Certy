@@ -38,12 +38,12 @@ export class RecoveryPasswordComponent {
   makeForm() {
 
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
+      email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
     })
 
     this.recovery_form = this.fb.group({
       secure_code: ['', [Validators.required, Validators.pattern('\\+?[0-9]{6}')]],
-      password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?&]{4,}$')]],
+      password: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*.?&]{4,}$')]],
     })
   }
 

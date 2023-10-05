@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CopsisController;
+use App\Http\Controllers\CRMController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::post('/actualizePassword', [LoginController::class, 'actualizePassword'])
 Route::post('/quotations/lastUpdate', [QuotationController::class, 'lastUpdate']);
 Route::resource('/quotations', QuotationController::class);
 Route::resource('/clients', ClientController::class);
+Route::resource('/crm', CRMController::class);
 
 Route::post('/copsis/token', [CopsisController::class, 'token']);
 Route::post('/copsis/brand', [CopsisController::class, 'consultBrand']);

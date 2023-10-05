@@ -72,8 +72,8 @@ class LoginController extends Controller
                 'POST',
                 [
                     'grant_type' => 'password',
-                    'client_id' => 4,
-                    'client_secret' => 'ArRFhdEGQo0kSFADhNDmWYVNFGP9kYJbQTsOu4e3',
+                    'client_id' => 1,
+                    'client_secret' => 'byEVGR446mHHbhYH0OowUVMUzRNjfh4TQGZXCIRh',
                     'username' => $request->email,
                     'password' => $request->password,
                     'scope' => '',
@@ -163,8 +163,6 @@ class LoginController extends Controller
                     'password' => Hash::make($request->password),
                     'status_id' => 1
                 ]);
-
-                $user->assignRole(2);
             }
 
             $log_Data = [
@@ -179,8 +177,8 @@ class LoginController extends Controller
                 'POST',
                 [
                     'grant_type' => 'password',
-                    'client_id' => 4,
-                    'client_secret' => 'ArRFhdEGQo0kSFADhNDmWYVNFGP9kYJbQTsOu4e3',
+                    'client_id' => 1,
+                    'client_secret' => 'byEVGR446mHHbhYH0OowUVMUzRNjfh4TQGZXCIRh',
                     'username' => $request->email,
                     'password' => $request->password,
                     'scope' => '',
@@ -404,8 +402,8 @@ class LoginController extends Controller
                 'POST',
                 [
                     'grant_type' => 'password',
-                    'client_id' => 4,
-                    'client_secret' => 'ArRFhdEGQo0kSFADhNDmWYVNFGP9kYJbQTsOu4e3',
+                    'client_id' => 1,
+                    'client_secret' => 'byEVGR446mHHbhYH0OowUVMUzRNjfh4TQGZXCIRh',
                     'username' => $request->email,
                     'password' => $request->password,
                     'scope' => '',
