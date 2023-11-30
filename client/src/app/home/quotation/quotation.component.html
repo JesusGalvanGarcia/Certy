@@ -28,10 +28,11 @@
                 <p class="page-title">
                     Cotiza sin costo en menos de 30 segundos
                 </p>
-                <img class="car-image" src="./assets/images/Carro-Nuevo-2.png" alt="certy_car_logo">
+                <img class="car-image" src="./assets/images/aseguradoras-certy-seguros-escritorio.png" alt="certy_car_logo">
+                <img class="logos-image" src="./assets/images/aseguradoras-certy-seguros-movil.png" alt="certy_phone_logos">
             </div>
             <div class="col col-12 col-md-6">
-                <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+                <mat-stepper class="example-stepper" >
                     <mat-step [stepControl]="userFormGroup">
                         <form [formGroup]="userFormGroup">
                             <mat-form-field appearance="outline" class="example-full-width">
@@ -116,8 +117,9 @@
                                 <div class="col">
                                     <mat-form-field appearance="outline" class="example-full-width">
                                         <mat-label>Código Postal</mat-label>
-                                        <input matInput formControlName="cp" (change)="validateCp()" maxlength="5"
-                                            minlength="5">
+                                        <input matInput formControlName="cp" maxlength="5" minlength="5">
+                                        <!-- <input matInput formControlName="cp" (change)="validateCp()" maxlength="5"
+                                            minlength="5"> -->
                                         <mat-error class="animated fadeIn" *ngIf="invalidCp">
                                             <label class="animated fadeIn"
                                                 *ngIf="userFormGroup.get('cp').hasError('required')">
@@ -772,13 +774,14 @@
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Colonia</mat-label>
-                                <input type="text" matInput [formControl]="suburbControl"
-                                    [matAutocomplete]="suburb_auto">
-                                <mat-autocomplete autoActiveFirstOption #suburb_auto="matAutocomplete">
+                                <input type="text" matInput formControlName="suburb">
+                                <!-- <input type="text" matInput [formControl]="suburbControl"
+                                    [matAutocomplete]="suburb_auto"> -->
+                                <!-- <mat-autocomplete autoActiveFirstOption #suburb_auto="matAutocomplete">
                                     <mat-option *ngFor="let suburb of filteredSuburbs | async" [value]="suburb">
                                         {{ suburb }}
                                     </mat-option>
-                                </mat-autocomplete>
+                                </mat-autocomplete> -->
                                 <mat-error class="animated fadeIn" *ngIf="invalidSuburb">
                                     <label class="animated fadeIn" *ngIf="suburbControl.hasError('required')">
                                         La colonia es requerida.

@@ -4,6 +4,10 @@
     max-width: 500px;
 }
 
+.logos-image {
+    display: none;
+}
+
 .page-title {
     color: #0E2B4D;
     font-size: 50px;
@@ -184,6 +188,11 @@ th {
 
     .car-image {
         display: none;
+    }
+
+    .logos-image {
+        display: block;
+        width: 100%;
     }
 
     .page-title {

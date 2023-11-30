@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { QuotationService } from 'src/app/services/quotation.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
 
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -60,9 +61,10 @@ export class QuotationComponent {
 
   lastUserFormGroup: any = this._formBuilder.group({
     rfc: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(12), Validators.pattern('^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z0-9]{3})?$')]],
-    township: ['', [Validators.required, Validators.minLength(5)]],
-    state: ['', [Validators.required, Validators.minLength(5)]],
-    street: ['', [Validators.required, Validators.minLength(5)]],
+    township: ['', [Validators.required]],
+    suburb: ['', [Validators.required]],
+    state: ['', [Validators.required]],
+    street: ['', [Validators.required]],
     street_number: ['', [Validators.pattern('^[a-zA-z0-9-]+$')]],
     int_street_number: ['', [Validators.pattern('^[a-zA-z0-9-]+$')]]
   });
@@ -202,6 +204,20 @@ export class QuotationComponent {
         this.quotation_id = quotation_id ? quotation_id : 0;
       }
     );
+
+    this.userFormGroup.get('complete_name').valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value: string) => {
+        // Elimina el último espacio en blanco si existe
+        this.userFormGroup.patchValue({ complete_name: value.trim() });
+      });
+
+    this.registerFormGroup.get('complete_name').valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value: string) => {
+        // Elimina el último espacio en blanco si existe
+        this.registerFormGroup.patchValue({ complete_name: value.trim() });
+      });
   }
 
   ngOnInit(): void {
@@ -254,14 +270,15 @@ export class QuotationComponent {
           township: client.township,
           street: client.street,
           street_number: client.street_number,
-          int_street_number: client.int_street_number
+          int_street_number: client.int_street_number,
+          suburb: client.suburb
         })
 
-        this.suburbControl.patchValue(client.suburb)
+        // this.suburbControl.patchValue(client.suburb)
 
         if (client.cp) {
 
-          this.validateCp();
+          // this.validateCp();
         }
 
         if (this.quotation_id > 0) {
@@ -1244,7 +1261,8 @@ export class QuotationComponent {
 
   validateLastForms() {
 
-    if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid || this.suburbControl.invalid) { return; }
+    // if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid || this.suburbControl.invalid) { return; }
+    if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid) { return; }
 
     this.toPayPage();
   }
@@ -1264,7 +1282,8 @@ export class QuotationComponent {
     let clientInfo = {
       rfc: this.lastUserFormGroup.get('rfc').value,
       township: this.lastUserFormGroup.get('township').value,
-      suburb: this.suburbControl.value,
+      // suburb: this.suburbControl.value,
+      suburb: this.lastUserFormGroup.get('suburb').value,
       state: this.lastUserFormGroup.get('state').value,
       street: this.lastUserFormGroup.get('street').value,
       street_number: this.lastUserFormGroup.get('street_number').value,
@@ -1419,7 +1438,8 @@ export class QuotationComponent {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
           codigoPostal: this.userFormGroup.get('cp').value,
-          colonia: this.suburbControl.value,
+          // colonia: this.suburbControl.value,
+          colonia: this.lastUserFormGroup.get('suburb').value,
           numeroExterior: this.lastUserFormGroup.get('street_number').value,
           numeroInterior: this.lastUserFormGroup.get('int_street_number').value
         }
@@ -1510,7 +1530,8 @@ export class QuotationComponent {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
           codigoPostal: this.userFormGroup.get('cp').value,
-          colonia: this.suburbControl.value,
+          // colonia: this.suburbControl.value,
+          colonia: this.userFormGroup.get('suburb').value,
           numeroExterior: this.lastUserFormGroup.get('street_number').value,
           numeroInterior: this.lastUserFormGroup.get('int_street_number').value
         }
@@ -1601,7 +1622,8 @@ export class QuotationComponent {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
           codigoPostal: this.userFormGroup.get('cp').value,
-          colonia: this.suburbControl.value,
+          // colonia: this.suburbControl.value,
+          colonia: this.lastUserFormGroup.get('suburb').value,
           numeroExterior: this.lastUserFormGroup.get('street_number').value,
           numeroInterior: this.lastUserFormGroup.get('int_street_number').value
         }
@@ -1805,9 +1827,10 @@ export class QuotationComponent {
   get invalidStreet() {
     return this.lastUserFormGroup.get('street').invalid
   }
-
+  
   get invalidSuburb() {
-    return this.suburbControl.invalid
+    return this.lastUserFormGroup.get('suburb').invalid
+    // return this.suburbControl.invalid
   }
 
   get invalidTownship() {

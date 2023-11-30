@@ -4,6 +4,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -31,6 +32,12 @@ export class RegisterComponent {
   ngOnInit(): void {
 
     this.makeForm();
+    this.form.get('complete_name').valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((value: string) => {
+        // Elimina el último espacio en blanco si existe
+        this.form.patchValue({ complete_name: value.trim() });
+      });
   }
 
   makeForm() {
