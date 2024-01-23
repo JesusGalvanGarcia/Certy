@@ -26,7 +26,6 @@ class CRMService extends ServiceProvider
             ]);
 
         $content = json_decode($response, true);
-
         // Si la respuesta falla se inserta en un log los motivos de las fallas
         if ($response->failed()) {
 
@@ -35,7 +34,7 @@ class CRMService extends ServiceProvider
                 ErrorsLog::create([
                     'description' => $error,
                     'http_code' => $response->status(),
-                    'module' => 'CopsisController',
+                    'module' => 'CRMController',
                     'prefix_code' => 'CRMService'
                 ]);
             }
@@ -58,10 +57,7 @@ class CRMService extends ServiceProvider
                 "id_cliente" => $lead_data['client_id'],
                 "nombre" => $lead_data['name'],
                 "correo" => $lead_data['email'],
-                "celular" => $lead_data['phone'],
                 "fecha_movimiento" => Carbon::now(),
-                "edad" => $lead_data['age'],
-                "sexo" => $lead_data['genre'],
                 "estado_proceso" => $lead_data['process_description'],
                 "modelo" => $lead_data['model'],
                 "marca" => $lead_data['brand'],

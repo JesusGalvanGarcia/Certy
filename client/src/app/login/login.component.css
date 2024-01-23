@@ -12,6 +12,13 @@
     max-width: 15px;
 }
 
+.page-title {
+    color: #0E2B4D;
+    font-size: 50px;
+    font-weight: bolder;
+    text-justify: auto;
+}
+
 .card-text {
     margin-top: 45px;
     margin-bottom: 50px;
@@ -28,4 +35,12 @@ mat-card {
 
 .example-full-width {
     width: 100%;
+}
+
+
+@media screen and (max-width: 800px) {
+
+    .page-title {
+        font-size: 20px;
+    }
 }

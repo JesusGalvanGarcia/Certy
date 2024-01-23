@@ -45,7 +45,7 @@
                                 style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
                                 [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
                         </li>
-                        <li class="nav-item" *ngIf="!authenticated">
+                        <li class="nav-item" *ngIf="!authenticated && showCotizaButton">
                             <button type="button" class="btn btn-info mb-2 mt-2"
                                 style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; margin-right: 10px;"
                                 [routerLink]="['/cotizacion']">
@@ -140,11 +140,11 @@
             </div>
             <div class="box">
                 <div class="social-web">
-                    <a href="https://www.facebook.com/FinancieraTrinitas/">
+                    <a href="https://www.facebook.com/profile.php?id=61553537730019">
                         <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-06.png" style="max-width: 13px;"
                             alt="Facebook Logo">
                     </a>
-                    <a href="https://www.instagram.com/trinitas.mx/">
+                    <a href="https://www.instagram.com/certy.trinitas/">
                         <img class="navbar-brand" src="./assets/images/Iconos_Web_Certy-07.png" alt="Intagram Logo">
                     </a>
                     <a href="https://twitter.com/Trinitas_Mx?s=20">

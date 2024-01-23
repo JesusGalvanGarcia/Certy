@@ -437,12 +437,12 @@ class CopsisController extends Controller
 
             // Se validan los datos de entrada
             $validator = Validator::make($request->all(), [
-                'complete_name' => 'Required|String',
+                // 'complete_name' => 'Required|String',
                 'email' => 'Required|Email',
-                'cellphone' => 'Required|Numeric|MinDigits:10|MaxDigits:12',
+                // 'cellphone' => 'Required|Numeric|MinDigits:10|MaxDigits:12',
                 'cp' => 'Required|Integer|NotIn:0|Digits:5',
-                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
-                'genre' => 'Required|String',
+                // 'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+                // 'genre' => 'Required|String',
                 'amis' => 'Required|String',
                 'model' => 'Required|Integer|NotIn:0|Digits:4|Min:2003',
                 'unit_type' => 'Required|String'
@@ -463,26 +463,17 @@ class CopsisController extends Controller
 
                 // Almacenamiento de la información de contacto del cliente
                 Client::create([
-                    'complete_name' => $request->complete_name,
                     'email' => $request->email,
-                    'cellphone' => $request->cellphone,
                     'cp' => $request->cp,
-                    'age' => $request->age,
-                    'genre' => $request->genre,
-                    'status_id' => 1
+                    'status_id' => 4
                 ]);
 
             else {
 
-                if (!$client->cellphone || ($client->complete_name != $request->complete_name))
-                    // Se actualiza la información del cliente
-                    $client->update([
-                        'complete_name' => $request->complete_name,
-                        'cellphone' => $request->cellphone,
-                        'cp' => $request->cp,
-                        'age' => $request->age,
-                        'genre' => $request->genre
-                    ]);
+                // Se actualiza la información del cliente
+                $client->update([
+                    'cp' => $request->cp
+                ]);
             }
 
             // Conexión con Copsis, el valor grupoNegocioID y tipoHomologacion son fijos
@@ -556,8 +547,8 @@ class CopsisController extends Controller
                 'pack' => 'Required|Integer|NotIn:0',
                 'payment_frequency' => 'Required|String',
                 'cp' => 'Required|Integer|NotIn:0|Digits:5',
-                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
-                'genre' => 'Required|String',
+                // 'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+                // 'genre' => 'Required|String',
                 'vehicle' => 'Required|Array'
             ]);
 
@@ -599,11 +590,11 @@ class CopsisController extends Controller
                     'vigenciaA' => Carbon::now()->addYear()->format('Y-m-d'),
                     'frecuenciaPago' => $request->payment_frequency,
                     'tipoSuma' => "COMERCIAL",
-                    'plataforma' =>   "CERTY",
+                    'plataforma' => "CERTY",
                     'vehiculo' => $request->vehicle,
                     'asegurado' => [
-                        'edad' => $request->age,
-                        'sexo' => $request->genre,
+                        'edad' => 27,
+                        'sexo' => 'MASCULINO',
                         'tipoPersona' => "FISICA",
                         'codigoPostal' => $request->cp
                     ]
@@ -696,8 +687,8 @@ class CopsisController extends Controller
                 'pack' => 'Required|Integer|NotIn:0',
                 'payment_frequency' => 'Required|String',
                 'cp' => 'Required|Integer|NotIn:0|Digits:5',
-                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
-                'genre' => 'Required|String',
+                // 'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+                // 'genre' => 'Required|String',
                 'vehicle' => 'Required|Array'
             ]);
 
@@ -741,8 +732,8 @@ class CopsisController extends Controller
                     'plataforma' =>   "CERTY",
                     'vehiculo' => $request->vehicle,
                     'asegurado' => [
-                        'edad' => $request->age,
-                        'sexo' => $request->genre,
+                        'edad' => 27,
+                        'sexo' => 'MASCULINO',
                         'tipoPersona' => "FISICA",
                         'codigoPostal' => $request->cp
                     ]
@@ -1018,8 +1009,8 @@ class CopsisController extends Controller
             // Se validan los datos del vehículo
             $vehicle_validator = Validator::make($request->vehiculo, [
                 'serie' => 'Required|String',
-                'placas' => 'String',
-                'motor' => 'String'
+                'placas' => 'String|Nullable',
+                'motor' => 'String|Nullable'
             ]);
 
             // Respuesta en caso de que la validación del vehículo falle
@@ -1320,8 +1311,8 @@ class CopsisController extends Controller
             // Se validan los datos del vehículo
             $vehicle_validator = Validator::make($request->vehiculo, [
                 'serie' => 'Required|String',
-                'placas' => 'String',
-                'motor' => 'String'
+                'placas' => 'String|Nullable',
+                'motor' => 'String|Nullable'
             ]);
 
             // Respuesta en caso de que la validación del vehículo falle
@@ -2278,8 +2269,8 @@ class CopsisController extends Controller
                 'pack' => 'Required|Integer|NotIn:0',
                 'payment_frequency' => 'Required|String',
                 'cp' => 'Required|Integer|NotIn:0|Digits:5',
-                'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
-                'genre' => 'Required|String',
+                // 'age' => 'Required|Integer|NotIn:0|Min:18|MaxDigits:3',
+                // 'genre' => 'Required|String',
                 'vehicle' => 'Required|Array'
             ]);
 
@@ -2324,8 +2315,8 @@ class CopsisController extends Controller
                     'plataforma' => "CERTY",
                     'vehiculo' => $request->vehicle,
                     'asegurado' => [
-                        'edad' => $request->age,
-                        'sexo' => $request->genre,
+                        'edad' => 27,
+                        'sexo' => 'MASCULINO',
                         'tipoPersona' => "FISICA",
                         'codigoPostal' => $request->cp
                     ]

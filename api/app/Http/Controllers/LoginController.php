@@ -138,7 +138,7 @@ class LoginController extends Controller
             }
 
             // Consulta que al usuario
-            $user = Client::where([['email', $request->email]])->whereIn('status_id', [1, 3])->first();
+            $user = Client::where([['email', $request->email]])->first();
 
             DB::beginTransaction();
 
@@ -155,9 +155,16 @@ class LoginController extends Controller
 
 
                 // Caso contrario se asigna la contraseña al usuario y se crea desde el proceso de cotización.
-                $user->update([
-                    'password' => Hash::make($request->password)
-                ]);
+                if ($user->status_id == 4)
+                    $user->update([
+                        'complete_name' => $request->complete_name,
+                        'password' => Hash::make($request->password),
+                        'status_id' => 1
+                    ]);
+                else
+                    $user->update([
+                        'password' => Hash::make($request->password)
+                    ]);
             } else {
 
                 //Si no existe se crea al usuario
@@ -172,8 +179,7 @@ class LoginController extends Controller
             $log_Data = [
                 'user_id' => $user->id,
                 'email' => $user->email,
-                'user_name' => $user->complete_name,
-                'role' => 2
+                'user_name' => $user->complete_name
             ];
 
             $log_on = Request::create(

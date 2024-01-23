@@ -30,9 +30,6 @@ class CRMController extends Controller
                 "client_id" => $request->client_id,
                 "name" => $request->complete_name,
                 "email" => $request->email,
-                "phone" => $request->phone,
-                "age" => $request->age,
-                "genre" => $request->genre,
                 "process_description" => $request->process_description,
                 "model" => $request->model,
                 "brand" => $request->brand,
@@ -51,7 +48,7 @@ class CRMController extends Controller
             else
                 return response()->json([
                     'title' => 'Proceso concluido',
-                    'message' => 'Lead actualizado correctamente',
+                    'message' => 'Lead creado correctamente',
                     'crm_id' => $response['id']
                 ]);
             // return $lead;

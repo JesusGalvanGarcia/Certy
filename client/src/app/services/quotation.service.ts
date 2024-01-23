@@ -14,10 +14,10 @@ export class QuotationService {
   constructor() {
 
     this.copsis_api_conect = axios.create({
-      baseURL: 'https://sandbox.moffin.mx/api/v1',
+      baseURL: 'https://app.moffin.mx/api/v1',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer b41df88be73704d091a3ab28c317f04e115d5c6929401caba4943951e9b59468'
+        'Authorization': 'Bearer 1a9df5fd728a290a7410cf693ac1a25cccd9bf63e53d0286d764161a48427b37'
       },
 
     })
@@ -336,7 +336,7 @@ export class QuotationService {
 
     return this.api_conect.put('/crm/1', leadData)
       .then(({ data }: any) => {
-
+        console.log(data)
         return data;
       })
       .catch(({ response }: any) => {

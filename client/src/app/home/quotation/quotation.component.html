@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="container animated fadeIn" style="margin-top: 50px; margin-bottom: 40px;">
+    <div class="container animated fadeIn" style="margin-top: 15px; margin-bottom: 40px;">
         <div class="row row-cols-1 row-cols-md-2" *ngIf="initial_page">
             <div class="col col-md-6">
                 <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
@@ -28,157 +28,30 @@
                 <p class="page-title">
                     Cotiza sin costo en menos de 30 segundos
                 </p>
-                <img class="car-image" src="./assets/images/aseguradoras-certy-seguros-escritorio.png" alt="certy_car_logo">
-                <img class="logos-image" src="./assets/images/aseguradoras-certy-seguros-movil.png" alt="certy_phone_logos">
+                <img class="car-image" src="./assets/images/aseguradoras-certy-seguros-escritorio.png"
+                    alt="certy_car_logo">
+                <div class="row row-cols-2">
+                    <div class="col">
+                        <img class="logos-image" src="./assets/images/logotipos-certy-qualitas.png"
+                            alt="certy_car_logo">
+                    </div>
+                    <div class="col">
+                        <img class="logos-image" src="./assets/images/logotipos-certy-primero-seguros.png"
+                            alt="certy_car_logo">
+                    </div>
+                    <div class="col">
+                        <img class="logos-image" src="./assets/images/logotipos-certy-chubb.png" alt="certy_car_logo">
+                    </div>
+                    <div class="col">
+                        <img class="logos-image" src="./assets/images/logotipos-certy-cire.png" alt="certy_car_logo">
+                    </div>
+                </div>
             </div>
             <div class="col col-12 col-md-6">
-                <mat-stepper class="example-stepper" >
-                    <mat-step [stepControl]="userFormGroup">
-                        <form [formGroup]="userFormGroup">
-                            <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Nombre y Apellidos</mat-label>
-                                <input matInput formControlName="complete_name" style="margin-bottom: 0px;">
-                                <mat-error class="animated fadeIn" *ngIf="invalidCompleteName">
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('complete_name').hasError('required')"
-                                        style="margin-top: 0px;">
-                                        El nombre y apellidos son requeridos.
-                                    </label>
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('complete_name').hasError('minlength')">
-                                        El nombre y apellidos debe contener al menos
-                                        {{userFormGroup.get('complete_name').errors.minlength.requiredLength}}
-                                        caracteres.
-                                    </label>
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('complete_name').hasError('pattern')">
-                                        El nombre es incorrecto, se ocupan al menos un nombre y apellidos.
-                                    </label>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Correo Electrónico</mat-label>
-                                <input matInput formControlName="email">
-                                <mat-error class="animated fadeIn" *ngIf="invalidEmail">
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('email').hasError('required')">
-                                        El correo electrónico es requerido.
-                                    </label>
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('email').hasError('pattern')">
-                                        El correo electrónico es invalido.
-                                    </label>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Teléfono</mat-label>
-                                <input matInput formControlName="cellphone" maxlength="10">
-                                <mat-error class="animated fadeIn" *ngIf="invalidCellphone">
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('cellphone').hasError('required')">
-                                        El teléfono es requerido.
-                                    </label>
-                                    <label class="animated fadeIn"
-                                        *ngIf="userFormGroup.get('cellphone').hasError('pattern')">
-                                        El teléfono es invalido.
-                                    </label>
-                                </mat-error>
-                            </mat-form-field>
-
-                            <div class="row">
-                                <div class="col">
-                                    <mat-form-field appearance="outline" class="example-full-width">
-                                        <mat-label>Edad</mat-label>
-                                        <input matInput formControlName="age" maxlength="2">
-                                        <mat-error class="animated fadeIn" *ngIf="invalidAge">
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('age').hasError('required')">
-                                                La edad es requerida.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('age').hasError('min')">
-                                                La edad debe ser igual o mayor a
-                                                {{userFormGroup.get('age').errors.min.min}}
-                                                años.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('age').hasError('maxlength')">
-                                                La edad debe contener
-                                                {{userFormGroup.get('age').errors.maxlength.requiredLength}}
-                                                caracteres.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('age').hasError('pattern')">
-                                                La edad es invalida.
-                                            </label>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col">
-                                    <mat-form-field appearance="outline" class="example-full-width">
-                                        <mat-label>Código Postal</mat-label>
-                                        <input matInput formControlName="cp" maxlength="5" minlength="5">
-                                        <!-- <input matInput formControlName="cp" (change)="validateCp()" maxlength="5"
-                                            minlength="5"> -->
-                                        <mat-error class="animated fadeIn" *ngIf="invalidCp">
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('cp').hasError('required')">
-                                                El código postal es requerido.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('cp').hasError('minlength')">
-                                                El código postal debe contener
-                                                {{userFormGroup.get('cp').errors.minlength.requiredLength}}
-                                                caracteres.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('cp').hasError('maxlength')">
-                                                El código postal debe contener
-                                                {{userFormGroup.get('cp').errors.maxlength.requiredLength}}
-                                                caracteres.
-                                            </label>
-                                            <label class="animated fadeIn"
-                                                *ngIf="userFormGroup.get('cp').hasError('pattern')">
-                                                El código postal es invalido.
-                                            </label>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col" align="start">
-                                    <mat-button-toggle-group #group="matButtonToggleGroup" style="border: 0px"
-                                        formControlName="genre">
-                                        <mat-button-toggle value="FEMENINO"
-                                            [class.make-activeF]="userFormGroup.get('genre').value == 'FEMENINO'"
-                                            [class.make-inactiveF]="userFormGroup.get('genre').value == 'MASCULINO' || !userFormGroup.get('genre').value"
-                                            style="color:white; margin-right: 10px; border-radius: 10px;">
-                                            <mat-icon>woman</mat-icon>
-                                        </mat-button-toggle>
-                                        <mat-button-toggle value="MASCULINO"
-                                            [class.make-activeM]="userFormGroup.get('genre').value == 'MASCULINO'"
-                                            [class.make-inactiveM]="userFormGroup.get('genre').value == 'FEMENINO' || !userFormGroup.get('genre').value"
-                                            style="color:white; margin-left: 10px; border-radius: 10px;">
-                                            <mat-icon>man</mat-icon>
-                                        </mat-button-toggle>
-                                    </mat-button-toggle-group>
-                                </div>
-                                <div class="col mt-4" align="end">
-                                    <button type="button" mat-button matStepperNext class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
-                                        [disabled]="userFormGroup.invalid"
-                                        (click)="checkSessionIsActive(1);">Siguiente</button>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-step>
-                    <mat-step [stepControl]="vehicleFormGroup" [editable]="userFormGroup.invalid">
+                <mat-stepper class="example-stepper">
+                    <mat-step [stepControl]="vehicleFormGroup">
                         <form [formGroup]="vehicleFormGroup" (submit)="validateForms();">
-                            <div class="row mt-4">
-                                <!-- <div class="col" align="start">
-                                    <button mat-button matStepperPrevious class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
-                                </div> -->
+                            <div class="row">
                                 <div class="col" align="start">
                                     <mat-radio-group aria-label="Select an option" formControlName="unit_type"
                                         color="primary">
@@ -248,16 +121,53 @@
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Correo Electrónico</mat-label>
+                                <input matInput formControlName="email">
+                                <mat-error class="animated fadeIn" *ngIf="invalidEmail">
+                                    <label class="animated fadeIn"
+                                        *ngIf="vehicleFormGroup.get('email').hasError('required')">
+                                        El correo electrónico es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="vehicleFormGroup.get('email').hasError('pattern')">
+                                        El correo electrónico es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
                             <div class="row">
-                                <!-- <div class="col" align="start">
-                                    <button mat-button matStepperPrevious class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
-                                </div> -->
-                                <div class="col" align="start">
+                                <div class="col">
+                                    <mat-form-field appearance="outline" class="example-full-width">
+                                        <mat-label>Código Postal</mat-label>
+                                        <!-- <input matInput formControlName="cp" maxlength="5" minlength="5"> -->
+                                        <input matInput formControlName="cp" (change)="validateCp()" maxlength="5"
+                                            minlength="5">
+                                        <mat-error class="animated fadeIn" *ngIf="invalidCp">
+                                            <label class="animated fadeIn"
+                                                *ngIf="vehicleFormGroup.get('cp').hasError('required')">
+                                                El código postal es requerido.
+                                            </label>
+                                            <label class="animated fadeIn"
+                                                *ngIf="vehicleFormGroup.get('cp').hasError('minlength')">
+                                                El código postal debe contener
+                                                {{vehicleFormGroup.get('cp').errors.minlength.requiredLength}}
+                                                caracteres.
+                                            </label>
+                                            <label class="animated fadeIn"
+                                                *ngIf="vehicleFormGroup.get('cp').hasError('maxlength')">
+                                                El código postal debe contener
+                                                {{vehicleFormGroup.get('cp').errors.maxlength.requiredLength}}
+                                                caracteres.
+                                            </label>
+                                            <label class="animated fadeIn"
+                                                *ngIf="vehicleFormGroup.get('cp').hasError('pattern')">
+                                                El código postal es invalido.
+                                            </label>
+                                        </mat-error>
+                                    </mat-form-field>
                                 </div>
                                 <div class="col mt-4" align="end">
-                                    <button type="submit" mat-button matStepperNext class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                    <button type="submit" mat-button matStepperNext class="btn btn-info form-button"
                                         [disabled]="vehicleFormGroup.invalid">Continuar</button>
                                 </div>
                             </div>
@@ -327,7 +237,7 @@
                             this.vehicleFormGroup.get('model').value }}
                         </div>
                         <div class="col">
-                            <label class="quotation-label-title"> C.P : </label> {{ userFormGroup.get('cp').value }}
+                            <label class="quotation-label-title"> C.P : </label> {{ vehicleFormGroup.get('cp').value }}
                         </div>
                     </div>
                 </div>
@@ -645,23 +555,27 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2" *ngIf="last_data_page">
-            <div class="col col-md-6">
+            <div class="col col-12 col-md-6">
                 <img class="navbar-brand mb-4" src="./assets/images/Iconos_Web_Certy-02.png" alt="certy_logo"
                     style="max-width: 50px;">
-                <p style="color:#0E2B4D; font-size: 50px; font-weight: bolder; text-justify: auto;">
+                <p class="page-title">
                     Completa los últimos datos para emitir tu póliza.
                 </p>
-                <img class="navbar-brand" src="./assets/images/Carro-Nuevo-1.png" alt="certy_logo"
-                    style="max-width: 500px;">
+                <img class="img-fluid" src="./assets/images/Carro-Nuevo-1.png" alt="certy_logo">
             </div>
             <div class="col col-12 col-md-6">
-                <mat-stepper class="example-stepper" [orientation]="(stepperOrientation | async)!">
+                <mat-stepper class="example-stepper">
                     <mat-step [stepControl]="lastVehicleFormGroup">
                         <form [formGroup]="lastVehicleFormGroup">
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Número de Serie</mat-label>
                                 <input formControlName="serial_no" matInput style="margin-bottom: 0px;" minlength="15"
                                     maxlength="17">
+                                <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                                    aria-expanded="false" aria-controls="collapseExample" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="1">
+                                    <mat-icon>help</mat-icon>
+                                </button>
                                 <mat-error class="animated fadeIn" *ngIf="invalidSerialNumber">
                                     <label class="animated fadeIn"
                                         *ngIf="lastVehicleFormGroup.get('serial_no').hasError('required')"
@@ -686,8 +600,23 @@
                                     </label>
                                 </mat-error>
                             </mat-form-field>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    <label class="help-text">Tu número de serie, VIN o NIV consiste en 17 dígitos que
+                                        identificaran a tu
+                                        auto,
+                                        suele estar grabado en una placa o calcomanía.
+                                    </label>
+                                    <label class="second-help-text">Este número puede
+                                        ubicarse en
+                                        tu tarjeta de circulación, la parte interna del chofer (especificamente, la
+                                        contra de la puerta en la carrocería), en el tablero, en un lugar visibledel
+                                        motor o tu cajuela!.
+                                    </label>
+                                </div>
+                            </div>
                             <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Número de Placas</mat-label>
+                                <mat-label>Número de Placas (Opcional)</mat-label>
                                 <input matInput formControlName="plate_no" minlength="6" maxlength="7"
                                     (keyup)="lastVehicleFormGroup.patchValue({plate_no: lastVehicleFormGroup.get('plate_no').value.toUpperCase()})">
                                 <mat-error class="animated fadeIn" *ngIf="invalidPlateNumber">
@@ -714,7 +643,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Número de Motor</mat-label>
+                                <mat-label>Número de Motor (Opcional)</mat-label>
                                 <input matInput formControlName="motor_no" maxlength="17">
                                 <mat-error class="animated fadeIn" *ngIf="invalidMotorNumber">
                                     <label class="animated fadeIn"
@@ -731,8 +660,7 @@
                                 <div class="col" align="start">
                                 </div>
                                 <div class="col" align="end">
-                                    <button mat-button matStepperNext class="btn btn-info"
-                                        style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                    <button mat-button matStepperNext class="btn btn-info form-button"
                                         [disabled]="lastVehicleFormGroup.invalid||versionControl.invalid">Siguiente</button>
                                 </div>
                             </div>
@@ -740,6 +668,41 @@
                     </mat-step>
                     <mat-step [stepControl]="lastUserFormGroup">
                         <form [formGroup]="lastUserFormGroup" (submit)="validateLastForms();">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Nombre y Apellidos</mat-label>
+                                <input matInput formControlName="complete_name" style="margin-bottom: 0px;">
+                                <mat-error class="animated fadeIn" *ngIf="invalidCompleteName">
+                                    <label class="animated fadeIn"
+                                        *ngIf="lastUserFormGroup.get('complete_name').hasError('required')"
+                                        style="margin-top: 0px;">
+                                        El nombre y apellidos son requeridos.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="lastUserFormGroup.get('complete_name').hasError('minlength')">
+                                        El nombre y apellidos debe contener al menos
+                                        {{lastUserFormGroup.get('complete_name').errors.minlength.requiredLength}}
+                                        caracteres.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="lastUserFormGroup.get('complete_name').hasError('pattern')">
+                                        El nombre es incorrecto, se ocupan al menos un nombre y apellidos.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Teléfono</mat-label>
+                                <input matInput formControlName="cellphone" maxlength="10">
+                                <mat-error class="animated fadeIn" *ngIf="invalidCellphone">
+                                    <label class="animated fadeIn"
+                                        *ngIf="lastUserFormGroup.get('cellphone').hasError('required')">
+                                        El teléfono es requerido.
+                                    </label>
+                                    <label class="animated fadeIn"
+                                        *ngIf="lastUserFormGroup.get('cellphone').hasError('pattern')">
+                                        El teléfono es invalido.
+                                    </label>
+                                </mat-error>
+                            </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>RFC</mat-label>
                                 <input matInput style="margin-bottom: 0px;" formControlName="rfc"
@@ -757,7 +720,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
-                                <mat-label>Calle</mat-label>
+                                <mat-label>Calle y Número</mat-label>
                                 <input matInput formControlName="street">
                                 <mat-error class="animated fadeIn" *ngIf="invalidStreet">
                                     <label class="animated fadeIn"
@@ -774,14 +737,14 @@
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Colonia</mat-label>
-                                <input type="text" matInput formControlName="suburb">
-                                <!-- <input type="text" matInput [formControl]="suburbControl"
-                                    [matAutocomplete]="suburb_auto"> -->
-                                <!-- <mat-autocomplete autoActiveFirstOption #suburb_auto="matAutocomplete">
+                                <!-- <input type="text" matInput formControlName="suburb"> -->
+                                <input type="text" matInput [formControl]="suburbControl"
+                                    [matAutocomplete]="suburb_auto">
+                                <mat-autocomplete autoActiveFirstOption #suburb_auto="matAutocomplete">
                                     <mat-option *ngFor="let suburb of filteredSuburbs | async" [value]="suburb">
                                         {{ suburb }}
                                     </mat-option>
-                                </mat-autocomplete> -->
+                                </mat-autocomplete>
                                 <mat-error class="animated fadeIn" *ngIf="invalidSuburb">
                                     <label class="animated fadeIn" *ngIf="suburbControl.hasError('required')">
                                         La colonia es requerida.
@@ -833,63 +796,13 @@
                             </div>
 
                             <div>
-                                <div class="row row-cols-1 row-cols-2">
-                                    <div class="col col-12 col-md-6" align="start">
-                                        <mat-form-field appearance="outline" class="example-full-width">
-                                            <mat-label>Número interior</mat-label>
-                                            <input matInput formControlName="int_street_number" maxlength="8">
-                                            <mat-error class="animated fadeIn" *ngIf="invalidIntStreetNumber">
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('int_street_number').hasError('required')">
-                                                    El número interior es requerido.
-                                                </label>
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('int_street_number').hasError('minlength')">
-                                                    El número interior debe contener al menos
-                                                    {{lastUserFormGroup.get('int_street_number').errors.minlength.requiredLength}}
-                                                    caracteres.
-                                                </label>
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('int_street_number').hasError('pattern')">
-                                                    El número interior es invalido.
-                                                </label>
-                                            </mat-error>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col col-12 col-md-6" align="end">
-                                        <mat-form-field appearance="outline" class="example-full-width">
-                                            <mat-label>Número exterior</mat-label>
-                                            <input matInput formControlName="street_number" maxlength="8">
-                                            <mat-error class="animated fadeIn" *ngIf="invalidStreetNumber">
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('street_number').hasError('required')">
-                                                    El número exterior es requerido.
-                                                </label>
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('street_number').hasError('minlength')">
-                                                    El número exterior debe contener al menos
-                                                    {{lastUserFormGroup.get('street_number').errors.minlength.requiredLength}}
-                                                    caracteres.
-                                                </label>
-                                                <label class="animated fadeIn"
-                                                    *ngIf="lastUserFormGroup.get('street_number').hasError('pattern')">
-                                                    El número exterior es invalido.
-                                                </label>
-                                            </mat-error>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
                                 <div class="row">
                                     <div class="col" align="start">
-                                        <button mat-button matStepperPrevious class="btn btn-info"
-                                            style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;">Regresar</button>
+                                        <button mat-button matStepperPrevious
+                                            class="btn btn-info form-button">Regresar</button>
                                     </div>
                                     <div class="col" align="end">
-                                        <button type="submit" mat-button class="btn btn-info"
-                                            style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; min-height: 40px;"
+                                        <button type="submit" mat-button class="btn btn-info form-button"
                                             [disabled]="lastUserFormGroup.invalid">
                                             Ir a Pago
                                         </button>
@@ -898,17 +811,13 @@
                             </div>
                         </form>
                     </mat-step>
-                    <mat-step readonly>
-                        <ng-template matStepLabel></ng-template>
-                        <p>Cargando pantalla...</p>
-                    </mat-step>
                 </mat-stepper>
             </div>
         </div>
 
         <div *ngIf="pay_page" align="center">
             <div class="row mt-4 mb-4" align="center">
-                <label style="color:#0E2B4D; font-size: 60px; font: normal normal bold 60px/73px Montserrat;">
+                <label class="page-title">
                     ¡Muchas gracias por elegirnos!
                 </label>
             </div>
@@ -950,7 +859,7 @@
                             <label class="pay-card-title">Dirección: </label>
                             <p class="pay-card-paragraph">Calle: {{lastUserFormGroup.get('street').value}}</p>
                             <p class="pay-card-paragraph">Colonia: {{suburbControl.value}}</p>
-                            <p class="pay-card-paragraph">Código Postal: {{userFormGroup.get('cp').value}}</p>
+                            <p class="pay-card-paragraph">Código Postal: {{vehicleFormGroup.get('cp').value}}</p>
                             <p class="pay-card-paragraph">RFC: {{lastUserFormGroup.get('rfc').value}}</p>
                         </div>
                         <div class="col col-12 col-md-6" align="start">
@@ -961,11 +870,30 @@
                                 </mat-radio-group>
                             </p>
                             <p>
-                                <button type="button" class="btn btn-primary btn-lg" style="border-radius: 20px;"
-                                    (click)="checkToPay();">
+                                <button type="button" class="btn btn-primary btn-lg form-button mb-2"
+                                    style="border-radius: 20px;" (click)="checkToPay();">
                                     Pagar Póliza
                                 </button>
                             </p>
+                            <div class="row row-cols-4">
+                                <div class="col col-3">
+                                    <div class="col" align="end">
+                                        <img class="img-fluid mb-4" src="./assets/images/Visa_Inc._logo.svg.webp"
+                                            alt="certy_logo">
+                                    </div>
+                                </div>
+                                <div class="col col-3">
+                                    <img class="img-fluid mb-4" src="./assets/images/Mastercard-logo.svg.webp"
+                                        alt="certy_logo">
+                                </div>
+                                <div class="col col-3">
+                                    <img class="img-fluid mb-4" src="./assets/images/American_Express_logo.png"
+                                        alt="certy_logo">
+                                </div>
+                                <div class="col col-3">
+                                    <img class="img-fluid mb-4" src="./assets/images/logo-Paypal.png" alt="certy_logo">
+                                </div>
+                            </div>
                             <p>
                                 <button type="button" mat-button (click)="returnLastDataPage();">
                                     Regresar
@@ -1000,7 +928,7 @@
                                                 <span matListItemLine>Descripción: ENCORE PAQ GC SPORT TOURING L3 SIDI
                                                     AUT 5
                                                     ABS CA CE PIEL SM CQ CB</span>
-                                                <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                                <span matListItemLine>C.P. {{vehicleFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
                                         </mat-list>
@@ -1114,7 +1042,7 @@
                                                     {{vehicleFormGroup.get('model').value}}</span>
                                                 <span matListItemLine>Descripción: {{ qualitas_quotation?.descripcion
                                                     }}</span>
-                                                <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                                <span matListItemLine>C.P. {{vehicleFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
                                         </mat-list>
@@ -1232,7 +1160,7 @@
                                                     {{vehicleFormGroup.get('model').value}}</span>
                                                 <span matListItemLine>Descripción: {{ chuub_quotation?.descripcion
                                                     }}</span>
-                                                <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                                <span matListItemLine>C.P. {{vehicleFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
                                         </mat-list>
@@ -1350,7 +1278,7 @@
                                                     {{vehicleFormGroup.get('model').value}}</span>
                                                 <span matListItemLine>Descripción: {{ primero_quotation?.descripcion
                                                     }}</span>
-                                                <span matListItemLine>C.P. {{userFormGroup.get('cp').value}}</span>
+                                                <span matListItemLine>C.P. {{vehicleFormGroup.get('cp').value}}</span>
                                                 <span matListItemLine>Vigencia: 1 Año</span>
                                             </mat-list-item>
                                         </mat-list>
@@ -1551,11 +1479,11 @@
                                     <mat-error class="animated fadeIn" *ngIf="invalidRegisterCompleteName">
                                         <label class="animated fadeIn"
                                             *ngIf="registerFormGroup.get('complete_name').hasError('required')">
-                                            El nombre es requerido.
+                                            El nombre y apellidos son requeridos.
                                         </label>
                                         <label class="animated fadeIn"
                                             *ngIf="registerFormGroup.get('complete_name').hasError('minlength')">
-                                            El nombre debe contener al menos
+                                            El nombre y apellidos deben contener al menos
                                             {{registerFormGroup.get('complete_name').errors.minlength.requiredLength }}
                                             caracteres.
                                         </label>

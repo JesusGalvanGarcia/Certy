@@ -15,6 +15,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LoginService } from '../../services/login.service';
 import { TemplateComponent } from '../shared/template/template.component';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-quotation',
@@ -32,21 +33,13 @@ export class QuotationComponent {
   types: any
   versions: any
 
-  userFormGroup: any = this._formBuilder.group({
-    // complete_name: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?!.* $)[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?(?:[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+)?$')]],
-    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
-    email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
-    cellphone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
-    age: ['', [Validators.required, Validators.min(18), Validators.pattern('[0-9]{1,2}')]],
-    cp: ['', [Validators.required, Validators.pattern('\\+?[0-9]{5}')]],
-    genre: ['', [Validators.required]]
-  });
-
   vehicleFormGroup: any = this._formBuilder.group({
     model: ['', [Validators.required, Validators.pattern('\\+?[0-9]{4}')]],
     brand_id: ['', [Validators.required, Validators.pattern('\\+?[0-9A-Za-z]{1,3}')]],
     type: ['', [Validators.required]],
-    unit_type: ['AUTO', [Validators.required]]
+    unit_type: ['AUTO', [Validators.required]],
+    email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
+    cp: ['', [Validators.required, Validators.pattern('\\+?[0-9]{5}')]],
   });
 
   // Version control
@@ -60,13 +53,12 @@ export class QuotationComponent {
   });
 
   lastUserFormGroup: any = this._formBuilder.group({
+    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
+    cellphone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
     rfc: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(12), Validators.pattern('^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z0-9]{3})?$')]],
     township: ['', [Validators.required]],
-    suburb: ['', [Validators.required]],
     state: ['', [Validators.required]],
-    street: ['', [Validators.required]],
-    street_number: ['', [Validators.pattern('^[a-zA-z0-9-]+$')]],
-    int_street_number: ['', [Validators.pattern('^[a-zA-z0-9-]+$')]]
+    street: ['', [Validators.required]]
   });
 
   stepperOrientation: Observable<StepperOrientation>;
@@ -143,7 +135,7 @@ export class QuotationComponent {
   });
 
   registerFormGroup: any = this._formBuilder.group({
-    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){0,6}$')]],
+    complete_name: ['', [Validators.required, Validators.pattern('^[A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]{1,}(?: [A-ZÁÉÍÓÚa-zñáéíóú\u00f1\u00d1\s]+){2,6}$')]],
     email: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$')]],
     password: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9\d@$!%*?.&]{4,}$')]],
     terms: [null, Validators.requiredTrue]
@@ -186,7 +178,8 @@ export class QuotationComponent {
     private _templateComponent: TemplateComponent,
     private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver,
     private router: Router,
-    private rutaActiva: ActivatedRoute
+    private rutaActiva: ActivatedRoute,
+    private viewportScroller: ViewportScroller
   ) {
 
     if (localStorage.getItem('Certy_token')) {
@@ -205,11 +198,11 @@ export class QuotationComponent {
       }
     );
 
-    this.userFormGroup.get('complete_name').valueChanges
+    this.lastUserFormGroup.get('complete_name').valueChanges
       .pipe(debounceTime(1000))
       .subscribe((value: string) => {
         // Elimina el último espacio en blanco si existe
-        this.userFormGroup.patchValue({ complete_name: value.trim() });
+        this.lastUserFormGroup.patchValue({ complete_name: value.trim() });
       });
 
     this.registerFormGroup.get('complete_name').valueChanges
@@ -255,30 +248,25 @@ export class QuotationComponent {
 
         this.client = client
 
-        this.userFormGroup.patchValue({
-          complete_name: client.complete_name,
+        this.vehicleFormGroup.patchValue({
           email: client.email,
-          cellphone: client.cellphone,
-          age: client.age,
-          cp: client.cp,
-          genre: client.genre
+          cp: client.cp
         })
 
         this.lastUserFormGroup.patchValue({
+          complete_name: client.complete_name,
+          cellphone: client.cellphone,
           rfc: client.rfc,
           state: client.state,
           township: client.township,
           street: client.street,
-          street_number: client.street_number,
-          int_street_number: client.int_street_number,
-          suburb: client.suburb
         })
 
-        // this.suburbControl.patchValue(client.suburb)
+        this.suburbControl.patchValue(client.suburb)
 
         if (client.cp) {
 
-          // this.validateCp();
+          this.validateCp();
         }
 
         if (this.quotation_id > 0) {
@@ -467,6 +455,7 @@ export class QuotationComponent {
 
     if (this.quotation_id == 0) {
 
+      this.viewportScroller.scrollToPosition([0, 0]);
       this.quotations = false;
       this.initial_page = true;
 
@@ -477,6 +466,13 @@ export class QuotationComponent {
 
       this.vehicleFormGroup.reset()
       this.versionControl.reset()
+
+      if (this.client)
+        this.vehicleFormGroup.patchValue({
+          email: this.client.email,
+          cp: this.client.cp
+        })
+
       this.vehicleFormGroup.patchValue({
         unit_type: 'AUTO'
       })
@@ -490,10 +486,10 @@ export class QuotationComponent {
 
   validateCp() {
 
-    if (this.userFormGroup.get('cp').invalid)
+    if (this.vehicleFormGroup.get('cp').invalid)
       return
 
-    this._quotationService.validateCP(this.userFormGroup.get('cp').value).
+    this._quotationService.validateCP(this.vehicleFormGroup.get('cp').value).
       then((place_data) => {
 
         for (let place of place_data) {
@@ -515,17 +511,17 @@ export class QuotationComponent {
       .catch(({ title, message, code }) => {
         console.log(message)
 
-        Swal.fire({
-          icon: 'warning',
-          title: title,
-          text: message,
-          footer: code,
-          confirmButtonColor: '#06B808',
-          confirmButtonText: 'Entendido',
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          allowEnterKey: false
-        })
+        // Swal.fire({
+        //   icon: 'warning',
+        //   title: title,
+        //   text: message,
+        //   footer: code,
+        //   confirmButtonColor: '#06B808',
+        //   confirmButtonText: 'Entendido',
+        //   allowOutsideClick: false,
+        //   allowEscapeKey: false,
+        //   allowEnterKey: false
+        // })
 
       })
   }
@@ -538,7 +534,7 @@ export class QuotationComponent {
 
   validateForms() {
 
-    if (this.userFormGroup.invalid || this.vehicleFormGroup.invalid) { return; }
+    if (this.vehicleFormGroup.invalid) { return; }
 
     this.toQuotations();
   }
@@ -553,13 +549,15 @@ export class QuotationComponent {
     })
     Swal.showLoading()
 
+    this.viewportScroller.scrollToPosition([0, 0]);
+
     const clientData: any = {
-      complete_name: this.userFormGroup.get('complete_name').value,
-      email: this.userFormGroup.get('email').value,
-      cellphone: this.userFormGroup.get('cellphone').value,
-      age: this.userFormGroup.get('age').value,
-      cp: this.userFormGroup.get('cp').value,
-      genre: this.userFormGroup.get('genre').value,
+      // complete_name: this.userFormGroup.get('complete_name').value,
+      email: this.vehicleFormGroup.get('email').value,
+      // cellphone: this.userFormGroup.get('cellphone').value,
+      // age: this.userFormGroup.get('age').value,
+      cp: this.vehicleFormGroup.get('cp').value,
+      // genre: this.userFormGroup.get('genre').value,
       amis: this.versionControl.value.amis,
       model: this.vehicleFormGroup.get('model').value,
       unit_type: this.vehicleFormGroup.get('unit_type').value,
@@ -568,7 +566,8 @@ export class QuotationComponent {
 
     // Si no existe sesión se manda a actualizar, si tiene sesión se almacena la información.
     if (this.quotation_id == 0) {
-      this.checkSessionIsActive((!this.user_info) ? 3 : 2);
+
+      this.saveLead();
     }
 
     this._quotationService.homologation(clientData).
@@ -618,9 +617,7 @@ export class QuotationComponent {
       pack: this.chuubInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
       payment_frequency: this.payment_frequency,
       vehicle: this.chuubInfo.vehiculo,
-      age: this.userFormGroup.get('age').value,
-      genre: this.userFormGroup.get('genre').value,
-      cp: this.userFormGroup.get('cp').value
+      cp: this.vehicleFormGroup.get('cp').value
     }
 
     this._quotationService.chuubQuotation(searchData).
@@ -651,9 +648,7 @@ export class QuotationComponent {
       pack: this.primeroInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
       payment_frequency: this.payment_frequency,
       vehicle: this.primeroInfo.vehiculo,
-      age: this.userFormGroup.get('age').value,
-      genre: this.userFormGroup.get('genre').value,
-      cp: this.userFormGroup.get('cp').value
+      cp: this.vehicleFormGroup.get('cp').value
     }
 
     this._quotationService.primeroQuotation(searchData).
@@ -683,9 +678,7 @@ export class QuotationComponent {
       pack: this.qualitasInfo.paquetes.find((paquete: any) => paquete.orden == this.quoter_pack).paqueteID,
       payment_frequency: this.payment_frequency,
       vehicle: this.qualitasInfo.vehiculo,
-      age: this.userFormGroup.get('age').value,
-      genre: this.userFormGroup.get('genre').value,
-      cp: this.userFormGroup.get('cp').value
+      cp: this.vehicleFormGroup.get('cp').value
     }
 
     this._quotationService.qualitasQuotation(searchData).
@@ -717,7 +710,7 @@ export class QuotationComponent {
   //     vehicle: this.anaInfo.vehiculo,
   //     age: this.userFormGroup.get('age').value,
   //     genre: this.userFormGroup.get('genre').value,
-  //     cp: this.userFormGroup.get('cp').value
+  //     cp: this.vehicleFormGroup.get('cp').value
   //   }
 
   //   this._quotationService.anaQuotation(searchData).
@@ -852,9 +845,11 @@ export class QuotationComponent {
     this._quotationService.storeQuotation(quotationData).
       then(({ quotation }) => {
 
+        this.quotation = quotation
         this.quotation_id = quotation.id;
         this.quotations = false;
         this.last_data_page = true;
+        this.viewportScroller.scrollToPosition([0, 0]);
         Swal.close();
       })
       .catch(({ title, message, code }) => {
@@ -899,6 +894,7 @@ export class QuotationComponent {
         this.quotations = false;
         this.last_data_page = true;
 
+        this.viewportScroller.scrollToPosition([0, 0]);
         Swal.close();
       })
       .catch(({ title, message, code }) => {
@@ -945,20 +941,19 @@ export class QuotationComponent {
 
         this.storeQuotation();
       }
-
     } else {
 
       this.loginFormGroup.patchValue({
-        email: this.userFormGroup.get('email').value
+        email: this.vehicleFormGroup.get('email').value
       });
 
       this.registerFormGroup.patchValue({
-        complete_name: this.userFormGroup.get('complete_name').value,
-        email: this.userFormGroup.get('email').value
+        complete_name: this.lastUserFormGroup.get('complete_name').value,
+        email: this.vehicleFormGroup.get('email').value
       });
 
       this.recoveryFormGroup.patchValue({
-        email: this.userFormGroup.get('email').value
+        email: this.vehicleFormGroup.get('email').value
       });
 
       this.display_login_modal = 'block';
@@ -1004,6 +999,7 @@ export class QuotationComponent {
 
         this._templateComponent.loginListener(true);
 
+        this.getClient();
         this.closeLoginModal();
         this.updateLead(4)
         this.storeQuotation();
@@ -1078,6 +1074,7 @@ export class QuotationComponent {
         this._templateComponent.loginListener(true);
 
         this.updateLead(4);
+        this.getClient();
 
         this.closeRegisterModal();
 
@@ -1262,8 +1259,12 @@ export class QuotationComponent {
   validateLastForms() {
 
     // if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid || this.suburbControl.invalid) { return; }
-    if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid) { return; }
+    if (this.lastVehicleFormGroup.invalid || this.lastUserFormGroup.invalid || this.suburbControl.invalid) {
 
+      return;
+    }
+
+    // this.updateLead(4);
     this.toPayPage();
   }
 
@@ -1282,17 +1283,15 @@ export class QuotationComponent {
     let clientInfo = {
       rfc: this.lastUserFormGroup.get('rfc').value,
       township: this.lastUserFormGroup.get('township').value,
-      // suburb: this.suburbControl.value,
-      suburb: this.lastUserFormGroup.get('suburb').value,
+      suburb: this.suburbControl.value,
+      complete_name: this.lastUserFormGroup.get('complete_name').value,
+      cellphone: this.lastUserFormGroup.get('cellphone').value,
       state: this.lastUserFormGroup.get('state').value,
       street: this.lastUserFormGroup.get('street').value,
-      street_number: this.lastUserFormGroup.get('street_number').value,
-      int_street_number: this.lastUserFormGroup.get('int_street_number').value
     }
 
     this._clientService.updateClient(user_info.user_id, clientInfo)
       .then((client) => {
-
         this.lastUpdateQuotation();
       })
       .catch(({ title, message, code }) => {
@@ -1331,6 +1330,7 @@ export class QuotationComponent {
         this.last_data_page = false;
         this.pay_page = true;
 
+        this.viewportScroller.scrollToPosition([0, 0]);
         Swal.close();
       })
       .catch(({ title, message, code }) => {
@@ -1355,6 +1355,7 @@ export class QuotationComponent {
 
     this.last_data_page = true;
     this.pay_page = false;
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   checkToPay() {
@@ -1388,7 +1389,7 @@ export class QuotationComponent {
     let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     // Se separa el nombre del usuario
-    let complete_name = this.userFormGroup.get('complete_name').value;
+    let complete_name = this.lastUserFormGroup.get('complete_name').value;
 
     const name_array = complete_name.split(" ");
 
@@ -1430,18 +1431,18 @@ export class QuotationComponent {
         apellidoMaterno: mother_lastname,
         rfc: this.lastUserFormGroup.get('rfc').value,
         estadoCivil: "SOLTERO",
-        sexo: this.userFormGroup.get('genre').value,
+        sexo: 'MASCULINO',
         tipoPersona: "FISICA",
-        correo: this.userFormGroup.get('email').value,
-        telefono: this.userFormGroup.get('cellphone').value,
+        correo: this.vehicleFormGroup.get('email').value,
+        telefono: this.lastUserFormGroup.get('cellphone').value,
         direccion: {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
-          codigoPostal: this.userFormGroup.get('cp').value,
-          // colonia: this.suburbControl.value,
-          colonia: this.lastUserFormGroup.get('suburb').value,
-          numeroExterior: this.lastUserFormGroup.get('street_number').value,
-          numeroInterior: this.lastUserFormGroup.get('int_street_number').value
+          codigoPostal: this.vehicleFormGroup.get('cp').value,
+          colonia: this.suburbControl.value,
+          // colonia: this.lastUserFormGroup.get('suburb').value,
+          numeroExterior: "1",
+          // numeroInterior: this.lastUserFormGroup.get('int_street_number').value
         }
       },
       vehiculo: {
@@ -1480,7 +1481,7 @@ export class QuotationComponent {
     let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     // Se separa el nombre del usuario
-    let complete_name = this.userFormGroup.get('complete_name').value;
+    let complete_name = this.lastUserFormGroup.get('complete_name').value;
 
     const name_array = complete_name.split(" ");
 
@@ -1522,18 +1523,16 @@ export class QuotationComponent {
         apellidoMaterno: mother_lastname,
         rfc: this.lastUserFormGroup.get('rfc').value,
         estadoCivil: "SOLTERO",
-        sexo: this.userFormGroup.get('genre').value,
+        sexo: 'MASCULINO',
         tipoPersona: "FISICA",
-        correo: this.userFormGroup.get('email').value,
-        telefono: this.userFormGroup.get('cellphone').value,
+        correo: this.vehicleFormGroup.get('email').value,
+        telefono: this.lastUserFormGroup.get('cellphone').value,
         direccion: {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
-          codigoPostal: this.userFormGroup.get('cp').value,
-          // colonia: this.suburbControl.value,
-          colonia: this.userFormGroup.get('suburb').value,
-          numeroExterior: this.lastUserFormGroup.get('street_number').value,
-          numeroInterior: this.lastUserFormGroup.get('int_street_number').value
+          codigoPostal: this.vehicleFormGroup.get('cp').value,
+          numeroExterior: "1",
+          colonia: this.suburbControl.value,
         }
       },
       vehiculo: {
@@ -1572,7 +1571,7 @@ export class QuotationComponent {
     let user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     // Se separa el nombre del usuario
-    let complete_name = this.userFormGroup.get('complete_name').value;
+    let complete_name = this.lastUserFormGroup.get('complete_name').value;
 
     const name_array = complete_name.split(" ");
 
@@ -1614,18 +1613,19 @@ export class QuotationComponent {
         apellidoMaterno: mother_lastname,
         rfc: this.lastUserFormGroup.get('rfc').value,
         estadoCivil: "SOLTERO",
-        sexo: this.userFormGroup.get('genre').value,
+        sexo: 'MASCULINO',
         tipoPersona: "FISICA",
-        correo: this.userFormGroup.get('email').value,
-        telefono: this.userFormGroup.get('cellphone').value,
+        correo: this.vehicleFormGroup.get('email').value,
+        telefono: this.lastUserFormGroup.get('cellphone').value,
         direccion: {
           calle: this.lastUserFormGroup.get('street').value,
           pais: 'MEXICO',
-          codigoPostal: this.userFormGroup.get('cp').value,
-          // colonia: this.suburbControl.value,
-          colonia: this.lastUserFormGroup.get('suburb').value,
-          numeroExterior: this.lastUserFormGroup.get('street_number').value,
-          numeroInterior: this.lastUserFormGroup.get('int_street_number').value
+          codigoPostal: this.vehicleFormGroup.get('cp').value,
+          numeroExterior: "1",
+          colonia: this.suburbControl.value,
+          // colonia: this.lastUserFormGroup.get('suburb').value,
+          // numeroExterior: this.lastUserFormGroup.get('street_number').value,
+          // numeroInterior: this.lastUserFormGroup.get('int_street_number').value
         }
       },
       vehiculo: {
@@ -1660,53 +1660,50 @@ export class QuotationComponent {
 
   // SUGAR CRM
 
-  checkSessionIsActive(process: number) {
+  // checkSessionIsActive(process: number) {
 
-    // 1 Sin sesión activa y en el primer formulario datos del usuarios
-    if (!this.user_info && process == 1) {
-      this.saveLead(process);
-    }
+  //   // 1 Sin sesión activa y en el primer formulario datos del usuarios
+  //   if (process == 1) {
 
-    // 2 Con sesión activa, segundo formulario información del auto a cotizar
-    else if (this.user_info && process == 2) {
+  //     this.saveLead(process);
+  //   }
 
-      this.saveLead(process);
-    }
+  //   // 2 Con sesión activa, segundo formulario información del auto a cotizar
+  //   else if (process == 2) {
 
-    // 3 Sin sesión activa y segundo formulario información a cotizar
+  //     this.saveLead(process);
+  //   }
 
-    else if (!this.user_info && process == 3) {
+  //   // 3 Sin sesión activa y segundo formulario información a cotizar
+  //   else if (process == 3) {
 
-      this.updateLead(process);
-    }
-  }
+  //     this.updateLead(process);
+  //   }
+  // }
 
-  saveLead(process: number) {
+  saveLead() {
 
     let brand: any;
     let user_info: any;
 
-    if (process != 1) {
+    // if (process != 1) {
 
-      brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value);
+    brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value);
 
-      user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
-    }
+    user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
+    // }
 
     const leadData: any = {
       client_id: user_info ? user_info.user_id : '',
-      complete_name: this.userFormGroup.get('complete_name').value,
-      email: this.userFormGroup.get('email').value,
-      phone: this.userFormGroup.get('cellphone').value,
-      age: this.userFormGroup.get('age').value,
-      genre: this.userFormGroup.get('genre').value,
-      process_description: process == 1 ? "Datos de Contacto" : "Cotizacion",
+      complete_name: user_info ? user_info.user_name : '',
+      email: this.vehicleFormGroup.get('email').value,
+      // phone: this.lastUserFormGroup.get('cellphone').value,
+      process_description: "Cotizacion",
       model: this.vehicleFormGroup.get('model').value,
       brand: brand ? brand.nombre : '',
       vehicle_type: this.vehicleFormGroup.get('type').value,
       vehicle: this.versionControl.value.descripcion
     }
-
     this._quotationService.saveLead(leadData).
       then(({ crm_id }) => {
 
@@ -1735,12 +1732,13 @@ export class QuotationComponent {
     let brand: any;
     let user_info: any;
 
+    // En caso de que sea una cotización nueva se consulta la marca en base al id de la marca seleccionada previamente.
     if (this.quotation_id == 0) {
 
       brand = this.brands.find((brand: any) => brand.marca == this.vehicleFormGroup.get('brand_id').value);
-
-      // user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
     }
+
+    user_info = JSON.parse(localStorage.getItem('Certy_user_info')!);
 
     let process_description = '';
 
@@ -1760,18 +1758,16 @@ export class QuotationComponent {
     }
 
     const leadData: any = {
-      // client_id: user_info ? user_info.user_id : '',
+      client_id: user_info ? user_info.user_id : '',
       lead_id: this.CRM_id_register,
-      complete_name: this.userFormGroup.get('complete_name').value,
-      email: this.userFormGroup.get('email').value,
-      phone: this.userFormGroup.get('cellphone').value,
-      age: this.userFormGroup.get('age').value,
-      genre: this.userFormGroup.get('genre').value,
+      complete_name: this.lastUserFormGroup.get('complete_name').value,
+      email: this.vehicleFormGroup.get('email').value,
+      phone: this.lastUserFormGroup.get('cellphone').value,
       process_description: process_description,
       model: this.vehicleFormGroup.get('model').value,
-      brand: this.quotation_id > 0 ? this.quotation.brand : brand.nombre,
+      brand: this.quotation_id > 0 ? this.quotation.brand : (process == 4 ? brand.nombre : ''),
       vehicle_type: this.vehicleFormGroup.get('type').value,
-      vehicle: this.versionControl.value.descripcion,
+      vehicle: this.quotation_id > 0 ? this.quotation.vehicle_description : this.versionControl.value.descripcion,
       insurer: this.quoter_name
     }
 
@@ -1789,23 +1785,19 @@ export class QuotationComponent {
   // Getters 
 
   get invalidCompleteName() {
-    return this.userFormGroup.get('complete_name').invalid
+    return this.lastUserFormGroup.get('complete_name').invalid
   }
 
   get invalidEmail() {
-    return this.userFormGroup.get('email').invalid
+    return this.vehicleFormGroup.get('email').invalid
   }
 
   get invalidCellphone() {
-    return this.userFormGroup.get('cellphone').invalid
-  }
-
-  get invalidAge() {
-    return this.userFormGroup.get('age').invalid
+    return this.lastUserFormGroup.get('cellphone').invalid
   }
 
   get invalidCp() {
-    return this.userFormGroup.get('cp').invalid
+    return this.vehicleFormGroup.get('cp').invalid
   }
 
   get invalidSerialNumber() {
@@ -1827,10 +1819,10 @@ export class QuotationComponent {
   get invalidStreet() {
     return this.lastUserFormGroup.get('street').invalid
   }
-  
+
   get invalidSuburb() {
-    return this.lastUserFormGroup.get('suburb').invalid
-    // return this.suburbControl.invalid
+    // return this.lastUserFormGroup.get('suburb').invalid
+    return this.suburbControl.invalid
   }
 
   get invalidTownship() {
