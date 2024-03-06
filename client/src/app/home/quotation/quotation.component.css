@@ -1,6 +1,7 @@
 /* Initial Form */
 
 .car-image {
+    width: 100%;
     max-width: 500px;
 }
 
