@@ -1,0 +1,47 @@
+.page-title {
+    color: #0E2B4D;
+    font-size: 45px;
+    font-weight: bolder;
+    text-justify: auto;
+}
+
+.subtitle-text {
+    font-size: 18px;
+    color: #0E2B4D;
+    font: Montserrat;
+}
+
+.coverage-button {
+    display: none;
+}
+
+.column-container-text {
+    text-align: start;
+}
+
+.column-container-image {
+    text-align: end;
+}
+
+@media screen and (max-width: 800px) {
+
+    .page-title {
+        font-size: 30px;
+    }
+
+    .covarage-image {
+        display: none;
+    }
+
+    .coverage-button {
+        display: block;
+    }
+
+    .column-container-text {
+        text-align: center;
+    }
+
+    .column-container-image {
+        text-align: center;
+    }
+}

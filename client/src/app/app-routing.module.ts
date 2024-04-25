@@ -10,6 +10,8 @@ import { AccountStatusComponent } from './home/account-status/account-status.com
 import { FaqsComponent } from './home/faqs/faqs.component';
 import { HelpsComponent } from './home/helps/helps.component';
 import { ControlComponent } from './home/control/control.component';
+import { UsComponent } from './home/us/us.component';
+import { CoverageComponent } from './home/coverage/coverage.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'proceso/:policy_id', component: ControlComponent },
   { path: 'cotizacion', component: QuotationComponent },
   { path: 'faqs', component: FaqsComponent },
+  { path: 'coberturas', component: CoverageComponent },
+  { path: 'nosotros', component: UsComponent },
   { path: 'ayuda', component: HelpsComponent },
   // { path: 'estado-de-cuenta', component: AccountStatusComponent, canActivate: [AuthGuard] },
 

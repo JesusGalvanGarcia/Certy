@@ -48,6 +48,8 @@ import { AccountStatusComponent } from './home/account-status/account-status.com
 import { FaqsComponent } from './home/faqs/faqs.component';
 import { HelpsComponent } from './home/helps/helps.component';
 import { ControlComponent } from './home/control/control.component';
+import { UsComponent } from './home/us/us.component';
+import { CoverageComponent } from './home/coverage/coverage.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { ControlComponent } from './home/control/control.component';
     AccountStatusComponent,
     FaqsComponent,
     HelpsComponent,
-    ControlComponent
+    ControlComponent,
+    UsComponent,
+    CoverageComponent
   ],
   imports: [
     BrowserModule,

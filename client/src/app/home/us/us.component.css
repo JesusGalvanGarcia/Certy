@@ -1,0 +1,39 @@
+.page-title {
+    color: #0E2B4D;
+    font-size: 45px;
+    font-weight: bolder;
+    text-justify: auto;
+}
+
+.car-image {
+    width: 100%;
+    max-width: 300px;
+}
+
+.us-text {
+    font-size: 15px;
+    color: #707070;
+    font: Montserrat Regular 15px/22px;
+}
+
+.subtitle-1 {
+    font-size: 34px;
+    color: #0E2B4D;
+    font-weight: bolder;
+    font: Montserrat;
+}
+
+.subtitle-2 {
+    font-size: 25px;
+    color: #60CDEE;
+    font-weight: bolder;
+    font: Montserrat;
+}
+
+@media screen and (max-width: 800px) {
+
+    .page-title {
+        font-size: 30px;
+    }
+    
+}

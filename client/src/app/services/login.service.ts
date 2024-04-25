@@ -68,8 +68,6 @@ export class LoginService {
     return this.api_conect.post('/sendSecureCode', userData)
       .then(({ data }: any) => {
 
-        this.saveToken(data.token, data.data)
-
         return data;
       })
       .catch(({ response }: any) => {

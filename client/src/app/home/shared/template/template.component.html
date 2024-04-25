@@ -35,45 +35,78 @@
             <div class="d-flex">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item" *ngIf="!authenticated">
-                            <button class="mb-2 mt-2" mat-button
-                                style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
-                                [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
-                        </li>
-                        <li class="nav-item" *ngIf="authenticated">
-                            <button class="mt-2 mb-2" mat-button
-                                style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
-                                [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
-                        </li>
-                        <li class="nav-item" *ngIf="!authenticated && showCotizaButton">
-                            <button type="button" class="btn btn-info mb-2 mt-2"
-                                style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; margin-right: 10px;"
-                                [routerLink]="['/cotizacion']">
-                                ¡Cotiza Ahora!
-                            </button>
-                        </li>
-                        <li class="nav-item" *ngIf="!authenticated">
-                            <button type="button" class="btn btn-outline-light mt-2 mb-2"
-                                style="min-width: 180px;margin-right: 10px;" [routerLink]="['/login']">
-                                Inicia Sesión
-                            </button>
-                        </li>
-                        <li class="nav-item" *ngIf="authenticated">
-                            <a class="nav-link active" [routerLink]="['/dashboard']">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" [routerLink]="['/cotizacion']">
                                 <button mat-button style="color: white">
-                                    <mat-icon>home</mat-icon>
                                     Inicio
                                 </button>
                             </a>
                         </li>
-                        <!-- <li class="nav-item" *ngIf="authenticated">
-                            <a class="nav-link active" [routerLink]="['/estado-de-cuenta']">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" [routerLink]="['/nosotros']">
                                 <button mat-button style="color: white">
-                                    <mat-icon>history_edu</mat-icon>
-                                    Estado de Cuenta
+                                    Nosotros
                                 </button>
                             </a>
-                        </li> -->
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" [routerLink]="['/coberturas']">
+                                <button mat-button style="color: white">
+                                    Cobertura
+                                </button>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" [routerLink]="['/faqs']">
+                                <button mat-button style="color: white">
+                                    FAQs
+                                </button>
+                            </a>
+                        </li>
+
+                        <ng-container *ngIf="!authenticated">
+                            <li class="nav-item">
+                                <button class="mb-2 mt-2" mat-button
+                                    style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
+                                    [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button type="button" class="btn btn-outline-light mt-2 mb-2"
+                                    style="min-width: 180px;margin-right: 10px;" [routerLink]="['/login']">
+                                    Inicia Sesión
+                                </button>
+                            </li>
+
+                            <li class="nav-item" *ngIf="!authenticated && showCotizaButton">
+                                <button type="button" class="btn btn-info mb-2 mt-2"
+                                    style="background: #60CDEE 0% 0% no-repeat padding-box;color:white;min-width: 180px; margin-right: 10px;"
+                                    [routerLink]="['/cotizacion']">
+                                    ¡Cotiza Ahora!
+                                </button>
+                            </li>
+                        </ng-container>
+
+                        <ng-container *ngIf=" authenticated">
+
+                            <li class="nav-item" *ngIf="authenticated">
+                                <button class="mt-2 mb-2" mat-button
+                                    style=" background:#60cdee00;color:#60CDEE;min-width: 180px; margin-right: 10px;"
+                                    [routerLink]="['/ayuda']">¿Qué hacer en caso de un siniestro?</button>
+                            </li>
+
+                            <li class="nav-item" *ngIf="authenticated">
+                                <a class="nav-link active" [routerLink]="['/dashboard']">
+                                    <button mat-button style="color: white">
+                                        Mis pólizas
+                                    </button>
+                                </a>
+                            </li>
+                        </ng-container>
                     </ul>
                     <small style="color: #60CDEE;">
                         {{authenticated ? user_info.user_name: '' }}
